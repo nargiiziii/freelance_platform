@@ -5,7 +5,7 @@
   align-items: center;
   gap: 30px;
   padding: 150px 30px;
-  
+
   h2 {
     font-size: 4.5rem;
     font-weight: bold;
@@ -16,6 +16,11 @@
     font-size: 2.5rem;
     margin: 20px 0;
     max-width: 450px;
+  }
+
+  button {
+    padding: 18px 28px;
+    font-size: 18px;
   }
 
   img {
@@ -50,22 +55,22 @@
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-.mainHead {
-  padding: 170px 50px;
-  
-  h2 {
-    font-size: 3rem;
-  }
+  .mainHead {
+    padding: 170px 50px;
 
-  p {
-    font-size: 2rem;
-  }
+    h2 {
+      font-size: 3rem;
+    }
 
-  img {
-    width: 510px;
-    height: 340px;
+    p {
+      font-size: 2rem;
+    }
+
+    img {
+      width: 510px;
+      height: 340px;
+    }
   }
-}
 }
 
 @media (min-width: 1024px) {

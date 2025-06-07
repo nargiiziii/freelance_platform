@@ -1,18 +1,32 @@
-import express from "express";
-import "dotenv/config";
-import "src/config/db.js";
-import cors from "cors";
+// server.js
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors'; // импортируем cors
+import connectDB from './src/config/db.js'; // путь до твоего db.js
 
-const port = process.env.PORT || 3000;
+dotenv.config();
+
 const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Настраиваем CORS, чтобы разрешить запросы с фронтенда на localhost:5173
+app.use(cors({
+  origin: 'http://localhost:5173',  // Адрес твоего React фронтенда
+  credentials: true,                 // Если нужны куки или авторизация
+}));
 
 app.use(express.json());
-app.use(cors());
 
-// app.post("api/..", async (req, res) => {
+// Подключение к базе данных
+connectDB();
 
-// }
+// Твои маршруты
+import authRoutes from './src/routes/authRoutes.js';
+import refreshRoutes from './src/routes/refreshTokenRoutes.js';
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.use('/api/auth', authRoutes);
+app.use('/api/auth', refreshRoutes);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

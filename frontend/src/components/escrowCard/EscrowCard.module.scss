@@ -1,0 +1,34 @@
+.escrowCard {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 180px;
+    height: 180px;
+
+    background-color: #9e85f9;
+    border-radius: 50%;
+
+    font-size: 90px;
+    color: white;
+  }
+
+  h3 {
+    font-size: 19px;
+  }
+
+  p {
+    font-size: 16px;
+    text-align: center;
+    color: #9383cc;
+    max-width: 200px;
+  }
+}

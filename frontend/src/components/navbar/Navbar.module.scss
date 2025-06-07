@@ -1,0 +1,42 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #d8cff9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 10px 90px;
+}
+
+.nav_right {
+  display: flex;
+  gap: 10px;
+}
+
+.burger {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .navbar {
+    padding: 10px 10px;
+  }
+  .nav_right {
+    display: none;
+  }
+  .burger {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .navbar {
+    padding: 0px 90px;
+  }
+}
+
+@media (min-width: 1024px) {
+}

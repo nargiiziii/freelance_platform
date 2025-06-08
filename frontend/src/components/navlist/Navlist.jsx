@@ -3,19 +3,20 @@ import { Link } from "react-router-dom";
 import style from "./Navlist.module.scss";
 const Navlist = () => {
   return (
-    <ul>
-      <li>
-        <Link to={"/"}>HOME</Link>
-      </li>
-      <li>
-        <Link to={"/login"}>lOGIN</Link>
-      </li>
-      <li>
-        <button>
-          <Link to={"/register"}>SIGN UP</Link>
-        </button>
-      </li>
-    </ul>
+    <ul className={style.ul}>
+  <li className={style.li}>
+    <Link to={"/"}>HOME</Link>
+  </li>
+  <li className={style.li}>
+    <Link to={"/login"}>LOGIN</Link>
+  </li>
+  <li className={style.li}>
+    <button className={style.button}>
+      <Link to={"/register"}>SIGN UP</Link>
+    </button>
+  </li>
+</ul>
+
   );
 };
 

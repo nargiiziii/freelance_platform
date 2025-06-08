@@ -7,8 +7,7 @@ import connectDB from './src/config/db.js'; // путь до твоего db.js
 dotenv.config();
 
 const app = express();
-console.log('process.env.PORT:', process.env.PORT);
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Настраиваем CORS, чтобы разрешить запросы с фронтенда на localhost:5173
 app.use(cors({

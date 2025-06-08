@@ -29,7 +29,7 @@ const MainHead = () => {
           </button>
         )}
       </div>
-      <img src="../../../public/images/working_woman.png" alt="" />
+      <img src="/images/working_woman.png" alt="Working Woman" />
     </div>
   );
 };

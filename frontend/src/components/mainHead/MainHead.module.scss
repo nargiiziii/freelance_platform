@@ -7,15 +7,18 @@
   padding: 150px 30px;
 
   h2 {
-    font-size: 4.5rem;
-    font-weight: bold;
+    font-size: 4rem;
+    font-weight: 600;
     max-width: 450px;
+    font-family: var(--font-main);
   }
 
   p {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin: 20px 0;
     max-width: 450px;
+    font-weight: 400;
+    font-family: var(--font-sec);
   }
 
   button {

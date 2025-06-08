@@ -4,31 +4,46 @@
   gap: 15px;
   justify-content: center;
   align-items: center;
-  width: 300px;
+  width: 30rem;
 
   .icon {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: 180px;
-    height: 180px;
+    width: 18rem;
+    height: 18rem;
 
     background-color: #9e85f9;
     border-radius: 50%;
 
-    font-size: 90px;
+    font-size: 9rem;
     color: white;
   }
 
   h3 {
     font-size: 19px;
+    font-family: var(--font-main);
   }
 
   p {
     font-size: 16px;
     text-align: center;
-    color: #9383cc;
+    color: #441dcf;
     max-width: 200px;
+    font-family: var(--font-sec);
+  }
+}
+
+@media (max-width: 767px) {
+  .escrowCard {
+    width: 24rem;
+
+    .icon {
+      width: 12rem;
+      height: 12rem;
+
+      font-size: 8rem;
+    }
   }
 }

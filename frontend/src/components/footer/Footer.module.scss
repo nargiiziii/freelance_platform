@@ -1,0 +1,166 @@
+.footer {
+  background: linear-gradient(135deg, #4b0077, #8e2de2);
+  color: white;
+  font-family: var(--font-main);
+  padding: 5rem 2rem 3rem;
+  border-top-left-radius: 8rem;
+  border-top-right-radius: 8rem;
+  margin-top: -6rem;
+  margin-bottom: -1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+img {
+  max-width: 100%;
+  width: 240px; 
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+
+  .footContent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 3rem;
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .brand {
+    flex: 1 1 300px;
+
+    p {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      max-width: 28rem;
+    }
+  }
+
+  .rightColumn {
+    display: flex;
+    flex: 1 1 400px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    .nav,
+    .contacts {
+      flex: 1 1 180px;
+    }
+  }
+
+  .nav {
+    h3 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin-bottom: 0.8rem;
+
+        a {
+          color: white;
+          text-decoration: none;
+          transition: color 0.3s;
+
+          &:hover {
+            color: #d8cff9;
+          }
+        }
+      }
+    }
+  }
+
+  .contacts {
+    h3 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+
+      a {
+        color: #d8cff9;
+        text-decoration: none;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
+
+    .socials {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      a {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        color: white;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: #d8cff9;
+          color: #4b0077;
+        }
+      }
+    }
+  }
+
+  .copy {
+    margin-top: 3rem;
+    font-size: 1rem;
+    opacity: 0.7;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+ .footContent {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .brand p {
+    max-width: 100%;
+  }
+
+  .rightColumn {
+    width: 100%;
+  }
+
+  img {
+    width: 150px;
+  }
+
+  .footer {
+    border-top-left-radius: 4rem;
+    border-top-right-radius: 4rem;
+    padding: 3rem 1rem 2rem;
+  }
+
+  .socials {
+    justify-content: center;
+  }
+}

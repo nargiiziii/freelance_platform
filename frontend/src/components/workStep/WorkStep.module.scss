@@ -1,0 +1,38 @@
+.workStep {
+  display: flex;
+  flex-direction: column;
+  color: #d6ccfc;
+  font-family: var(--font-sec);
+
+  .num {
+    font-size: 4rem;
+    font-weight: bold;
+    background-color: #c2b5f1;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #521194;
+  }
+
+  .title {
+    font-size: 2.8rem;
+    font-weight: bold;
+    padding: 1rem 0;
+  }
+  .subtitle {
+    font-size: 1.6rem;
+    font-weight: normal;
+    padding: 1rem 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .workStep {
+    .title {
+      font-size: 2.2rem;
+    }
+  }
+}

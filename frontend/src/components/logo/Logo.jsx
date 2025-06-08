@@ -3,7 +3,7 @@ import style from "./Logo.module.scss"
 const Logo = () => {
   return (
     <div className={style.logo}>
-      <img src="../../../public/images/logo_dark.png" alt="Logo" />
+      <img src="/images/logo_dark.png" alt="Logo" />
     </div>
   )
 }

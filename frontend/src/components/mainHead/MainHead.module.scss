@@ -22,8 +22,37 @@
   }
 
   button {
-    padding: 18px 28px;
-    font-size: 18px;
+    background-color: #6a4ef6;
+    border-radius: 8px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(106, 78, 246, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    a {
+      text-decoration: none;
+      width: 100%;
+      display: block;
+      color: white;
+    }
+  }
+
+  button:hover {
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(126, 98, 249, 0.4);
+    border: none;
+    a {
+      text-decoration: none;
+      width: 100%;
+      display: block;
+      color: #7e62f9;
+    }
   }
 
   img {

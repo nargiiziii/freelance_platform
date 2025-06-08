@@ -7,6 +7,7 @@ import connectDB from './src/config/db.js'; // путь до твоего db.js
 dotenv.config();
 
 const app = express();
+console.log('process.env.PORT:', process.env.PORT);
 const PORT = process.env.PORT || 3000;
 
 // Настраиваем CORS, чтобы разрешить запросы с фронтенда на localhost:5173
@@ -26,6 +27,11 @@ import refreshRoutes from './src/routes/refreshTokenRoutes.js';
 
 app.use('/api/auth', authRoutes);
 app.use('/api/auth', refreshRoutes);
+
+app.get('/', (req, res) => {
+  res.send('Backend is running');
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

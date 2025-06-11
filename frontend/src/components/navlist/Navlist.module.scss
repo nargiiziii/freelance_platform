@@ -39,3 +39,33 @@
   box-shadow: 0 4px 12px rgba(126, 98, 249, 0.4);
   color: #7e62f9;
 }
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  transition: transform 0.2s;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+.avatarPlaceholder {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: gray;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profileLink {
+  display: flex;
+  align-items: center;
+}

@@ -1,12 +1,13 @@
 // src/App.jsx
 import React from "react";
 import { BrowserRouter, Routes, Route, RouterProvider } from "react-router-dom";
-import Register from "./pages/Register";
+import Register from "./pages/register/Register";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
+import Dashboard from "./pages/dashboard/Dashboard";
+import EditProfile from "./pages/editProf/EditProdile";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "/edit-profile",
+        element: <EditProfile />,
       },
     ],
   },

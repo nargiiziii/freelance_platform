@@ -1,26 +1,20 @@
-import express from "express";
-import Project from "../models/project.js";
-import User from "../models/user.js";
+import express from 'express';
+import {
+  createProject,
+  getEmployerProjects,
+  getOpenProjects
+} from '../controllers/projectController.js';
+import {authMiddleware} from '../middleware/jwtMiddleware.js';
 
 const router = express.Router();
 
-router.post("/create", async (req, res) => {
-  try {
-    const { title, description, employerId } = req.body;
+// Создание проекта (только для employer)
+router.post('/', authMiddleware, createProject);
 
-    // 1. Создать проект
-    const newProject = await Project.create({ title, description, employerId });
+// Получить проекты текущего employer
+router.get('/my-projects', authMiddleware, getEmployerProjects);
 
-    // 2. Увеличить счётчик у работодателя
-    await User.findByIdAndUpdate(employerId, {
-      $inc: { postedProjectsCount: 1 }
-    });
-
-    res.status(201).json(newProject);
-  } catch (err) {
-    console.error("Ошибка при создании проекта:", err);
-    res.status(500).json({ message: "Ошибка сервера" });
-  }
-});
+// Получить открытые проекты для фрилансера
+router.get('/', authMiddleware, getOpenProjects);
 
 export default router;

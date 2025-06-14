@@ -3,13 +3,9 @@ import axios from 'axios';
 
 const instance = axios.create({
   baseURL: 'http://localhost:3000/api',
+  withCredentials: true, // ✅ обязательно, чтобы cookie автоматически передавались
 });
 
-
-instance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+// ❌ Удаляем interceptor с токеном из localStorage — он больше не нужен
 
 export default instance;

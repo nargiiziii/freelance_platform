@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import axios from "../../axiosInstance";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux"; // ✅
+import { getProfile } from "../../redux/features/authSlice"; // ✅
 import style from "./Register.module.scss";
 
 export default function Register() {
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // ✅
+
   const [form, setForm] = useState({
     role: "freelancer",
     name: "",
@@ -14,6 +18,7 @@ export default function Register() {
     skills: [],
     portfolio: [],
   });
+
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [error, setError] = useState("");
@@ -26,7 +31,7 @@ export default function Register() {
     const file = e.target.files[0];
     if (file) {
       setAvatarFile(file);
-      setAvatarPreview(URL.createObjectURL(file)); // для превью
+      setAvatarPreview(URL.createObjectURL(file));
     }
   };
 
@@ -46,7 +51,6 @@ export default function Register() {
         formData.append("avatar", avatarFile);
       }
 
-      // Если есть skills и portfolio — добавь их как JSON
       if (form.skills.length)
         formData.append("skills", JSON.stringify(form.skills));
       if (form.portfolio.length)
@@ -54,10 +58,16 @@ export default function Register() {
 
       const response = await axios.post("/auth/register", formData, {
         headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true, // ✅ важно
       });
 
       console.log("Успешно зарегистрированы:", response.data);
-      navigate("/login");
+
+      // ✅ Получаем профиль после регистрации
+      await dispatch(getProfile());
+
+      // ✅ Переход к Dashboard
+      navigate("/dashboard");
     } catch (err) {
       console.error("Ошибка регистрации:", err.response?.data || err.message);
       setError(err.response?.data?.message || "Ошибка при регистрации");

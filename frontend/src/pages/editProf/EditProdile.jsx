@@ -31,9 +31,9 @@ function EditProfile() {
     }
   }, [user]);
 
-  useEffect(() => {
-    console.log("Current user from Redux store:", user);
-  }, [user]);
+  // useEffect(() => {
+  //   console.log("Current user from Redux store:", user);
+  // }, [user]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -53,8 +53,8 @@ function EditProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("user перед отправкой:", user);
-    console.log("user._id перед отправкой:", user?.id);
+    // console.log("user перед отправкой:", user);
+    // console.log("user._id перед отправкой:", user?.id);
 
     if (!user?.id) {
       alert(
@@ -69,10 +69,10 @@ function EditProfile() {
       if (avatarFile) {
         const formData = new FormData();
         formData.append("image", avatarFile, avatarFile.name);
-        console.log("Отправляемый файл:", avatarFile.name);
+        // console.log("Отправляемый файл:", avatarFile.name);
 
         const res = await axios.post("/upload", formData);
-        console.log("URL аватара после загрузки:", res.data.url);
+        // console.log("URL аватара после загрузки:", res.data.url);
 
         avatarUrl = res.data.url.replace(/^\/+/, ""); // Убираем ведущий слэш
       }

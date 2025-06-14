@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../redux/features/authSlice";
+import { logoutUser } from "../../redux/features/authSlice"; // 👈 обновлённый thunk
 import style from "./Navlist.module.scss";
 
 const Navlist = () => {
@@ -9,14 +9,14 @@ const Navlist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await dispatch(logoutUser()); // 👈 отправка запроса на /auth/logout
     navigate("/");
   };
 
   const getDashboardPath = () => {
-    if (user?.role === "freelancer") return "/dashboard";
-    if (user?.role === "employer") return "/dashboard";
+    if (user?.role === "freelancer") return "/freelancer-dash";
+    if (user?.role === "employer") return "/employee-dash";
     return "/";
   };
 
@@ -53,6 +53,9 @@ const Navlist = () => {
           <li className={style.li}>
             <Link to="/messages">Messages</Link>
           </li>
+          <li className={style.li}>
+            <Link to="/escrow">Escrow</Link> {/* Секция для управления эскроу */}
+          </li>
         </>
       )}
 
@@ -69,6 +72,9 @@ const Navlist = () => {
           </li>
           <li className={style.li}>
             <Link to="/freelancers">Find Freelancers</Link>
+          </li>
+          <li className={style.li}>
+            <Link to="/escrow">Escrow</Link> {/* Секция для управления эскроу */}
           </li>
         </>
       )}

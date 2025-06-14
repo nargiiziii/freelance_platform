@@ -27,7 +27,7 @@ const portfolioItemSchema = new mongoose.Schema(
     description: { type: String },
     technologies: { type: [String], default: [] },
     date: { type: String },
-    image: { type: String }, // добавлено
+    image: { type: String }, 
   },
   { _id: false }
 );

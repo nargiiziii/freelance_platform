@@ -3,15 +3,16 @@ import multer from 'multer';
 import {
   updateUser,
   addPortfolioItem,
-  getUser // ✅ импортируем getUser
+  getUser
 } from '../controllers/userController.js';
+import { authMiddleware } from '../middleware/jwtMiddleware.js'; // ✅ Импорт миддлвара
 
 const router = express.Router();
 
-// Настройка хранения файлов
+// 📂 Настройка хранения файлов
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // папка для сохранения
+    cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -21,11 +22,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// 👇 Маршруты
+// ✅ Маршруты
 router.put('/:id', updateUser);
-router.post('/portfolio', upload.single('image'), addPortfolioItem);
 
-// ✅ Добавлен маршрут для получения пользователя по ID
+// ✅ Добавляем проверку токена перед загрузкой портфолио
+router.post('/portfolio', authMiddleware, upload.single('image'), addPortfolioItem);
+
+// ✅ Получение пользователя по ID
 router.get('/:id', getUser);
 
 export default router;

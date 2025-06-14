@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../../axiosInstance"; // ✅ Путь подгони под структуру
+import style from "./AddPortfolioModal.module.scss";
 
 const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
   const [title, setTitle] = useState("");
@@ -40,9 +41,10 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
         formData
       );
 
-      const newProject = response.data.newProject || response.data.project || response.data; // зависит от API
+      const newProject =
+        response.data.newProject || response.data.project || response.data;
 
-      onProjectAdded(newProject); // передаём только новый проект
+      onProjectAdded(newProject);
       onClose();
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Ошибка при добавлении проекта");
@@ -52,11 +54,11 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
   };
 
   return (
-    <div style={styles.overlay}>
-      <div style={styles.modal}>
+    <div className={style.overlay}>
+      <div className={style.modal}>
         <h2>Добавить проект в портфолио</h2>
         <form onSubmit={handleSubmit}>
-          <div style={styles.field}>
+          <div className={style.field}>
             <label>Изображение проекта</label>
             <input
               type="file"
@@ -65,7 +67,7 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
             />
           </div>
 
-          <div style={styles.field}>
+          <div className={style.field}>
             <label>Название проекта *</label>
             <input
               type="text"
@@ -75,7 +77,7 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
             />
           </div>
 
-          <div style={styles.field}>
+          <div className={style.field}>
             <label>Описание *</label>
             <textarea
               value={description}
@@ -85,7 +87,7 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
             />
           </div>
 
-          <div style={styles.field}>
+          <div className={style.field}>
             <label>Ссылка на проект</label>
             <input
               type="url"
@@ -95,7 +97,7 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
             />
           </div>
 
-          <div style={styles.field}>
+          <div className={style.field}>
             <label>Технологии (через запятую)</label>
             <input
               type="text"
@@ -105,7 +107,7 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
             />
           </div>
 
-          <div style={styles.field}>
+          <div className={style.field}>
             <label>Дата выполнения</label>
             <input
               type="date"
@@ -114,16 +116,15 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
             />
           </div>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p className={style.error}>{error}</p>}
 
-          <div style={{ marginTop: 20 }}>
+          <div className={style.buttons}>
             <button type="submit" disabled={loading}>
               {loading ? "Сохраняем..." : "Добавить проект"}
             </button>
             <button
               type="button"
               onClick={onClose}
-              style={{ marginLeft: 10 }}
               disabled={loading}
             >
               Отмена
@@ -133,34 +134,6 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
       </div>
     </div>
   );
-};
-
-const styles = {
-  overlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 1000,
-  },
-  modal: {
-    backgroundColor: "white",
-    borderRadius: 8,
-    padding: 20,
-    width: "90%",
-    maxWidth: 500,
-    boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
-  },
-  field: {
-    marginBottom: 15,
-    display: "flex",
-    flexDirection: "column",
-  },
 };
 
 export default AddPortfolioModal;

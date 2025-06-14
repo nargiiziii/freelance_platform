@@ -1,23 +1,24 @@
-import jwt from 'jsonwebtoken'; // 💡 Добавь ЭТО
+import jwt from "jsonwebtoken";
 
 export const authMiddleware = async (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  console.log('Полученный токен:', token);
+  const token = req.cookies.accessToken;
+  console.log("Полученный токен из cookie:", token);
 
-  if (!token) return res.status(401).json({ message: 'Нет авторизации' });
+  if (!token) return res.status(401).json({ message: "Нет авторизации" });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('Декодированный токен:', decoded);
+    console.log("Декодированный токен:", decoded);
 
-    req.userId = decoded.id;
+    req.user = { id: decoded.id }; // ✅ доступно как req.user.id
     next();
   } catch (error) {
-    console.error('Ошибка при проверке токена:', error.message);
+    console.error("Ошибка при проверке токена:", error.message);
 
-    if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({ message: 'Токен истек, обновите access token' });
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Токен истек, обновите access token" });
     }
-    return res.status(401).json({ message: 'Токен не валиден' });
+
+    return res.status(401).json({ message: "Токен не валиден" });
   }
 };

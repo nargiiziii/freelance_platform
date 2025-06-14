@@ -15,14 +15,14 @@ export const updateUser = async (req, res) => {
   }
 };
 
-
 export const addPortfolioItem = async (req, res) => {
   try {
-    const { userId, title, description, link, technologies, date } = req.body;
+    const { title, description, link, technologies, date } = req.body;
+    const userId = req.user.id;
 
-    console.log("userId из запроса:", userId);
+    console.log("userId из токена:", userId);
 
-    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ message: "Некорректный userId" });
     }
 
@@ -51,6 +51,7 @@ export const addPortfolioItem = async (req, res) => {
     res.status(500).json({ message: "Ошибка при добавлении проекта в портфолио" });
   }
 };
+
 
 // Получение пользователя по id (GET /users/:id)
 export const getUser = async (req, res) => {

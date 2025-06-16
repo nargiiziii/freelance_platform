@@ -4,7 +4,8 @@ import {
   updateUser,
   addPortfolioItem,
   getUser,
-  topUpBalance
+  topUpBalance,
+  getFreelancers
 } from '../controllers/userController.js';
 import { verifyToken } from '../middleware/jwtMiddleware.js'; // ✅ Исправлено
 
@@ -33,5 +34,7 @@ router.post('/portfolio', verifyToken, upload.single('image'), addPortfolioItem)
 router.get('/:id', getUser);
 
 router.post("/top-up", verifyToken, topUpBalance);
+// для страницы фрилансеров
+router.get('/freelancers/all', getFreelancers);
 
 export default router;

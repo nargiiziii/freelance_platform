@@ -17,6 +17,9 @@ import ProjectListForFreelancer from "./components/projectListForFreelancer/Proj
 import MyProposals from "./pages/myProposals/MyProposals";
 import BalancePage from "./pages/balancePage/BalancePage";
 import ProjectDetails from "./pages/projectDetails/ProjectDetails";
+import FreelancersList from "./pages/freelancersList/FreelancersList";
+import MessagesPage from "./pages/messagesPage/MessagesPage";
+import ChatRoom from "./pages/сhatRoom/ChatRoom";
 
 const router = createBrowserRouter([
   {
@@ -35,9 +38,12 @@ const router = createBrowserRouter([
       { path: "/employee-dash", element: <EmployeeDash /> },
       { path: "/edit-profile", element: <EditProfile /> },
       { path: "/escrow", element: <BalancePage /> },
+      { path: "/messages", element: <MessagesPage /> },
+      { path: "/chatRoom/:userId", element: <ChatRoom /> },
       { path: "/jobs", element: <ProjectListForFreelancer /> },
       { path: "/my-proposals", element: <MyProposals /> },
       { path: "/create-project", element: <CreateProjectPage /> },
+      { path: "/freelancers", element: <FreelancersList /> },
       { path: "/employer/project/:id", element: <ProjectDetails /> },
     ],
   },

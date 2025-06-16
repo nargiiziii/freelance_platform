@@ -13,6 +13,7 @@ import uploadRoutes from './src/routes/uploadRoutes.js';
 import projectRoutes from './src/routes/projectRoutes.js';
 import proposalRoutes from './src/routes/proposalRoutes.js';
 import escrowRoutes from "./src/routes/escrowRoutes.js";
+import messageRoutes from "./src/routes/messageRoutes.js";
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/proposals', proposalRoutes);
 app.use("/api/escrow", escrowRoutes);
+app.use("/api/messages", messageRoutes);
 
 // ✅ Проверка сервера
 app.get('/', (req, res) => {

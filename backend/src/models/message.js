@@ -1,36 +1,12 @@
-// // models/Message.js
+import mongoose from "mongoose";
 
-// import mongoose from 'mongoose';
+const messageSchema = new mongoose.Schema(
+  {
+    chatId: { type: mongoose.Schema.Types.ObjectId, ref: "Chat", required: true },
+    sender: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    content: { type: String, required: true },
+  },
+  { timestamps: true }
+);
 
-// const { Schema, model } = mongoose;
-
-// const messageSchema = new Schema({
-//   senderId: {
-//     type: Schema.Types.ObjectId,
-//     ref: 'User',
-//     required: true
-//   },
-//   receiverId: {
-//     type: Schema.Types.ObjectId,
-//     ref: 'User',
-//     required: true
-//   },
-//   projectId: {
-//     type: Schema.Types.ObjectId,
-//     ref: 'Project',
-//     required: true
-//   },
-//   content: {
-//     type: String,
-//     required: true
-//   },
-//   read: {
-//     type: Boolean,
-//     default: false
-//   }
-// }, {
-//   collection: 'messages',
-//   timestamps: { createdAt: true, updatedAt: false }
-// });
-
-// export default model('Message', messageSchema);
+export default mongoose.model("Message", messageSchema);

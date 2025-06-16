@@ -109,8 +109,12 @@ function EmployeeDash() {
               <h3>Размещённые проекты</h3>
               <div>
                 <button onClick={() => setFilterStatus("all")}>Все</button>
-                <button onClick={() => setFilterStatus("open")}>Открытые</button>
-                <button onClick={() => setFilterStatus("closed")}>Завершённые</button>
+                <button onClick={() => setFilterStatus("open")}>
+                  Открытые
+                </button>
+                <button onClick={() => setFilterStatus("closed")}>
+                  Завершённые
+                </button>
               </div>
               {status === "loading" ? (
                 <p>Загрузка проектов...</p>
@@ -118,18 +122,47 @@ function EmployeeDash() {
                 <p>Вы ещё не разместили ни одного проекта.</p>
               ) : (
                 <div className={style.projectList}>
-                  {filteredProjects.map((project) => (
-                    <div key={project._id} className={style.projectCard}>
-                      <h4>{project.title}</h4>
-                      <p>{project.description}</p>
-                      <p><strong>Бюджет:</strong> {project.budget}₽</p>
-                      <p><strong>Статус:</strong> {project.status}</p>
-                      <p><strong>Создан:</strong> {new Date(project.createdAt).toLocaleDateString()}</p>
-                      <button onClick={() => navigate(`/employer/project/${project._id}`)}>
-                        📂 Подробнее
-                      </button>
-                    </div>
-                  ))}
+                  {filteredProjects.map((project) => {
+                    const hasPendingProposal = project.proposals?.some(
+                      (proposal) => proposal.status === "pending"
+                    );
+                    return (
+                      <div key={project._id} className={style.projectCard}>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                          }}
+                        >
+                          <h4>{project.title}</h4>
+                          {hasPendingProposal && (
+                            <span style={{ color: "green", fontSize: "20px" }}>
+                              🟢
+                            </span>
+                          )}
+                        </div>
+                        <p>{project.description}</p>
+                        <p>
+                          <strong>Бюджет:</strong> {project.budget}₽
+                        </p>
+                        <p>
+                          <strong>Статус:</strong> {project.status}
+                        </p>
+                        <p>
+                          <strong>Создан:</strong>{" "}
+                          {new Date(project.createdAt).toLocaleDateString()}
+                        </p>
+                        <button
+                          onClick={() =>
+                            navigate(`/employer/project/${project._id}`)
+                          }
+                        >
+                          📂 Подробнее
+                        </button>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </section>

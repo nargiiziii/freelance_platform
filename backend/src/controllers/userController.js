@@ -82,3 +82,14 @@ export const topUpBalance = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+// Получить всех фрилансеров
+export const getFreelancers = async (req, res) => {
+  try {
+    const freelancers = await User.find({ role: "freelancer" }).select("-password"); // без пароля
+    res.json(freelancers);
+  } catch (err) {
+    res.status(500).json({ message: "Ошибка при получении фрилансеров" });
+  }
+};

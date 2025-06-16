@@ -1,0 +1,47 @@
+.freelancerList {
+  padding: 2rem;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .card {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 8px;
+    width: 250px;
+    background: #f9f9f9;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    span {
+      font-size: 24px;
+      display: block;
+      text-align: center;
+      line-height: 60px;
+    }
+  }
+
+  .info {
+    h3 {
+      margin: 0;
+    }
+  }
+}

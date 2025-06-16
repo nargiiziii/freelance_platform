@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOpenProjects } from "../../redux/features/projectSlice";
 import { createProposal } from "../../redux/features/proposalSlice";
+import { Link } from "react-router-dom";
 
 function ProjectListForFreelancer() {
   const dispatch = useDispatch();
@@ -49,6 +50,16 @@ function ProjectListForFreelancer() {
               <p>
                 <strong>Бюджет:</strong> {project.budget}₽
               </p>
+              {/* 💬 Кнопка: отправить сообщение нанимателю */}
+              {project.employer && (
+                <p>
+                  <strong>Наниматель:</strong> {project.employer.name}
+                  <Link to={`/chatRoom/${project.employer._id}`}>
+                    <button>Написать нанимателю</button>
+                  </Link>
+                </p>
+              )}
+
               <button onClick={() => setActiveProject(project)}>
                 Откликнуться
               </button>

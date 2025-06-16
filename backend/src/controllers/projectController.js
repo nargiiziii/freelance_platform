@@ -74,7 +74,10 @@ export const getEmployerProjects = async (req, res) => {
 // Получить все открытые проекты для фрилансера
 export const getOpenProjects = async (req, res) => {
   try {
-    const projects = await Project.find({ status: "open" });
+    const projects = await Project.find({ status: "open" }).populate(
+      "employer",
+      "name"
+    );
     res.json(projects);
   } catch (err) {
     res.status(500).json({ message: err.message });

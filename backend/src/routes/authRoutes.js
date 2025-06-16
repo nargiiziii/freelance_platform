@@ -5,7 +5,7 @@ import {
   getProfile,
   logoutUser,
 } from '../controllers/authController.js';
-import { authMiddleware } from '../middleware/jwtMiddleware.js';
+import { verifyToken } from '../middleware/jwtMiddleware.js'; // ✅ правильный импорт
 
 const router = express.Router();
 
@@ -19,6 +19,6 @@ router.post('/login', loginUser);
 router.post('/logout', logoutUser);
 
 // 🔐 Защищённый маршрут — получить профиль
-router.get('/profile', authMiddleware, getProfile);
+router.get('/profile', verifyToken, getProfile); // ✅ исправлено
 
 export default router;

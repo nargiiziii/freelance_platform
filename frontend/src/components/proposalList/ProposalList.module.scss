@@ -1,0 +1,41 @@
+// ProposalList.module.scss
+
+.proposalList {
+  margin-top: 1rem;
+}
+
+.heading {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #4a4a4a;
+}
+
+.noProposals {
+  color: #888;
+  font-style: italic;
+}
+
+.proposalCard {
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fefefe;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.acceptButton {
+  margin-top: 0.5rem;
+  background-color: #5a67d8;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.acceptButton:hover {
+  background-color: #434190;
+}

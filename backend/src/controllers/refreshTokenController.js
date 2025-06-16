@@ -34,17 +34,16 @@ export const refreshToken = async (req, res) => {
     user.refreshToken = tokens.refreshToken;
     await user.save();
 
-    // 🧁 Устанавливаем новые токены в cookie
     res
       .cookie("accessToken", tokens.accessToken, {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production", // ✅ включаем только в продакшене
         sameSite: "Strict",
         maxAge: 15 * 60 * 1000, // 15 минут
       })
       .cookie("refreshToken", tokens.refreshToken, {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production", // ✅
         sameSite: "Strict",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 дней
       })

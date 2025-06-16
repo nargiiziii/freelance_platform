@@ -5,7 +5,7 @@ import {
   addPortfolioItem,
   getUser
 } from '../controllers/userController.js';
-import { authMiddleware } from '../middleware/jwtMiddleware.js'; // ✅ Импорт миддлвара
+import { verifyToken } from '../middleware/jwtMiddleware.js'; // ✅ Исправлено
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ const upload = multer({ storage });
 router.put('/:id', updateUser);
 
 // ✅ Добавляем проверку токена перед загрузкой портфолио
-router.post('/portfolio', authMiddleware, upload.single('image'), addPortfolioItem);
+router.post('/portfolio', verifyToken, upload.single('image'), addPortfolioItem);
 
 // ✅ Получение пользователя по ID
 router.get('/:id', getUser);

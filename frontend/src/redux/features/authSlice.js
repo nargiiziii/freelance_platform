@@ -23,14 +23,25 @@ export const updateUser = createAsyncThunk('auth/updateUser', async ({ userId, u
 });
 
 // 🔁 Получение профиля из cookie токена
-export const getProfile = createAsyncThunk('auth/getProfile', async (_, thunkAPI) => {
-  try {
-    const res = await axios.get('/auth/profile');
-    return res.data;
-  } catch (e) {
-    return thunkAPI.rejectWithValue("Не удалось загрузить профиль");
+export const getProfile = createAsyncThunk(
+  "auth/getProfile",
+  async (_, thunkAPI) => {
+    try {
+      const res = await axios.get("/auth/profile", {
+        requiresAuth: false, // 👉 предотвращает refresh, если неавторизован
+      });
+      return res.data;
+    } catch (e) {
+      if (e.response?.status === 401) {
+        return null;
+      }
+      return thunkAPI.rejectWithValue(
+        e.response?.data?.message || "Ошибка при получении профиля"
+      );
+    }
   }
-});
+);
+
 
 // 🧹 Logout
 export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, thunkAPI) => {

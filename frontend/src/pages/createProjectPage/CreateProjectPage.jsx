@@ -1,23 +1,17 @@
-import React, { useState, useEffect } from "react";
-import style from "./AddProjectModal.module.scss";
+// src/pages/CreateProjectPage.jsx
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { createProject } from "../../redux/features/projectSlice";
+import style from "./CreateProjectPage.module.scss"
 
-const AddProjectModal = ({ isOpen, onClose, onSubmit }) => {
+const CreateProjectPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [skillsRequired, setSkillsRequired] = useState("");
   const [budget, setBudget] = useState("");
-
-  // Сбросить поля при открытии модалки
-  useEffect(() => {
-    if (isOpen) {
-      setTitle("");
-      setDescription("");
-      setSkillsRequired("");
-      setBudget("");
-    }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,16 +28,21 @@ const AddProjectModal = ({ isOpen, onClose, onSubmit }) => {
     const skillsArray = skillsRequired
       .split(",")
       .map((s) => s.trim())
-      .filter(Boolean); // убираем пустые строки
+      .filter(Boolean);
 
-    onSubmit({
+    dispatch(createProject({
       title: trimmedTitle,
       description: trimmedDescription,
       skillsRequired: skillsArray,
       budget: parsedBudget,
-    });
-
-    onClose();
+    }))
+      .unwrap()
+      .then(() => {
+        navigate("/dashboard"); // или /dashboard?section=projects
+      })
+      .catch((err) => {
+        alert("Ошибка при создании проекта: " + err);
+      });
   };
 
   return (
@@ -75,10 +74,10 @@ const AddProjectModal = ({ isOpen, onClose, onSubmit }) => {
           required
         />
         <button type="submit">Создать</button>
-        <button type="button" onClick={onClose}>Отмена</button>
+        <button type="button" onClick={() => navigate("/dashboard")}>Отмена</button>
       </form>
     </div>
   );
 };
 
-export default AddProjectModal;
+export default CreateProjectPage;

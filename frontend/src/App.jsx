@@ -1,16 +1,19 @@
 // src/App.jsx
-import React from "react";
-import { BrowserRouter, Routes, Route, RouterProvider } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { getProfile } from "./redux/features/authSlice";
+
+import Layout from "./pages/Layout";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
-import { createBrowserRouter } from "react-router-dom";
-import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Dashboard from "./pages/dashboard/Dashboard";
 import EditProfile from "./pages/editProf/EditProdile";
-import ProjectsList from "./components/projectsList/ProjectsList";
 import FreelancerDash from "./components/freelancer_dash/Freelancer_dash";
 import EmployeeDash from "./components/employee_dash/Employee_dash";
+import CreateProjectPage from "./pages/createProjectPage/CreateProjectPage";
+import ProjectListForFreelancer from "./components/projectListForFreelancer/ProjectListForFreelancer";
 
 const router = createBrowserRouter([
   {
@@ -21,43 +24,29 @@ const router = createBrowserRouter([
       </div>
     ),
     children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/register",
-        element: <Register />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/dashboard",
-        element: <Dashboard />,
-      },
-            {
-        path: "/freelancer-dash",
-        element: <FreelancerDash />,
-      },
-            {
-        path: "/employee-dash",
-        element: <EmployeeDash />,
-      },
-      {
-        path: "/edit-profile",
-        element: <EditProfile />,
-      },
-      {
-        path: "/jobs",
-        element: <ProjectsList />,
-      },
+      { path: "/", element: <Home /> },
+      { path: "/register", element: <Register /> },
+      { path: "/login", element: <Login /> },
+      { path: "/dashboard", element: <Dashboard /> },
+      { path: "/freelancer-dash", element: <FreelancerDash /> },
+      { path: "/employee-dash", element: <EmployeeDash /> },
+      { path: "/edit-profile", element: <EditProfile /> },
+      { path: "/jobs", element: <ProjectListForFreelancer /> },
+      { path: "/create-project", element: <CreateProjectPage /> },
     ],
   },
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    if (!user) {
+      dispatch(getProfile());
+    }
+  }, [dispatch, user]);
+
   return <RouterProvider router={router} />;
 }
 

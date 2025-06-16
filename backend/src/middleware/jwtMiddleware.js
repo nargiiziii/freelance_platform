@@ -1,6 +1,8 @@
+// backend/src/middleware/jwtMiddleware.js
 import jwt from "jsonwebtoken";
 
-export const authMiddleware = async (req, res, next) => {
+// 🛡 Middleware: проверка access токена из cookie
+export const verifyToken = async (req, res, next) => {
   const token = req.cookies.accessToken;
   console.log("Полученный токен из cookie:", token);
 

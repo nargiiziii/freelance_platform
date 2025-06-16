@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import axios from "../../axiosInstance";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux"; // ✅
-import { getProfile } from "../../redux/features/authSlice"; // ✅
 import style from "./Register.module.scss";
 
 export default function Register() {
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // ✅
 
   const [form, setForm] = useState({
     role: "freelancer",
@@ -56,18 +53,15 @@ export default function Register() {
       if (form.portfolio.length)
         formData.append("portfolio", JSON.stringify(form.portfolio));
 
-      const response = await axios.post("/auth/register", formData, {
+      await axios.post("/auth/register", formData, {
         headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true, // ✅ важно
+        withCredentials: true,
       });
 
-      console.log("Успешно зарегистрированы:", response.data);
+      console.log("Успешно зарегистрированы");
 
-      // ✅ Получаем профиль после регистрации
-      await dispatch(getProfile());
-
-      // ✅ Переход к Dashboard
-      navigate("/dashboard");
+      // 🔁 Вместо getProfile — переходим на логин
+      navigate("/login");
     } catch (err) {
       console.error("Ошибка регистрации:", err.response?.data || err.message);
       setError(err.response?.data?.message || "Ошибка при регистрации");

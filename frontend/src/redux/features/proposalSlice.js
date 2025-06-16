@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// 📤 Отправка отклика фрилансером
+// 🔁 Отправка отклика
 export const createProposal = createAsyncThunk(
   "proposal/createProposal",
   async ({ projectId, coverLetter, price }, thunkAPI) => {
@@ -14,108 +14,126 @@ export const createProposal = createAsyncThunk(
 
       if (!response.ok) {
         const error = await response.json();
-        return thunkAPI.rejectWithValue(error.message || "Ошибка при отправке отклика");
+        return thunkAPI.rejectWithValue(
+          error.message || "Ошибка при отправке отклика"
+        );
       }
 
-      return await response.json();
+      return await response.json(); // вернёт один отклик
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }
   }
 );
 
-// 🔄 Обновление статуса отклика (employer)
-export const updateProposalStatus = createAsyncThunk(
-  "proposal/updateStatus",
-  async ({ proposalId, status }, thunkAPI) => {
+// 🔁 Принятие отклика
+export const acceptProposal = createAsyncThunk(
+  "proposal/acceptProposal",
+  async ({ proposalId }, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:3000/api/proposals/status", {
+      const res = await fetch("http://localhost:3000/api/proposals/accept", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ proposalId, status }),
+        body: JSON.stringify({ proposalId }), // теперь правильно
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        return thunkAPI.rejectWithValue(error.message || "Ошибка обновления статуса");
-      }
-
-      return await response.json();
+      if (!res.ok) throw new Error("Ошибка при принятии отклика");
+      return await res.json(); // вернёт { proposal }
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }
   }
 );
 
-// 📥 Получение всех откликов по проекту (опционально)
+
+// 🔁 Получить отклики по projectId
 export const fetchProposalsByProject = createAsyncThunk(
   "proposal/fetchByProject",
   async (projectId, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/projects/${projectId}/proposals`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `http://localhost:3000/api/proposals/project/${projectId}`,
+        {
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
         const error = await response.json();
-        return thunkAPI.rejectWithValue(error.message || "Ошибка загрузки откликов");
+        return thunkAPI.rejectWithValue(
+          error.message || "Ошибка загрузки откликов"
+        );
       }
 
-      return await response.json();
+      const proposals = await response.json();
+      return { projectId, proposals };
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }
   }
 );
 
+// 📦 Slice
 const proposalSlice = createSlice({
   name: "proposal",
   initialState: {
-    proposals: [],
+    proposalsByProjectId: {}, // 💡 ключ: projectId
     status: "idle",
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
-
-      // 🔄 Отправка отклика
+      // ✅ Создание отклика
       .addCase(createProposal.pending, (state) => {
         state.status = "loading";
       })
       .addCase(createProposal.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.proposals.push(action.payload);
+        const proposal = action.payload;
+        const projectId = proposal.project;
+        if (!state.proposalsByProjectId[projectId]) {
+          state.proposalsByProjectId[projectId] = [];
+        }
+        state.proposalsByProjectId[projectId].push(proposal);
       })
       .addCase(createProposal.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })
 
-      // 🔁 Обновление статуса
-      .addCase(updateProposalStatus.pending, (state) => {
+      // ✅ Принятие отклика
+      .addCase(acceptProposal.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(updateProposalStatus.fulfilled, (state, action) => {
+      .addCase(acceptProposal.fulfilled, (state, action) => {
         state.status = "succeeded";
-        const index = state.proposals.findIndex(p => p._id === action.payload._id);
-        if (index !== -1) {
-          state.proposals[index] = action.payload;
+        const updatedProposal = action.payload.proposal;
+        const projectId = updatedProposal.project;
+        const proposals = state.proposalsByProjectId[projectId];
+        if (proposals) {
+          const index = proposals.findIndex(
+            (p) => p._id === updatedProposal._id
+          );
+          if (index !== -1) {
+            proposals[index] = updatedProposal;
+          }
         }
       })
-      .addCase(updateProposalStatus.rejected, (state, action) => {
+      .addCase(acceptProposal.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })
 
-      // 📥 Загрузка откликов
+      // ✅ Получение откликов по проекту
       .addCase(fetchProposalsByProject.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchProposalsByProject.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.proposals = action.payload;
+        const { projectId, proposals } = action.payload;
+        state.proposalsByProjectId[projectId] = proposals;
       })
       .addCase(fetchProposalsByProject.rejected, (state, action) => {
         state.status = "failed";

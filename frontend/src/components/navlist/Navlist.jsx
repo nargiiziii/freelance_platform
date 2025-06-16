@@ -62,7 +62,7 @@ const Navlist = () => {
       {user && user.role === "employer" && (
         <>
           <li className={style.li}>
-            <Link to="/post-job">Post a Job</Link>
+            <Link to="/create-project">Post a Job</Link>
           </li>
           <li className={style.li}>
             <Link to="/employer/jobs">My Jobs</Link>
@@ -72,7 +72,7 @@ const Navlist = () => {
           </li>
           <li className={style.li}>
             <Link to="/freelancers">Find Freelancers</Link>
-          </li>
+          </li> 
           <li className={style.li}>
             <Link to="/escrow">Escrow</Link> {/* Секция для управления эскроу */}
           </li>

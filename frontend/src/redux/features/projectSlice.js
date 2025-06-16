@@ -1,22 +1,20 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// ✅ Создание проекта (employer)
+// 🔄 Создание проекта
 export const createProject = createAsyncThunk(
-  'projects/createProject',
+  "projects/createProject",
   async (projectData, thunkAPI) => {
     try {
-      const response = await fetch('http://localhost:3000/api/projects', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(projectData),
+      const response = await fetch("http://localhost:3000/api/projects", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ ...projectData, status: "open" }),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        return thunkAPI.rejectWithValue(error.message || 'Ошибка при создании проекта');
+        return thunkAPI.rejectWithValue(error.message || "Ошибка при создании проекта");
       }
 
       return await response.json();
@@ -26,36 +24,36 @@ export const createProject = createAsyncThunk(
   }
 );
 
-// ✅ Получение проектов работодателя
+// 📥 Получить проекты работодателя
 export const getEmployerProjects = createAsyncThunk(
-  'projects/getEmployerProjects',
+  "projects/getEmployerProjects",
   async (_, thunkAPI) => {
     try {
-      const response = await fetch('http://localhost:3000/api/projects/my-projects', {
-        credentials: 'include',
+      const res = await fetch("http://localhost:3000/api/projects/my-projects", {
+        credentials: "include",
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        return thunkAPI.rejectWithValue(error.message || 'Ошибка при загрузке проектов');
+      if (!res.ok) {
+        const error = await res.json();
+        return thunkAPI.rejectWithValue(error.message || "Ошибка при загрузке проектов");
       }
 
-      return await response.json();
+      return await res.json();
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }
   }
 );
 
-// ✅ Получение открытых проектов для фрилансеров
+// 🌍 Получить открытые проекты для фрилансеров
 export const getOpenProjects = createAsyncThunk(
-  'projects/getOpenProjects',
+  "projects/getOpenProjects",
   async (_, thunkAPI) => {
     try {
-      const res = await fetch('http://localhost:3000/api/projects', {
-        credentials: 'include',
+      const res = await fetch("http://localhost:3000/api/projects", {
+        credentials: "include",
       });
-      if (!res.ok) throw new Error('Ошибка при получении проектов');
+      if (!res.ok) throw new Error("Ошибка при получении проектов");
       return await res.json();
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
@@ -63,18 +61,18 @@ export const getOpenProjects = createAsyncThunk(
   }
 );
 
-// ✅ Отправка отклика фрилансером
-export const sendProposal = createAsyncThunk(
-  'projects/sendProposal',
-  async ({ projectId, coverLetter, price }, thunkAPI) => {
+// 📤 Отправка работы
+export const submitWork = createAsyncThunk(
+  "projects/submitWork",
+  async ({ projectId, submittedFileUrl }, thunkAPI) => {
     try {
-      const res = await fetch('http://localhost:3000/api/proposals', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ projectId, coverLetter, price }),
+      const res = await fetch(`http://localhost:3000/api/projects/${projectId}/submit-work`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ submittedFileUrl }),
       });
-      if (!res.ok) throw new Error('Ошибка при отправке отклика');
+      if (!res.ok) throw new Error("Ошибка при отправке работы");
       return await res.json();
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
@@ -82,52 +80,121 @@ export const sendProposal = createAsyncThunk(
   }
 );
 
+// ✅ Завершение проекта
+export const completeProject = createAsyncThunk(
+  "projects/completeProject",
+  async (projectId, thunkAPI) => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/projects/${projectId}/complete`, {
+        method: "PATCH",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Ошибка при завершении проекта");
+      return await res.json();
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
+// 📋 Получить проекты фрилансера
+export const getFreelancerProjects = createAsyncThunk(
+  "projects/getFreelancerProjects",
+  async (_, thunkAPI) => {
+    try {
+      const res = await fetch("http://localhost:3000/api/projects/freelancer-projects", {
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Ошибка загрузки проектов фрилансера");
+      return await res.json();
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
+// 💾 Slice
 const projectSlice = createSlice({
-  name: 'projects',
+  name: "projects",
   initialState: {
-    items: [],
-    status: 'idle',
+    employerProjects: [],
+    freelancerProjects: [],
+    openProjects: [],
+    status: {
+      employer: "idle",
+      freelancer: "idle",
+      open: "idle",
+    },
     error: null,
   },
+
   reducers: {},
+
   extraReducers: (builder) => {
     builder
-      // 📤 Создание проекта
+      // 📤 Create
       .addCase(createProject.pending, (state) => {
-        state.status = 'loading';
+        state.status.employer = "loading";
       })
       .addCase(createProject.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.items.push(action.payload);
+        state.status.employer = "succeeded";
+        state.employerProjects.push(action.payload);
       })
       .addCase(createProject.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status.employer = "failed";
         state.error = action.payload;
       })
 
-      // 📥 Проекты работодателя
+      // 📥 Employer
       .addCase(getEmployerProjects.pending, (state) => {
-        state.status = 'loading';
+        state.status.employer = "loading";
       })
       .addCase(getEmployerProjects.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.items = action.payload;
+        state.status.employer = "succeeded";
+        state.employerProjects = action.payload;
       })
       .addCase(getEmployerProjects.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status.employer = "failed";
         state.error = action.payload;
       })
 
-      // 📥 Открытые проекты для фрилансеров
+      // 🌍 Open projects
       .addCase(getOpenProjects.pending, (state) => {
-        state.status = 'loading';
+        state.status.open = "loading";
       })
       .addCase(getOpenProjects.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.items = action.payload;
+        state.status.open = "succeeded";
+        state.openProjects = action.payload;
       })
       .addCase(getOpenProjects.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status.open = "failed";
+        state.error = action.payload;
+      })
+
+      // 📤 Submit work
+      .addCase(submitWork.fulfilled, (state, action) => {
+        const project = action.payload.project;
+        const index = state.freelancerProjects.findIndex((p) => p._id === project._id);
+        if (index !== -1) state.freelancerProjects[index] = project;
+      })
+
+      // ✅ Complete
+      .addCase(completeProject.fulfilled, (state, action) => {
+        const project = action.payload.project;
+        const index = state.employerProjects.findIndex((p) => p._id === project._id);
+        if (index !== -1) state.employerProjects[index] = project;
+      })
+
+      // 👨‍💻 Freelancer
+      .addCase(getFreelancerProjects.pending, (state) => {
+        state.status.freelancer = "loading";
+      })
+      .addCase(getFreelancerProjects.fulfilled, (state, action) => {
+        state.status.freelancer = "succeeded";
+        state.freelancerProjects = action.payload;
+      })
+      .addCase(getFreelancerProjects.rejected, (state, action) => {
+        state.status.freelancer = "failed";
         state.error = action.payload;
       });
   },

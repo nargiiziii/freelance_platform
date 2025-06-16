@@ -1,8 +1,10 @@
+// backend/src/routes/refreshTokenRoutes.js
 import express from 'express';
 import { refreshToken } from '../controllers/refreshTokenController.js';
 
 const router = express.Router();
 
-router.post('/refresh_token', refreshToken);
+// ✅ маршрут GET /auth/refresh для axios
+router.get('/refresh', refreshToken);
 
 export default router;

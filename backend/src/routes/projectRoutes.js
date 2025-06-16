@@ -2,19 +2,21 @@ import express from 'express';
 import {
   createProject,
   getEmployerProjects,
-  getOpenProjects
+  getOpenProjects,
+  submitWork,
+  completeProject
 } from '../controllers/projectController.js';
-import {authMiddleware} from '../middleware/jwtMiddleware.js';
+import { verifyToken } from '../middleware/jwtMiddleware.js'; // ✅ Не забудь этот импорт
+import { getFreelancerProjects } from "../controllers/projectController.js";
+
 
 const router = express.Router();
 
-// Создание проекта (только для employer)
-router.post('/', authMiddleware, createProject);
-
-// Получить проекты текущего employer
-router.get('/my-projects', authMiddleware, getEmployerProjects);
-
-// Получить открытые проекты для фрилансера
-router.get('/', authMiddleware, getOpenProjects);
+router.post('/', verifyToken, createProject);
+router.get('/my-projects', verifyToken, getEmployerProjects);
+router.get('/', getOpenProjects);
+router.patch('/:projectId/submit-work', verifyToken, submitWork);
+router.patch('/:projectId/complete', verifyToken, completeProject);
+router.get("/freelancer-projects", verifyToken, getFreelancerProjects);
 
 export default router;

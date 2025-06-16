@@ -1,10 +1,11 @@
 import express from 'express';
-import { createProposal, updateProposalStatus } from '../controllers/proposalController.js';
-import {authMiddleware} from '../middleware/jwtMiddleware.js';
-
+import { createProposal, acceptProposal, getProposalsByProject } from '../controllers/proposalController.js';
+import { verifyToken } from '../middleware/jwtMiddleware.js'; // ✅ исправлено
 const router = express.Router();
 
-router.post('/', authMiddleware, createProposal);
-router.patch('/status', authMiddleware, updateProposalStatus);
+// 🔐 Только авторизованные пользователи могут отправлять и обновлять предложения
+router.post('/', verifyToken, createProposal);
+router.patch('/accept', verifyToken, acceptProposal);
+router.get('/project/:projectId', verifyToken, getProposalsByProject);
 
 export default router;

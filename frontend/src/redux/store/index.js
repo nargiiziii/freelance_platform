@@ -14,7 +14,8 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "../features/authSlice";
 import userReducer from "../features/userSlice";
 import projectReducer from "../features/projectSlice";
-import proposalReducer from "../features/proposalSlice"
+import proposalReducer from "../features/proposalSlice";
+import escrowReducer from "../features/escrowSlice";
 
 const persistConfig = {
   key: "auth",
@@ -28,7 +29,8 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     user: userReducer,
     projects: projectReducer, // ✅ измени здесь
-        proposal: proposalReducer,
+    proposal: proposalReducer,
+    escrow: escrowReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

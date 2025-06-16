@@ -15,6 +15,8 @@ import EmployeeDash from "./components/employee_dash/Employee_dash";
 import CreateProjectPage from "./pages/createProjectPage/CreateProjectPage";
 import ProjectListForFreelancer from "./components/projectListForFreelancer/ProjectListForFreelancer";
 import MyProposals from "./pages/myProposals/MyProposals";
+import BalancePage from "./pages/balancePage/BalancePage";
+import ProjectDetails from "./pages/projectDetails/ProjectDetails";
 
 const router = createBrowserRouter([
   {
@@ -32,9 +34,11 @@ const router = createBrowserRouter([
       { path: "/freelancer-dash", element: <FreelancerDash /> },
       { path: "/employee-dash", element: <EmployeeDash /> },
       { path: "/edit-profile", element: <EditProfile /> },
+      { path: "/escrow", element: <BalancePage /> },
       { path: "/jobs", element: <ProjectListForFreelancer /> },
       { path: "/my-proposals", element: <MyProposals /> },
       { path: "/create-project", element: <CreateProjectPage /> },
+      { path: "/employer/project/:id", element: <ProjectDetails /> },
     ],
   },
 ]);

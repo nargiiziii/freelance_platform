@@ -53,12 +53,17 @@ export const createProject = async (req, res) => {
 // Получить проекты текущего нанимателя
 export const getEmployerProjects = async (req, res) => {
   try {
-    const projects = await Project.find({ employer: req.user.id })
-      .populate({
-        path: "proposals",
-        populate: { path: "freelancer", select: "name" }, // 👈 подтяни имя фрилансера
-      })
-      .populate("escrow");
+    const projects = await Project.find({ employer: req.user.id }).populate({
+      path: "proposals",
+      populate: [
+        { path: "freelancer", select: "name" },
+        {
+          path: "project",
+          populate: { path: "escrow" }, // 🔥 ЭТО ГЛАВНОЕ!
+        },
+      ],
+    });
+
     console.log("Найдено проектов:", projects.length);
     res.json(projects);
   } catch (err) {

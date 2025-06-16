@@ -63,3 +63,22 @@ export const getUser = async (req, res) => {
     res.status(500).json({ message: "Ошибка сервера" });
   }
 };
+
+
+// 📤 Пополнение баланса
+export const topUpBalance = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { amount } = req.body;
+
+    if (!amount || amount <= 0) return res.status(400).json({ message: "Некорректная сумма" });
+
+    const user = await User.findById(userId);
+    user.balance += amount;
+    await user.save();
+
+    res.json({ message: "Баланс пополнен", balance: user.balance });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

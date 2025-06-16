@@ -36,7 +36,10 @@ export const rejectProposal = async (req, res) => {
     proposal.status = "rejected";
     await proposal.save();
 
-    res.status(200).json({ proposal });
+    // Преобразуем в обычный объект и добавляем escrow
+    const proposalWithEscrow = proposal.toObject();
+
+    res.status(200).json({ proposal: proposalWithEscrow });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -56,16 +59,41 @@ export const submitWork = [
         status: "accepted",
       });
 
-      if (!proposal)
-        return res.status(404).json({ message: "Accepted proposal not found" });
+      if (!proposal) {
+        return res.status(404).json({ message: "Proposal not found" });
+      }
 
       proposal.status = "submitted";
       proposal.workFile = req.file.filename;
       await proposal.save();
 
-      res.status(200).json({ message: "Work submitted", proposal });
+      // ⬇️ Вот ключ: перезагружаем proposal с project.escrow
+      const updatedProposal = await Proposal.findById(proposal._id)
+        .populate({
+          path: "project",
+          populate: {
+            path: "escrow", // ✅ ПОЛНОСТЬЮ подтяни escrow
+          },
+        })
+        .populate({
+          path: "freelancer",
+          select: "name",
+        });
+
+  
+      if (proposal.project) {
+        const project = await Project.findById(proposal.project);
+        project.status = "submitted";
+        await project.save();
+      }
+
+      return res.status(200).json({
+        message: "Work submitted",
+        proposal: updatedProposal,
+      });
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      console.error("❌ submitWork error:", err);
+      return res.status(500).json({ message: err.message });
     }
   },
 ];
@@ -92,7 +120,7 @@ export const downloadWorkFile = (req, res) => {
     return res.status(404).json({ message: "Файл не найден" });
   }
 
-  res.download(filePath); // 💥 это заставляет браузер скачать файл
+  res.download(filePath);
 };
 
 export const createProposal = async (req, res) => {
@@ -120,57 +148,45 @@ export const createProposal = async (req, res) => {
 export const acceptProposal = async (req, res) => {
   try {
     const { proposalId } = req.body;
-
     const proposal = await Proposal.findById(proposalId).populate("project");
-
-    if (!proposal) {
+    if (!proposal)
       return res.status(404).json({ message: "Proposal not found" });
-    }
 
     const project = proposal.project;
     const userId = req.user._id || req.user.id;
 
-    // 🧠 Защита: нельзя принять отклик, если проект уже закрыт
     if (project.status !== "open") {
       return res
         .status(400)
-        .json({
-          message: "This project has already been taken by another freelancer.",
-        });
+        .json({ message: "Проект уже в работе или закрыт" });
     }
 
-    // ✅ Проверка на владельца проекта
     if (
       !project.employer ||
       project.employer.toString() !== userId.toString()
     ) {
-      return res
-        .status(403)
-        .json({ message: "Not authorized to accept this proposal" });
+      return res.status(403).json({ message: "Не авторизованы" });
     }
 
-    // ✅ Убедимся, что фрилансер указан
-    if (!proposal.freelancer) {
+    const employer = await User.findById(userId);
+    if (!employer || employer.balance < proposal.price) {
       return res
         .status(400)
-        .json({ message: "Proposal has no freelancer assigned" });
+        .json({ message: "Недостаточно средств на балансе" });
     }
 
-    // ✅ Принять этот отклик
+    employer.balance -= proposal.price;
+    await employer.save();
+
     proposal.status = "accepted";
     await proposal.save();
 
-    // ❌ Отклонить все остальные
     await Proposal.updateMany(
       { project: project._id, _id: { $ne: proposal._id } },
       { status: "rejected" }
     );
-
-    // ✅ Обновить статус проекта
     project.status = "in_progress";
-    await project.save();
 
-    // ✅ Создать escrow
     const escrow = await Escrow.create({
       project: project._id,
       employer: userId,
@@ -179,13 +195,12 @@ export const acceptProposal = async (req, res) => {
       status: "funded",
     });
 
-    // 💾 Привязать escrow к проекту
     project.escrow = escrow._id;
     await project.save();
 
-    res.status(200).json({ proposal }); // ✅ именно это ждёт фронт
+    res.status(200).json({ proposal });
   } catch (err) {
-    console.error("❌ Ошибка в acceptProposal:", err);
+    console.error("Ошибка в acceptProposal:", err);
     res.status(500).json({ message: err.message || "Internal Server Error" });
   }
 };
@@ -195,7 +210,10 @@ export const getProposalsByProject = async (req, res) => {
     const { projectId } = req.params;
     const proposals = await Proposal.find({ project: projectId })
       .populate("freelancer", "name avatar")
-      .sort({ createdAt: -1 });
+      .populate({
+        path: "project",
+        populate: { path: "escrow" }, // 🔥 ключевой момент!
+      });
 
     res.json(proposals);
   } catch (err) {

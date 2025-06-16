@@ -3,7 +3,8 @@ import multer from 'multer';
 import {
   updateUser,
   addPortfolioItem,
-  getUser
+  getUser,
+  topUpBalance
 } from '../controllers/userController.js';
 import { verifyToken } from '../middleware/jwtMiddleware.js'; // ✅ Исправлено
 
@@ -30,5 +31,7 @@ router.post('/portfolio', verifyToken, upload.single('image'), addPortfolioItem)
 
 // ✅ Получение пользователя по ID
 router.get('/:id', getUser);
+
+router.post("/top-up", verifyToken, topUpBalance);
 
 export default router;

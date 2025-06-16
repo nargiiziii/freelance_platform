@@ -1,26 +1,36 @@
 // ✅ authSlice.js (обновлённый)
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../axiosInstance';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "../../axiosInstance";
 
 // 🔐 Логин
-export const loginUser = createAsyncThunk('auth/login', async (credentials, thunkAPI) => {
-  try {
-    const res = await axios.post('/auth/login', credentials);
-    return res.data;
-  } catch (e) {
-    return thunkAPI.rejectWithValue(e.response?.data?.message || "Ошибка при входе");
+export const loginUser = createAsyncThunk(
+  "auth/login",
+  async (credentials, thunkAPI) => {
+    try {
+      const res = await axios.post("/auth/login", credentials);
+      return res.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(
+        e.response?.data?.message || "Ошибка при входе"
+      );
+    }
   }
-});
+);
 
 // 🔁 Обновление профиля
-export const updateUser = createAsyncThunk('auth/updateUser', async ({ userId, userData }, thunkAPI) => {
-  try {
-    const res = await axios.put(`/users/${userId}`, userData);
-    return res.data;
-  } catch (e) {
-    return thunkAPI.rejectWithValue(e.response?.data?.message || "Ошибка при обновлении");
+export const updateUser = createAsyncThunk(
+  "auth/updateUser",
+  async ({ userId, userData }, thunkAPI) => {
+    try {
+      const res = await axios.put(`/users/${userId}`, userData);
+      return res.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(
+        e.response?.data?.message || "Ошибка при обновлении"
+      );
+    }
   }
-});
+);
 
 // 🔁 Получение профиля из cookie токена
 export const getProfile = createAsyncThunk(
@@ -42,16 +52,18 @@ export const getProfile = createAsyncThunk(
   }
 );
 
-
 // 🧹 Logout
-export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, thunkAPI) => {
-  try {
-    await axios.post('/auth/logout');
-    return true;
-  } catch (e) {
-    return thunkAPI.rejectWithValue("Ошибка при выходе");
+export const logoutUser = createAsyncThunk(
+  "auth/logoutUser",
+  async (_, thunkAPI) => {
+    try {
+      await axios.post("/auth/logout");
+      return true;
+    } catch (e) {
+      return thunkAPI.rejectWithValue("Ошибка при выходе");
+    }
   }
-});
+);
 
 const normalizeUser = (user) => {
   if (!user) return null;
@@ -61,8 +73,26 @@ const normalizeUser = (user) => {
   };
 };
 
+export const topUpBalance = createAsyncThunk(
+  "auth/topUpBalance",
+  async (amount, thunkAPI) => {
+    try {
+      const res = await axios.post("/users/top-up", { amount });
+      const state = thunkAPI.getState();
+      return {
+        ...state.auth.user,
+        balance: res.data.balance,
+      };
+    } catch (e) {
+      return thunkAPI.rejectWithValue(
+        e.response?.data?.message || "Ошибка при пополнении"
+      );
+    }
+  }
+);
+
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: {
     user: null,
     loading: false,
@@ -104,6 +134,9 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
+      })
+      .addCase(topUpBalance.fulfilled, (state, action) => {
+        state.user = normalizeUser(action.payload);
       });
   },
 });

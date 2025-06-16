@@ -1,3 +1,4 @@
+// src/pages/EmployeeDash.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +9,6 @@ import {
 } from "../../redux/features/escrowSlice";
 import { getEmployerProjects } from "../../redux/features/projectSlice";
 import style from "./Employee_dash.module.scss";
-import ProposalList from "../proposalList/ProposalList";
 
 function EmployeeDash() {
   const dispatch = useDispatch();
@@ -35,25 +35,6 @@ function EmployeeDash() {
       setFilteredProjects(projects.filter((p) => p.status === filterStatus));
     }
   }, [filterStatus, projects]);
-
-  const handleCreateEscrow = (project) => {
-    if (!project.proposals?.length) {
-      alert("Нет доступных предложений от фрилансеров");
-      return;
-    }
-    const freelancerId = project.proposals[0].freelancer;
-    const amount = project.budget;
-
-    dispatch(createEscrow({ projectId: project._id, freelancerId, amount }));
-  };
-
-  const handleRelease = (escrowId) => {
-    dispatch(releaseFunds(escrowId));
-  };
-
-  const handleRefund = (escrowId) => {
-    dispatch(refundFunds(escrowId));
-  };
 
   if (!user) return <p>Загрузка данных пользователя...</p>;
 
@@ -128,12 +109,8 @@ function EmployeeDash() {
               <h3>Размещённые проекты</h3>
               <div>
                 <button onClick={() => setFilterStatus("all")}>Все</button>
-                <button onClick={() => setFilterStatus("open")}>
-                  Открытые
-                </button>
-                <button onClick={() => setFilterStatus("completed")}>
-                  Завершенные
-                </button>
+                <button onClick={() => setFilterStatus("open")}>Открытые</button>
+                <button onClick={() => setFilterStatus("closed")}>Завершённые</button>
               </div>
               {status === "loading" ? (
                 <p>Загрузка проектов...</p>
@@ -145,51 +122,12 @@ function EmployeeDash() {
                     <div key={project._id} className={style.projectCard}>
                       <h4>{project.title}</h4>
                       <p>{project.description}</p>
-                      <p>
-                        <strong>Бюджет:</strong> {project.budget}₽
-                      </p>
-                      <p>
-                        <strong>Статус:</strong>{" "}
-                        {project.status === "open" ? "Открыт" : "Закрыт"}
-                      </p>
-                      <p>
-                        <strong>Создан:</strong>{" "}
-                        {new Date(project.createdAt).toLocaleDateString()}
-                      </p>
-
-                      {/* ✅ Показ откликов всегда */}
-                      <ProposalList proposals={project.proposals || []} />
-
-                      {/* 💰 Escrow блок */}
-                      {project.escrow ? (
-                        <div className={style.escrowBox}>
-                          <p>
-                            <strong>Escrow статус:</strong>{" "}
-                            {project.escrow.status}
-                          </p>
-
-                          {project.escrow.status === "pending" && (
-                            <>
-                              <button
-                                onClick={() =>
-                                  handleRelease(project.escrow._id)
-                                }
-                              >
-                                ✅ Выпустить средства
-                              </button>
-                              <button
-                                onClick={() => handleRefund(project.escrow._id)}
-                              >
-                                ↩️ Вернуть средства
-                              </button>
-                            </>
-                          )}
-                        </div>
-                      ) : (
-                        <button onClick={() => handleCreateEscrow(project)}>
-                          💰 Заморозить средства
-                        </button>
-                      )}
+                      <p><strong>Бюджет:</strong> {project.budget}₽</p>
+                      <p><strong>Статус:</strong> {project.status}</p>
+                      <p><strong>Создан:</strong> {new Date(project.createdAt).toLocaleDateString()}</p>
+                      <button onClick={() => navigate(`/employer/project/${project._id}`)}>
+                        📂 Подробнее
+                      </button>
                     </div>
                   ))}
                 </div>

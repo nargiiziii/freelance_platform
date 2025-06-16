@@ -209,11 +209,9 @@ const proposalSlice = createSlice({
           if (index !== -1) proposals[index] = updated;
         }
       })
-
-      // ✅ Отправка работы
       .addCase(submitWork.fulfilled, (state, action) => {
         const updated = action.payload.proposal;
-        const projectId = updated.project;
+        const projectId = updated.project._id || updated.project; // ✅ подстраховка
         const proposals = state.proposalsByProjectId[projectId];
         if (proposals) {
           const index = proposals.findIndex((p) => p._id === updated._id);

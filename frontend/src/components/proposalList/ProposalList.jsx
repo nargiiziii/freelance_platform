@@ -1,7 +1,10 @@
 // ✅ Обновлённый ProposalList (аккуратный стиль)
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { acceptProposal } from "../../redux/features/proposalSlice";
+import {
+  acceptProposal,
+  rejectProposal,
+} from "../../redux/features/proposalSlice";
 import { getEmployerProjects } from "../../redux/features/projectSlice";
 import style from "./ProposalList.module.scss";
 
@@ -39,7 +42,8 @@ const ProposalList = ({ proposals = [] }) => {
           <div key={proposal._id} className={style.proposalCard}>
             <div className={style.infoBlock}>
               <p>
-                <strong>Фрилансер:</strong> {proposal.freelancer?.name || "Без имени"}
+                <strong>Фрилансер:</strong>{" "}
+                {proposal.freelancer?.name || "Без имени"}
               </p>
               <p>
                 <strong>Письмо:</strong> {proposal.coverLetter}
@@ -51,10 +55,36 @@ const ProposalList = ({ proposals = [] }) => {
                 <strong>Статус:</strong> {proposal.status}
               </p>
             </div>
+
             {proposal.status === "pending" && (
-              <button className={style.acceptButton} onClick={() => handleAccept(proposal._id)}>
-                ✅ Принять
-              </button>
+              <div className={style.buttons}>
+                <button
+                  className={style.acceptButton}
+                  onClick={() => handleAccept(proposal._id)}
+                >
+                  ✅ Принять
+                </button>
+                <button
+                  className={style.rejectButton}
+                  onClick={() =>
+                    dispatch(rejectProposal({ proposalId: proposal._id }))
+                  }
+                >
+                  ❌ Отклонить
+                </button>
+              </div>
+            )}
+
+            {proposal.status === "submitted" && proposal.workFile && (
+              <div>
+                <strong>Фрилансер сдал работу:</strong>
+                <br />
+                <a
+                  href={`http://localhost:3000/api/proposals/download/${proposal.workFile}`}
+                >
+                  📥 Скачать файл
+                </a>
+              </div>
             )}
           </div>
         ))

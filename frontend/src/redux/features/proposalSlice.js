@@ -46,7 +46,6 @@ export const acceptProposal = createAsyncThunk(
   }
 );
 
-
 // 🔁 Получить отклики по projectId
 export const fetchProposalsByProject = createAsyncThunk(
   "proposal/fetchByProject",
@@ -74,11 +73,73 @@ export const fetchProposalsByProject = createAsyncThunk(
   }
 );
 
+// 🔁 Отклонение отклика
+export const rejectProposal = createAsyncThunk(
+  "proposal/rejectProposal",
+  async ({ proposalId }, thunkAPI) => {
+    try {
+      const res = await fetch("http://localhost:3000/api/proposals/reject", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ proposalId }),
+      });
+
+      if (!res.ok) throw new Error("Ошибка при отклонении отклика");
+      return await res.json(); // { proposal }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
+// 🔁 Отправка готовой работы фрилансером (file)
+export const submitWork = createAsyncThunk(
+  "proposal/submitWork",
+  async ({ projectId, file }, thunkAPI) => {
+    try {
+      const formData = new FormData();
+      formData.append("projectId", projectId);
+      formData.append("workFile", file);
+
+      const res = await fetch(
+        "http://localhost:3000/api/proposals/submit-work",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      if (!res.ok) throw new Error("Ошибка при отправке работы");
+      return await res.json(); // { proposal }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
+export const getMyProposals = createAsyncThunk(
+  "proposal/getMyProposals",
+  async (_, thunkAPI) => {
+    try {
+      const res = await fetch("http://localhost:3000/api/proposals/my", {
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Ошибка при загрузке откликов");
+      return await res.json();
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
 // 📦 Slice
 const proposalSlice = createSlice({
   name: "proposal",
   initialState: {
-    proposalsByProjectId: {}, // 💡 ключ: projectId
+    proposalsByProjectId: {},
+    myProposals: [], // ← это важно
     status: "idle",
     error: null,
   },
@@ -136,6 +197,37 @@ const proposalSlice = createSlice({
         state.proposalsByProjectId[projectId] = proposals;
       })
       .addCase(fetchProposalsByProject.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      }) // ✅ Отклонение
+      .addCase(rejectProposal.fulfilled, (state, action) => {
+        const updated = action.payload.proposal;
+        const projectId = updated.project;
+        const proposals = state.proposalsByProjectId[projectId];
+        if (proposals) {
+          const index = proposals.findIndex((p) => p._id === updated._id);
+          if (index !== -1) proposals[index] = updated;
+        }
+      })
+
+      // ✅ Отправка работы
+      .addCase(submitWork.fulfilled, (state, action) => {
+        const updated = action.payload.proposal;
+        const projectId = updated.project;
+        const proposals = state.proposalsByProjectId[projectId];
+        if (proposals) {
+          const index = proposals.findIndex((p) => p._id === updated._id);
+          if (index !== -1) proposals[index] = updated;
+        }
+      })
+      .addCase(getMyProposals.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getMyProposals.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.myProposals = action.payload;
+      })
+      .addCase(getMyProposals.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

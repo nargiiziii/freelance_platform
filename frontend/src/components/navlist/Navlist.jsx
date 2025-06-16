@@ -45,7 +45,7 @@ const Navlist = () => {
             <Link to="/jobs">Jobs</Link>
           </li>
           <li className={style.li}>
-            <Link to="/freelancer/proposals">My Proposals</Link>
+            <Link to="/my-proposals">My Proposals</Link>
           </li>
           <li className={style.li}>
             <Link to="/freelancer/projects">My Projects</Link>

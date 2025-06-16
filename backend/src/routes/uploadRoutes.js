@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const timestamp = Date.now();
-    const safeName = file.originalname.replace(/\s+/g, '_'); // заменим пробелы на "_"
+    const safeName = file.originalname.replace(/\s+/g, '_'); 
     cb(null, `${timestamp}-${safeName}`);
   },
 });

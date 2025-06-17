@@ -1,0 +1,93 @@
+.chatWrapper {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.chatHeader {
+  margin-bottom: 10px;
+}
+
+.chatBox {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 10px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.messageRow {
+  display: flex;
+  margin: 5px 0;
+}
+
+.myMessage {
+  justify-content: flex-end;
+}
+
+.theirMessage {
+  justify-content: flex-start;
+}
+
+.messageBubble {
+  background: #cce5ff;
+  color: #000;
+  padding: 8px 12px;
+  border-radius: 16px;
+  max-width: 70%;
+  position: relative;
+  word-break: break-word;
+}
+
+.theirMessage .messageBubble {
+  background: #f2f2f2;
+}
+
+.statusIcon {
+  position: absolute;
+  bottom: -18px;
+  right: 8px;
+}
+
+.readIcon {
+  color: #4b0082;
+}
+
+.unreadIcon {
+  color: #a48cd4;
+}
+
+.typingIndicator {
+  font-style: italic;
+  color: #888;
+  margin: 5px 0;
+}
+
+.inputArea {
+  display: flex;
+  gap: 10px;
+}
+
+.inputField {
+  flex: 1;
+  padding: 8px;
+}
+
+.sendButton {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.fixedHeader {
+  background-color: #f8f0ff;
+  padding: 10px 20px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}

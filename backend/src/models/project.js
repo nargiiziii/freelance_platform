@@ -21,8 +21,9 @@ const projectSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Escrow",
     default: null,
-  }, // 👈 Добавлено поле
+  }, 
   createdAt: { type: Date, default: Date.now },
+  category: { type: String, required: true },
 });
 
 const Project = mongoose.model("Project", projectSchema);

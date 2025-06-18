@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProject } from "../../redux/features/projectSlice";
-import style from "./CreateProjectPage.module.scss"
+import style from "./CreateProjectPage.module.scss";
 
 const CreateProjectPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [skillsRequired, setSkillsRequired] = useState("");
   const [budget, setBudget] = useState("");
+  const [category, setCategory] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,8 +21,16 @@ const CreateProjectPage = () => {
     const trimmedDescription = description.trim();
     const parsedBudget = Number(budget);
 
-    if (!trimmedTitle || !trimmedDescription || isNaN(parsedBudget) || parsedBudget <= 0) {
-      alert("Пожалуйста, заполните все поля корректно. Бюджет должен быть положительным числом.");
+    if (
+      !trimmedTitle ||
+      !trimmedDescription ||
+      isNaN(parsedBudget) ||
+      parsedBudget <= 0 ||
+      !category
+    ) {
+      alert(
+        "Пожалуйста, заполните все поля корректно. Бюджет должен быть положительным числом, и выберите категорию."
+      );
       return;
     }
 
@@ -30,15 +39,18 @@ const CreateProjectPage = () => {
       .map((s) => s.trim())
       .filter(Boolean);
 
-    dispatch(createProject({
-      title: trimmedTitle,
-      description: trimmedDescription,
-      skillsRequired: skillsArray,
-      budget: parsedBudget,
-    }))
+    dispatch(
+      createProject({
+        title: trimmedTitle,
+        description: trimmedDescription,
+        skillsRequired: skillsArray,
+        budget: parsedBudget,
+        category, 
+      })
+    )
       .unwrap()
       .then(() => {
-        navigate("/dashboard"); // или /dashboard?section=projects
+        navigate("/dashboard");
       })
       .catch((err) => {
         alert("Ошибка при создании проекта: " + err);
@@ -48,6 +60,18 @@ const CreateProjectPage = () => {
   return (
     <div className={style.modal}>
       <form onSubmit={handleSubmit}>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+        >
+          <option value="">Выберите категорию</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Design">Design</option>
+          <option value="Writing">Writing</option>
+          <option value="Marketing">Marketing</option>
+        </select>
+
         <h3>Новое задание</h3>
         <input
           value={title}
@@ -74,7 +98,9 @@ const CreateProjectPage = () => {
           required
         />
         <button type="submit">Создать</button>
-        <button type="button" onClick={() => navigate("/dashboard")}>Отмена</button>
+        <button type="button" onClick={() => navigate("/dashboard")}>
+          Отмена
+        </button>
       </form>
     </div>
   );

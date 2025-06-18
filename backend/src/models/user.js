@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// Отзывы (для фрилансеров и, опционально, нанимателей)
 const reviewSchema = new mongoose.Schema(
   {
     reviewerId: {
@@ -51,6 +50,7 @@ const userSchema = new mongoose.Schema(
     rating: { type: Number, default: 0 },
     completedProjectsCount: { type: Number, default: 0 },
     isAvailable: { type: Boolean, default: true },
+    category: { type: String }, // профессия фрилансера
 
     // Общие
     balance: { type: Number, default: 0 }, // escrow: пополняет employer, получает freelancer

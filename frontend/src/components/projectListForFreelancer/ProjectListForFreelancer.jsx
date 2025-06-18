@@ -39,6 +39,14 @@ function ProjectListForFreelancer() {
 
   return (
     <section>
+      <select onChange={(e) => dispatch(getOpenProjects(e.target.value))}>
+        <option value="">Все категории</option>
+        <option value="Web Development">Web Development</option>
+        <option value="Design">Design</option>
+        <option value="Writing">Writing</option>
+        <option value="Marketing">Marketing</option>
+      </select>
+
       <h3>Открытые проекты</h3>
       <ul>
         {projects
@@ -50,6 +58,10 @@ function ProjectListForFreelancer() {
               <p>
                 <strong>Бюджет:</strong> {project.budget}₽
               </p>
+              <p>
+                <strong>Категория:</strong> {project.category || "Не указана"}
+              </p>
+
               {/* 💬 Кнопка: отправить сообщение нанимателю */}
               {project.employer && (
                 <p>

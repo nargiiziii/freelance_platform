@@ -1,3 +1,4 @@
+// ChatRoom.jsx (already styled better)
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -147,7 +148,7 @@ const ChatRoom = () => {
   return (
     <div className={style.chatWrapper}>
       <div className={style.fixedHeader}>
-        <h2 className={style.chatHeader}>Чат с {receiverInfo?.name || "пользователем"}</h2>
+        <h2 className={style.chatHeader}>{receiverInfo?.name || "пользователем"}</h2>
       </div>
 
       <div className={style.chatBox}>

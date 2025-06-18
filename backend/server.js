@@ -40,12 +40,10 @@ const io = new Server(server, {
 const onlineUsers = new Map();
 
 io.on("connection", (socket) => {
-  console.log("🔌 Новый сокет:", socket.id);
 
   socket.on("join", (userId) => {
     onlineUsers.set(userId, socket.id);
     socket.userId = userId;
-    console.log(`👤 Пользователь ${userId} подключился`);
   });
 
   socket.on("typing", ({ chatId, sender, receiver }) => {
@@ -77,7 +75,6 @@ io.on("connection", (socket) => {
     if (socket.userId) {
       onlineUsers.delete(socket.userId);
     }
-    console.log("❌ Сокет отключён:", socket.id);
   });
 });
 

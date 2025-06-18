@@ -12,6 +12,7 @@ export default function Register() {
     email: "",
     password: "",
     bio: "",
+    category: "",
     skills: [],
     portfolio: [],
   });
@@ -43,6 +44,7 @@ export default function Register() {
       formData.append("email", form.email);
       formData.append("password", form.password);
       formData.append("bio", form.bio);
+      formData.append("category", form.category);
 
       if (avatarFile) {
         formData.append("avatar", avatarFile);
@@ -113,6 +115,21 @@ export default function Register() {
         onChange={handleChange}
         className={style.textarea}
       />
+      {form.role === "freelancer" && (
+        <select
+          name="category"
+          value={form.category}
+          onChange={handleChange}
+          className={style.select}
+          required
+        >
+          <option value="">Выберите профессию</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Design">Design</option>
+          <option value="Writing">Writing</option>
+          <option value="Marketing">Marketing</option>
+        </select>
+      )}
 
       <label className={style.fileLabel}>
         {avatarPreview ? (

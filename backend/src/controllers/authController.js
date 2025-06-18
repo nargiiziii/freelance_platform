@@ -29,9 +29,11 @@ export const registerUser = [
   upload.single("avatar"),
   async (req, res) => {
     try {
-      const { role, name, email, password, bio } = req.body;
+      const { role, name, email, password, bio, category } = req.body;
       const skills = req.body.skills ? JSON.parse(req.body.skills) : [];
-      const portfolio = req.body.portfolio ? JSON.parse(req.body.portfolio) : [];
+      const portfolio = req.body.portfolio
+        ? JSON.parse(req.body.portfolio)
+        : [];
 
       const avatar = req.file
         ? req.file.path.replace(/\\/g, "/").replace(/^\/+/, "")
@@ -53,6 +55,7 @@ export const registerUser = [
         bio,
         skills,
         portfolio,
+        category, 
         rating: 0,
         reviews: [],
       });
@@ -116,7 +119,7 @@ export const loginUser = async (req, res) => {
     res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
-        secure: false, // 👈 отключаем на локалке
+        secure: false,
         sameSite: "Lax",
         maxAge: 15 * 60 * 1000,
       })

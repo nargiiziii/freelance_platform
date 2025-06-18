@@ -29,7 +29,7 @@ export const getFreelancerProjects = async (req, res) => {
 // Создать проект (employer)
 export const createProject = async (req, res) => {
   try {
-    const { title, description, skillsRequired, budget } = req.body;
+    const { title, description, skillsRequired, budget, category } = req.body;
     const employer = req.user.id;
 
     const project = new Project({
@@ -39,7 +39,7 @@ export const createProject = async (req, res) => {
       budget,
       employer,
       status: "open",
-      // escrow пока не создаём здесь — создашь позже, когда фрилансер примет предложение
+      category,
     });
 
     await project.save();
@@ -64,7 +64,7 @@ export const getEmployerProjects = async (req, res) => {
       ],
     });
 
-    console.log("Найдено проектов:", projects.length);
+    // console.log("Найдено проектов:", projects.length);
     res.json(projects);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -74,10 +74,11 @@ export const getEmployerProjects = async (req, res) => {
 // Получить все открытые проекты для фрилансера
 export const getOpenProjects = async (req, res) => {
   try {
-    const projects = await Project.find({ status: "open" }).populate(
-      "employer",
-      "name"
-    );
+    const { category } = req.query;
+    const filter = { status: "open" };
+    if (category) filter.category = category;
+
+    const projects = await Project.find(filter).populate("employer", "name");
     res.json(projects);
   } catch (err) {
     res.status(500).json({ message: err.message });

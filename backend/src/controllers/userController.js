@@ -20,7 +20,7 @@ export const addPortfolioItem = async (req, res) => {
     const { title, description, link, technologies, date } = req.body;
     const userId = req.user.id;
 
-    console.log("userId из токена:", userId);
+    // console.log("userId из токена:", userId);
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ message: "Некорректный userId" });
@@ -84,10 +84,16 @@ export const topUpBalance = async (req, res) => {
 };
 
 
-// Получить всех фрилансеров
+// Получить фрилансеров
 export const getFreelancers = async (req, res) => {
   try {
-    const freelancers = await User.find({ role: "freelancer" }).select("-password"); // без пароля
+    const { category } = req.query;
+    const filter = { role: "freelancer" };
+    if (category) {
+      filter.category = { $regex: new RegExp(`^${category}$`, "i") }; // 🔍 ignore case
+    }
+
+    const freelancers = await User.find(filter).select("-password");
     res.json(freelancers);
   } catch (err) {
     res.status(500).json({ message: "Ошибка при получении фрилансеров" });

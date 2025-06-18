@@ -92,7 +92,7 @@ export const submitWork = [
         proposal: updatedProposal,
       });
     } catch (err) {
-      console.error("❌ submitWork error:", err);
+      // console.error("❌ submitWork error:", err);
       return res.status(500).json({ message: err.message });
     }
   },
@@ -200,7 +200,7 @@ export const acceptProposal = async (req, res) => {
 
     res.status(200).json({ proposal });
   } catch (err) {
-    console.error("Ошибка в acceptProposal:", err);
+    // console.error("Ошибка в acceptProposal:", err);
     res.status(500).json({ message: err.message || "Internal Server Error" });
   }
 };

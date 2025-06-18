@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { topUpBalance } from "../../redux/features/authSlice";
+import { useEffect } from "react";
+import { getProfile } from "../../redux/features/authSlice";
 
 function BalancePage() {
   const dispatch = useDispatch();
@@ -8,6 +10,10 @@ function BalancePage() {
   const [amount, setAmount] = useState(0);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+                                
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [dispatch]);
 
   const handleTopUp = async () => {
     try {
@@ -29,10 +35,14 @@ function BalancePage() {
     <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md">
       <h2 className="text-xl font-bold mb-4">💰 Ваш баланс</h2>
 
-      <p className="text-lg mb-4">Текущий баланс: <strong>{user.balance} монет</strong></p>
+      <p className="text-lg mb-4">
+        Текущий баланс: <strong>{user.balance} монет</strong>
+      </p>
 
       <div className="mb-4">
-        <label htmlFor="amount" className="block font-medium">Сумма пополнения:</label>
+        <label htmlFor="amount" className="block font-medium">
+          Сумма пополнения:
+        </label>
         <input
           type="number"
           id="amount"

@@ -14,7 +14,9 @@ export const createProject = createAsyncThunk(
 
       if (!response.ok) {
         const error = await response.json();
-        return thunkAPI.rejectWithValue(error.message || "Ошибка при создании проекта");
+        return thunkAPI.rejectWithValue(
+          error.message || "Ошибка при создании проекта"
+        );
       }
 
       return await response.json();
@@ -29,13 +31,18 @@ export const getEmployerProjects = createAsyncThunk(
   "projects/getEmployerProjects",
   async (_, thunkAPI) => {
     try {
-      const res = await fetch("http://localhost:3000/api/projects/my-projects", {
-        credentials: "include",
-      });
+      const res = await fetch(
+        "http://localhost:3000/api/projects/my-projects",
+        {
+          credentials: "include",
+        }
+      );
 
       if (!res.ok) {
         const error = await res.json();
-        return thunkAPI.rejectWithValue(error.message || "Ошибка при загрузке проектов");
+        return thunkAPI.rejectWithValue(
+          error.message || "Ошибка при загрузке проектов"
+        );
       }
 
       return await res.json();
@@ -48,12 +55,20 @@ export const getEmployerProjects = createAsyncThunk(
 // 🌍 Получить открытые проекты для фрилансеров
 export const getOpenProjects = createAsyncThunk(
   "projects/getOpenProjects",
-  async (_, thunkAPI) => {
+  async (category = "", thunkAPI) => {
     try {
-      const res = await fetch("http://localhost:3000/api/projects", {
+      const url = category
+        ? `http://localhost:3000/api/projects?category=${encodeURIComponent(
+            category
+          )}`
+        : "http://localhost:3000/api/projects";
+
+      const res = await fetch(url, {
         credentials: "include",
       });
+
       if (!res.ok) throw new Error("Ошибка при получении проектов");
+
       return await res.json();
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
@@ -66,12 +81,15 @@ export const submitWork = createAsyncThunk(
   "projects/submitWork",
   async ({ projectId, submittedFileUrl }, thunkAPI) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/projects/${projectId}/submit-work`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ submittedFileUrl }),
-      });
+      const res = await fetch(
+        `http://localhost:3000/api/projects/${projectId}/submit-work`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ submittedFileUrl }),
+        }
+      );
       if (!res.ok) throw new Error("Ошибка при отправке работы");
       return await res.json();
     } catch (err) {
@@ -85,10 +103,13 @@ export const completeProject = createAsyncThunk(
   "projects/completeProject",
   async (projectId, thunkAPI) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/projects/${projectId}/complete`, {
-        method: "PATCH",
-        credentials: "include",
-      });
+      const res = await fetch(
+        `http://localhost:3000/api/projects/${projectId}/complete`,
+        {
+          method: "PATCH",
+          credentials: "include",
+        }
+      );
       if (!res.ok) throw new Error("Ошибка при завершении проекта");
       return await res.json();
     } catch (err) {
@@ -102,9 +123,12 @@ export const getFreelancerProjects = createAsyncThunk(
   "projects/getFreelancerProjects",
   async (_, thunkAPI) => {
     try {
-      const res = await fetch("http://localhost:3000/api/projects/freelancer-projects", {
-        credentials: "include",
-      });
+      const res = await fetch(
+        "http://localhost:3000/api/projects/freelancer-projects",
+        {
+          credentials: "include",
+        }
+      );
       if (!res.ok) throw new Error("Ошибка загрузки проектов фрилансера");
       return await res.json();
     } catch (err) {
@@ -174,14 +198,18 @@ const projectSlice = createSlice({
       // 📤 Submit work
       .addCase(submitWork.fulfilled, (state, action) => {
         const project = action.payload.project;
-        const index = state.freelancerProjects.findIndex((p) => p._id === project._id);
+        const index = state.freelancerProjects.findIndex(
+          (p) => p._id === project._id
+        );
         if (index !== -1) state.freelancerProjects[index] = project;
       })
 
       // ✅ Complete
       .addCase(completeProject.fulfilled, (state, action) => {
         const project = action.payload.project;
-        const index = state.employerProjects.findIndex((p) => p._id === project._id);
+        const index = state.employerProjects.findIndex(
+          (p) => p._id === project._id
+        );
         if (index !== -1) state.employerProjects[index] = project;
       })
 

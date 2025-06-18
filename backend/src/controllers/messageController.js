@@ -42,7 +42,7 @@ export const getUserChats = async (req, res) => {
         members: chat.members,
         lastMessage: chat.lastMessage,
         unreadCount,
-        partner, // добавим сразу
+        partner, 
       };
     })
   );
@@ -100,7 +100,7 @@ export const sendMessage = async (req, res) => {
     const populated = await newMsg.populate("sender", "name");
     res.status(201).json(populated);
   } catch (error) {
-    console.error("❌ Ошибка при отправке сообщения:", error);
+    // console.error("❌ Ошибка при отправке сообщения:", error);
     res.status(500).json({ message: "Внутренняя ошибка сервера" });
   }
 };
@@ -125,7 +125,7 @@ export const markMessagesAsRead = async (req, res) => {
 
     res.json({ message: "Сообщения помечены как прочитанные" });
   } catch (error) {
-    console.error("❌ Ошибка при обновлении read:", error);
+    // console.error("❌ Ошибка при обновлении read:", error);
     res.status(500).json({ message: "Ошибка при обновлении" });
   }
 };

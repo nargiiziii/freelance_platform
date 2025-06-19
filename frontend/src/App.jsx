@@ -1,26 +1,30 @@
-// src/App.jsx
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { getProfile } from "./redux/features/authSlice";
 
+// Общие страницы
 import Layout from "./pages/Layout";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
 import Home from "./pages/Home";
 import Dashboard from "./pages/dashboard/Dashboard";
 import EditProfile from "./pages/editProf/EditProdile";
-import FreelancerDash from "./components/freelancer_dash/Freelancer_dash";
-import EmployeeDash from "./components/employee_dash/Employee_dash";
-import CreateProjectPage from "./pages/createProjectPage/CreateProjectPage";
-import ProjectListForFreelancer from "./components/projectListForFreelancer/ProjectListForFreelancer";
-import MyProposals from "./pages/myProposals/MyProposals";
 import BalancePage from "./pages/balancePage/BalancePage";
-import ProjectDetails from "./pages/projectDetails/ProjectDetails";
-import FreelancersList from "./pages/freelancersList/FreelancersList";
 import MessagesPage from "./pages/messagesPage/MessagesPage";
 import ChatRoom from "./pages/сhatRoom/ChatRoom";
+import FreelancersList from "./pages/freelancersList/FreelancersList";
+
+// Страницы фрилансера
+import FreelancerDash from "./components/freelancer_dash/Freelancer_dash";
+import ProjectListForFreelancer from "./components/projectListForFreelancer/ProjectListForFreelancer";
+import MyProposals from "./pages/myProposals/MyProposals";
+
+// Страницы работодателя
+import EmployeeDash from "./components/employee_dash/Employee_dash";
+import CreateProjectPage from "./pages/createProjectPage/CreateProjectPage";
 import MyJobs from "./pages/myJobs/MyJobs";
+import ProjectDetails from "./pages/projectDetails/ProjectDetails";
 import EditProject from "./pages/editProject/EditProject";
 
 const router = createBrowserRouter([
@@ -32,20 +36,25 @@ const router = createBrowserRouter([
       </div>
     ),
     children: [
+      // Общие маршруты
       { path: "/", element: <Home /> },
       { path: "/register", element: <Register /> },
       { path: "/login", element: <Login /> },
       { path: "/dashboard", element: <Dashboard /> },
-      { path: "/freelancer-dash", element: <FreelancerDash /> },
-      { path: "/employee-dash", element: <EmployeeDash /> },
       { path: "/edit-profile", element: <EditProfile /> },
       { path: "/escrow", element: <BalancePage /> },
       { path: "/messages", element: <MessagesPage /> },
       { path: "/chatRoom/:userId", element: <ChatRoom /> },
+      { path: "/freelancers", element: <FreelancersList /> },
+
+      // Маршруты фрилансера
+      { path: "/freelancer-dash", element: <FreelancerDash /> },
       { path: "/jobs", element: <ProjectListForFreelancer /> },
       { path: "/my-proposals", element: <MyProposals /> },
+
+      // Маршруты работодателя
+      { path: "/employee-dash", element: <EmployeeDash /> },
       { path: "/create-project", element: <CreateProjectPage /> },
-      { path: "/freelancers", element: <FreelancersList /> },
       { path: "/my-jobs", element: <MyJobs /> },
       { path: "/employer/project/:id", element: <ProjectDetails /> },
       { path: "/edit-project/:id", element: <EditProject /> },

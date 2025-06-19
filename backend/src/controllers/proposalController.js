@@ -1,17 +1,16 @@
-// backend/src/controllers/proposalController.js
+// Импорт моделей и зависимостей
 import Proposal from "../models/proposal.js";
 import Project from "../models/project.js";
 import Escrow from "../models/escrow.js";
 import User from "../models/user.js";
 import fs from "fs";
-
 import path from "path";
 import multer from "multer";
 
-// Multer для загрузки файла
+// Настройка хранилища для загрузки файлов (используется в submitWork)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // путь к папке
+    cb(null, "uploads/"); // Папка для сохранения файлов
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
@@ -19,7 +18,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Отклонение отклика
+
+// Контроллер для отклонения отклика фрилансера
 export const rejectProposal = async (req, res) => {
   try {
     const { proposalId } = req.body;
@@ -36,7 +36,6 @@ export const rejectProposal = async (req, res) => {
     proposal.status = "rejected";
     await proposal.save();
 
-    // Преобразуем в обычный объект и добавляем escrow
     const proposalWithEscrow = proposal.toObject();
 
     res.status(200).json({ proposal: proposalWithEscrow });
@@ -45,7 +44,8 @@ export const rejectProposal = async (req, res) => {
   }
 };
 
-// Загрузка работы
+
+// Контроллер для загрузки выполненной работы фрилансером
 export const submitWork = [
   upload.single("workFile"),
   async (req, res) => {
@@ -67,11 +67,10 @@ export const submitWork = [
       proposal.workFile = req.file.filename;
       await proposal.save();
 
-      // ⬇️ Вот ключ: перезагружаем proposal с project.escrow
       const updatedProposal = await Proposal.findById(proposal._id)
         .populate({
           path: "project",
-          populate: { path: "escrow" }, // ✅ подтягиваем escrow!
+          populate: { path: "escrow" },
         })
         .populate({
           path: "freelancer",
@@ -89,12 +88,13 @@ export const submitWork = [
         proposal: updatedProposal,
       });
     } catch (err) {
-      // console.error("❌ submitWork error:", err);
       return res.status(500).json({ message: err.message });
     }
   },
 ];
 
+
+// Контроллер для получения всех откликов фрилансера
 export const getMyProposals = async (req, res) => {
   try {
     const freelancerId = req.user._id || req.user.id;
@@ -108,11 +108,12 @@ export const getMyProposals = async (req, res) => {
   }
 };
 
+
+// Контроллер для скачивания загруженного файла работы
 export const downloadWorkFile = (req, res) => {
   const filename = req.params.filename;
   const filePath = path.resolve("uploads", filename);
 
-  // 🛡 Проверка: существует ли файл
   if (!fs.existsSync(filePath)) {
     return res.status(404).json({ message: "Файл не найден" });
   }
@@ -120,6 +121,8 @@ export const downloadWorkFile = (req, res) => {
   res.download(filePath);
 };
 
+
+// Контроллер для создания нового отклика фрилансера на проект
 export const createProposal = async (req, res) => {
   try {
     const { projectId, coverLetter, price } = req.body;
@@ -142,6 +145,8 @@ export const createProposal = async (req, res) => {
   }
 };
 
+
+// Контроллер для принятия отклика работодателем и создания Escrow
 export const acceptProposal = async (req, res) => {
   try {
     const { proposalId } = req.body;
@@ -197,11 +202,12 @@ export const acceptProposal = async (req, res) => {
 
     res.status(200).json({ proposal });
   } catch (err) {
-    // console.error("Ошибка в acceptProposal:", err);
     res.status(500).json({ message: err.message || "Internal Server Error" });
   }
 };
 
+
+// Контроллер для получения всех откликов на конкретный проект
 export const getProposalsByProject = async (req, res) => {
   try {
     const { projectId } = req.params;
@@ -221,6 +227,8 @@ export const getProposalsByProject = async (req, res) => {
   }
 };
 
+
+// Контроллер для принятия выполненной работы работодателем и выплаты через Escrow
 export const acceptWorkSubmission = async (req, res) => {
   try {
     const { proposalId } = req.params;
@@ -239,18 +247,15 @@ export const acceptWorkSubmission = async (req, res) => {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    // Найдём escrow
     const escrow = await Escrow.findOne({ project: project._id });
     if (!escrow) return res.status(404).json({ message: "Escrow not found" });
 
-    // Проверим статус
     if (escrow.status !== "funded") {
       return res
         .status(400)
         .json({ message: "Escrow already released or refunded" });
     }
 
-    // Выпустим средства
     const freelancer = await User.findById(escrow.freelancer);
     if (!freelancer)
       return res.status(404).json({ message: "Freelancer not found" });

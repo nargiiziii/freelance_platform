@@ -1,8 +1,8 @@
 import Escrow from "../models/escrow.js";
 import Project from "../models/project.js";
-import User from "../models/user.js"; // ⬅️ добавь импорт
+import User from "../models/user.js"; // Модель пользователя
 
-// 🔐 Создать escrow (работодатель инициирует заморозку)
+// Функция для создания escrow (работодатель замораживает средства)
 export const createEscrow = async (req, res) => {
   try {
     const { projectId, freelancerId, amount } = req.body;
@@ -15,7 +15,7 @@ export const createEscrow = async (req, res) => {
       amount,
     });
 
-    // Связываем escrow с проектом
+    // Привязка escrow к проекту
     await Project.findByIdAndUpdate(projectId, { escrow: escrow._id });
 
     res.status(201).json(escrow);
@@ -24,7 +24,7 @@ export const createEscrow = async (req, res) => {
   }
 };
 
-// 💸 Выпустить средства фрилансеру
+// Функция для выпуска средств фрилансеру после принятия работы
 export const releaseFunds = async (req, res) => {
   try {
     const { escrowId } = req.params;
@@ -42,7 +42,8 @@ export const releaseFunds = async (req, res) => {
     escrow.status = "released";
 
     await Promise.all([freelancer.save(), escrow.save()]);
-    // ⬇️ Обновим статус проекта на closed
+
+    // Обновление статуса проекта на "closed" после выплаты
     const project = await Project.findById(escrow.project);
     if (project) {
       project.status = "closed";
@@ -55,7 +56,7 @@ export const releaseFunds = async (req, res) => {
   }
 };
 
-// ↩️ Вернуть средства работодателю
+// Функция для возврата средств работодателю (если работа не была принята)
 export const refundFunds = async (req, res) => {
   try {
     const { escrowId } = req.params;
@@ -73,22 +74,22 @@ export const refundFunds = async (req, res) => {
     if (!employer)
       return res.status(404).json({ message: "Работодатель не найден" });
 
-    // ⬅️ Вернуть деньги
+    // Возврат средств работодателю
     employer.balance += escrow.amount;
     await employer.save();
 
-    // ⬅️ Изменить статус escrow
+    // Изменение статуса escrow
     escrow.status = "rejected";
     await escrow.save();
 
-    // ✅ Обновить статус проекта
+    // Обновление статуса проекта на "closed"
     const project = await Project.findById(escrow.project);
     if (project) {
-      project.status = "closed"; // или "closed"
+      project.status = "closed";
       await project.save();
     }
 
-    // ✅ Обновить статус отклика
+    // Обновление статуса отклика (proposal) как отклонённого
     const Proposal = (await import("../models/proposal.js")).default;
     const proposal = await Proposal.findOne({
       project: escrow.project,
@@ -96,7 +97,7 @@ export const refundFunds = async (req, res) => {
     });
 
     if (proposal) {
-      proposal.status = "rejected"; // или "rejected"
+      proposal.status = "rejected";
       await proposal.save();
     }
 
@@ -107,9 +108,7 @@ export const refundFunds = async (req, res) => {
   }
 };
 
-
-// 📄 Получить историю транзакций пользователя (улучшено)
-
+// Функция для получения истории транзакций текущего пользователя
 export const getTransactionHistory = async (req, res) => {
   try {
     const userId = String(req.user.id);
@@ -123,7 +122,7 @@ export const getTransactionHistory = async (req, res) => {
 
     const formatted = escrows
       .filter((e) => {
-        // ⚠️ Фрилансер видит только завершённые переводы
+        // Фрилансер видит только завершённые переводы
         const isUserFreelancer = String(e.freelancer._id) === userId;
         if (isUserFreelancer && e.status !== "released") return false;
         return true;
@@ -137,12 +136,12 @@ export const getTransactionHistory = async (req, res) => {
 
         let direction = "outcome";
 
-        // ✅ Фрилансер получил деньги
+        // Определение типа транзакции: доход для фрилансера
         if (e.status === "released" && isUserFreelancer) {
           direction = "income";
         }
 
-        // ✅ Работодатель получил возврат
+        // Возврат — доход для работодателя
         if (e.status === "rejected" && isUserEmployer) {
           direction = "income";
         }

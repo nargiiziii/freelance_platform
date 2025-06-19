@@ -1,8 +1,8 @@
-// ✅ authSlice.js (обновлённый)
+// Импорт необходимых функций из Redux Toolkit и axios-инстанса
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../axiosInstance";
 
-// 🔐 Логин
+// Асинхронный thunk для логина пользователя
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (credentials, thunkAPI) => {
@@ -17,7 +17,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// 🔁 Обновление профиля
+// Асинхронный thunk для обновления данных пользователя (редактирование профиля)
 export const updateUser = createAsyncThunk(
   "auth/updateUser",
   async ({ userId, userData }, thunkAPI) => {
@@ -32,18 +32,18 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-// 🔁 Получение профиля из cookie токена
+// Асинхронный thunk для получения текущего профиля (по токену в cookie)
 export const getProfile = createAsyncThunk(
   "auth/getProfile",
   async (_, thunkAPI) => {
     try {
       const res = await axios.get("/auth/profile", {
-        requiresAuth: false, // 👉 предотвращает refresh, если неавторизован
+        requiresAuth: false, // Не вызывает refresh, если пользователь не авторизован
       });
       return res.data;
     } catch (e) {
       if (e.response?.status === 401) {
-        return null;
+        return null; // Если не авторизован, возвращаем null
       }
       return thunkAPI.rejectWithValue(
         e.response?.data?.message || "Ошибка при получении профиля"
@@ -52,7 +52,7 @@ export const getProfile = createAsyncThunk(
   }
 );
 
-// 🧹 Logout
+// Асинхронный thunk для выхода пользователя (logout)
 export const logoutUser = createAsyncThunk(
   "auth/logoutUser",
   async (_, thunkAPI) => {
@@ -65,6 +65,7 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+// Вспомогательная функция для нормализации объекта пользователя
 const normalizeUser = (user) => {
   if (!user) return null;
   return {
@@ -73,6 +74,7 @@ const normalizeUser = (user) => {
   };
 };
 
+// Асинхронный thunk для пополнения баланса пользователя
 export const topUpBalance = createAsyncThunk(
   "auth/topUpBalance",
   async (amount, thunkAPI) => {
@@ -94,17 +96,19 @@ export const topUpBalance = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
-    loading: false,
-    error: null,
+    user: null,       // Объект текущего пользователя
+    loading: false,   // Флаг загрузки для async операций
+    error: null,      // Сообщение об ошибке
   },
   reducers: {
+    // Редьюсер для ручной установки пользователя
     setUser: (state, action) => {
       state.user = normalizeUser(action.payload);
     },
   },
   extraReducers: (builder) => {
     builder
+      // Обработка состояний запроса loginUser
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -117,9 +121,13 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
+      // Обновление пользователя после успешного изменения профиля
       .addCase(updateUser.fulfilled, (state, action) => {
         state.user = normalizeUser(action.payload);
       })
+
+      // Обработка состояний запроса getProfile
       .addCase(getProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -132,9 +140,13 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
+      // Очистка пользователя после выхода
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
       })
+
+      // Обновление баланса после успешного пополнения
       .addCase(topUpBalance.fulfilled, (state, action) => {
         state.user = normalizeUser(action.payload);
       });
@@ -142,4 +154,5 @@ const authSlice = createSlice({
 });
 
 export const { setUser } = authSlice.actions;
+
 export default authSlice.reducer;

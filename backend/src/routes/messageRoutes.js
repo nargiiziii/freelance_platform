@@ -4,25 +4,26 @@ import {
   getUserChats,
   getChatMessages,
   sendMessage,
-  markMessagesAsRead, // 👈 добавили
+  markMessagesAsRead,
 } from "../controllers/messageController.js";
+
 import { verifyToken } from "../middleware/jwtMiddleware.js";
 
 const router = express.Router();
 
-// ✅ Создание чата
+// Маршрут для создания нового чата (доступен только авторизованным пользователям)
 router.post("/create", verifyToken, createChat);
 
-// ✅ Получение всех чатов пользователя
+// Маршрут для получения всех чатов текущего пользователя
 router.get("/chats", verifyToken, getUserChats);
 
-// ✅ Получение сообщений по chatId
+// Маршрут для получения всех сообщений в конкретном чате по chatId
 router.get("/chats/:chatId/messages", verifyToken, getChatMessages);
 
-// ✅ Отправка сообщения
+// Маршрут для отправки сообщения в определённый чат
 router.post("/chats/:chatId/send", verifyToken, sendMessage);
 
-// ✅ Пометить сообщения как прочитанные
-router.patch("/chats/:chatId/read", verifyToken, markMessagesAsRead); // 👈 новая строка
+// Маршрут для пометки сообщений в чате как прочитанных
+router.patch("/chats/:chatId/read", verifyToken, markMessagesAsRead);
 
 export default router;

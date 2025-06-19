@@ -1,5 +1,6 @@
 import express from 'express';
-import { verifyToken } from '../middleware/jwtMiddleware.js'; // ✅ исправлено
+import { verifyToken } from '../middleware/jwtMiddleware.js';
+
 import {
   createProposal,
   acceptProposal,
@@ -11,18 +12,30 @@ import {
   downloadWorkFile,
 } from "../controllers/proposalController.js";
 
-
 const router = express.Router();
 
-// 🔐 Только авторизованные пользователи могут отправлять и обновлять предложения
+// Создание отклика на проект
 router.post('/', verifyToken, createProposal);
-router.patch('/accept', verifyToken, acceptProposal);
-router.get('/project/:projectId', verifyToken, getProposalsByProject);
-router.patch("/reject", verifyToken, rejectProposal);
-router.post("/submit-work", verifyToken, submitWork);
-router.get("/my", verifyToken, getMyProposals);
-router.get("/download/:filename", downloadWorkFile);
-router.post("/:proposalId/accept-work", verifyToken, acceptWorkSubmission);
 
+// Принятие отклика
+router.patch('/accept', verifyToken, acceptProposal);
+
+// Получение откликов по проекту
+router.get('/project/:projectId', verifyToken, getProposalsByProject);
+
+// Отклонение отклика
+router.patch("/reject", verifyToken, rejectProposal);
+
+// Отправка работы фрилансером
+router.post("/submit-work", verifyToken, submitWork);
+
+// Получение всех откликов фрилансера
+router.get("/my", verifyToken, getMyProposals);
+
+// Скачивание отправленного файла
+router.get("/download/:filename", downloadWorkFile);
+
+// Принятие работы и выплата через escrow
+router.post("/:proposalId/accept-work", verifyToken, acceptWorkSubmission);
 
 export default router;

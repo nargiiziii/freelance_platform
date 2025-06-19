@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// 🔄 Создание проекта
+// Асинхронный thunk для создания нового проекта
+// Используется работодателем для публикации проекта
 export const createProject = createAsyncThunk(
   "projects/createProject",
   async (projectData, thunkAPI) => {
@@ -26,7 +27,7 @@ export const createProject = createAsyncThunk(
   }
 );
 
-// 📥 Получить проекты работодателя
+// Асинхронный thunk для получения всех проектов текущего работодателя
 export const getEmployerProjects = createAsyncThunk(
   "projects/getEmployerProjects",
   async (_, thunkAPI) => {
@@ -52,7 +53,7 @@ export const getEmployerProjects = createAsyncThunk(
   }
 );
 
-// 🌍 Получить открытые проекты для фрилансеров
+// Асинхронный thunk для получения открытых проектов для фрилансеров (с фильтрацией по категории)
 export const getOpenProjects = createAsyncThunk(
   "projects/getOpenProjects",
   async (category = "", thunkAPI) => {
@@ -76,7 +77,7 @@ export const getOpenProjects = createAsyncThunk(
   }
 );
 
-// 📤 Отправка работы
+// Асинхронный thunk для отправки выполненной работы фрилансером
 export const submitWork = createAsyncThunk(
   "projects/submitWork",
   async ({ projectId, submittedFileUrl }, thunkAPI) => {
@@ -98,7 +99,7 @@ export const submitWork = createAsyncThunk(
   }
 );
 
-// ✅ Завершение проекта
+// Асинхронный thunk для завершения проекта работодателем
 export const completeProject = createAsyncThunk(
   "projects/completeProject",
   async (projectId, thunkAPI) => {
@@ -118,7 +119,7 @@ export const completeProject = createAsyncThunk(
   }
 );
 
-// 📋 Получить проекты фрилансера
+// Асинхронный thunk для получения всех проектов текущего фрилансера
 export const getFreelancerProjects = createAsyncThunk(
   "projects/getFreelancerProjects",
   async (_, thunkAPI) => {
@@ -137,26 +138,25 @@ export const getFreelancerProjects = createAsyncThunk(
   }
 );
 
-// 💾 Slice
 const projectSlice = createSlice({
   name: "projects",
   initialState: {
-    employerProjects: [],
-    freelancerProjects: [],
-    openProjects: [],
+    employerProjects: [],      // проекты текущего работодателя
+    freelancerProjects: [],    // проекты текущего фрилансера
+    openProjects: [],          // все открытые проекты
     status: {
-      employer: "idle",
-      freelancer: "idle",
-      open: "idle",
+      employer: "idle",        // статус загрузки проектов работодателя
+      freelancer: "idle",      // статус загрузки проектов фрилансера
+      open: "idle",            // статус загрузки открытых проектов
     },
-    error: null,
+    error: null,               // сообщение об ошибке, если есть
   },
 
-  reducers: {},
+  reducers: {}, 
 
   extraReducers: (builder) => {
     builder
-      // 📤 Create
+      // Обработка createProject
       .addCase(createProject.pending, (state) => {
         state.status.employer = "loading";
       })
@@ -169,7 +169,7 @@ const projectSlice = createSlice({
         state.error = action.payload;
       })
 
-      // 📥 Employer
+      // Обработка getEmployerProjects
       .addCase(getEmployerProjects.pending, (state) => {
         state.status.employer = "loading";
       })
@@ -182,7 +182,7 @@ const projectSlice = createSlice({
         state.error = action.payload;
       })
 
-      // 🌍 Open projects
+      // Обработка getOpenProjects
       .addCase(getOpenProjects.pending, (state) => {
         state.status.open = "loading";
       })
@@ -195,7 +195,7 @@ const projectSlice = createSlice({
         state.error = action.payload;
       })
 
-      // 📤 Submit work
+      // Обработка submitWork (фрилансер отправляет выполненную работу)
       .addCase(submitWork.fulfilled, (state, action) => {
         const project = action.payload.project;
         const index = state.freelancerProjects.findIndex(
@@ -204,7 +204,7 @@ const projectSlice = createSlice({
         if (index !== -1) state.freelancerProjects[index] = project;
       })
 
-      // ✅ Complete
+      // Обработка completeProject (работодатель завершает проект)
       .addCase(completeProject.fulfilled, (state, action) => {
         const project = action.payload.project;
         const index = state.employerProjects.findIndex(
@@ -213,7 +213,7 @@ const projectSlice = createSlice({
         if (index !== -1) state.employerProjects[index] = project;
       })
 
-      // 👨‍💻 Freelancer
+      // Обработка getFreelancerProjects
       .addCase(getFreelancerProjects.pending, (state) => {
         state.status.freelancer = "loading";
       })

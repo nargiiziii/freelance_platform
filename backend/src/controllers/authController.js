@@ -1,10 +1,11 @@
+// Импорты моделей и библиотек
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import multer from "multer";
 
-// Настройка multer
+// Настройка хранилища файлов для загрузки аватара пользователя
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
@@ -15,7 +16,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Генерация токенов
+// Функция генерации access и refresh токенов для авторизации
 const generateTokens = (userId) => {
   const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
     expiresIn: "15m",
@@ -24,28 +25,29 @@ const generateTokens = (userId) => {
   return { accessToken, refreshToken };
 };
 
-// ✅ Регистрация
+// Контроллер регистрации нового пользователя
 export const registerUser = [
-  upload.single("avatar"),
+  upload.single("avatar"), // Обработка загрузки аватара
   async (req, res) => {
     try {
       const { role, name, email, password, bio, category } = req.body;
       const skills = req.body.skills ? JSON.parse(req.body.skills) : [];
-      const portfolio = req.body.portfolio
-        ? JSON.parse(req.body.portfolio)
-        : [];
+      const portfolio = req.body.portfolio ? JSON.parse(req.body.portfolio) : [];
 
       const avatar = req.file
         ? req.file.path.replace(/\\/g, "/").replace(/^\/+/, "")
         : null;
 
+      // Проверка: существует ли пользователь с таким email
       const existingUser = await User.findOne({ email });
       if (existingUser)
         return res.status(400).json({ message: "Пользователь уже существует" });
 
+      // Хэширование пароля
       const salt = await bcrypt.genSalt(10);
       const passwordHash = await bcrypt.hash(password, salt);
 
+      // Создание нового пользователя
       const newUser = new User({
         role,
         name,
@@ -55,20 +57,22 @@ export const registerUser = [
         bio,
         skills,
         portfolio,
-        category, 
+        category,
         rating: 0,
         reviews: [],
       });
 
+      // Генерация токенов и сохранение refresh токена
       const { accessToken, refreshToken } = generateTokens(newUser._id);
       newUser.refreshToken = refreshToken;
       await newUser.save();
 
+      // Установка httpOnly cookies и ответ с данными пользователя
       res
         .cookie("accessToken", accessToken, {
           httpOnly: true,
-          secure: false, // 👈 отключаем на локалке
-          sameSite: "Lax", // 👈 работает между портами
+          secure: false,
+          sameSite: "Lax",
           maxAge: 15 * 60 * 1000,
         })
         .cookie("refreshToken", refreshToken, {
@@ -99,23 +103,27 @@ export const registerUser = [
   },
 ];
 
-// ✅ Логин
+// Контроллер входа пользователя в систему
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Поиск пользователя по email
     const user = await User.findOne({ email });
     if (!user)
       return res.status(400).json({ message: "Неверный email или пароль" });
 
+    // Проверка пароля
     const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch)
       return res.status(400).json({ message: "Неверный email или пароль" });
 
+    // Генерация токенов и сохранение refresh токена
     const { accessToken, refreshToken } = generateTokens(user._id);
     user.refreshToken = refreshToken;
     await user.save();
 
+    // Установка cookies и отправка данных пользователя
     res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
@@ -150,20 +158,22 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// ✅ Профиль
-
+// Контроллер получения профиля текущего пользователя
 export const getProfile = async (req, res) => {
   try {
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: "Нет авторизации" });
     }
 
-    const userId = req.user.id; // ✅ правильно читаем ID
+    const userId = req.user.id;
+
+    // Поиск пользователя по ID
     const user = await User.findById(userId).select("-passwordHash");
 
     if (!user)
       return res.status(404).json({ message: "Пользователь не найден" });
 
+    // Приведение данных к нужному формату
     const userObj = user.toObject();
     userObj.id = userObj._id;
     delete userObj._id;
@@ -175,9 +185,11 @@ export const getProfile = async (req, res) => {
   }
 };
 
-// ✅ Выход из аккаунта
+// Контроллер выхода пользователя из системы
 export const logoutUser = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
+
+  // Очистка refresh токена у пользователя
   if (refreshToken) {
     const user = await User.findOne({ refreshToken });
     if (user) {
@@ -186,6 +198,7 @@ export const logoutUser = async (req, res) => {
     }
   }
 
+  // Очистка cookies
   res.clearCookie("accessToken");
   res.clearCookie("refreshToken");
 

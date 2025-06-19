@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Схема отзыва, включающая информацию о пользователе, проекте, комментарий и оценку
 const reviewSchema = new mongoose.Schema(
   {
     reviewerId: {
@@ -15,10 +16,10 @@ const reviewSchema = new mongoose.Schema(
     comment: { type: String, required: true },
     stars: { type: Number, min: 1, max: 5, required: true },
   },
-  { _id: false }
+  { _id: false } 
 );
 
-
+// Схема элемента портфолио фрилансера: информация о выполненной работе
 const portfolioItemSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
@@ -26,41 +27,43 @@ const portfolioItemSchema = new mongoose.Schema(
     description: { type: String },
     technologies: { type: [String], default: [] },
     date: { type: String },
-    image: { type: String }, 
+    image: { type: String },
   },
-  { _id: false }
+  { _id: false } 
 );
 
-
-
+// Основная схема пользователя: общие поля, а также специфичные для фрилансеров и нанимателей
 const userSchema = new mongoose.Schema(
   {
+    // Роль пользователя (фрилансер или наниматель)
     role: { type: String, enum: ["freelancer", "employer"], required: true },
 
+    // Основные личные данные
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },
 
+    // Профиль и описание
     avatar: { type: String, default: "" },
     bio: { type: String, default: "" },
 
-    // Только для фрилансеров
+    // Поля, актуальные только для фрилансеров
     skills: { type: [String], default: [] },
     portfolio: { type: [portfolioItemSchema], default: [] },
     rating: { type: Number, default: 0 },
     completedProjectsCount: { type: Number, default: 0 },
     isAvailable: { type: Boolean, default: true },
-    category: { type: String }, // профессия фрилансера
+    category: { type: String }, // специализация фрилансера
 
-    // Общие
-    balance: { type: Number, default: 0 }, // escrow: пополняет employer, получает freelancer
+    // Общие поля, связанные с деньгами и отзывами
+    balance: { type: Number, default: 0 },
     reviews: { type: [reviewSchema], default: [] },
     refreshToken: { type: String, default: "" },
 
-    // Только для нанимателей
+    // Поле, актуальное только для нанимателей
     postedProjectsCount: { type: Number, default: 0 },
   },
-  { timestamps: true }
+  { timestamps: true } 
 );
 
 const User = mongoose.model("User", userSchema);

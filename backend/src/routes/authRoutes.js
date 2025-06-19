@@ -1,24 +1,27 @@
+// Импортируем express для создания маршрутизатора
 import express from 'express';
+
 import {
   registerUser,
   loginUser,
   getProfile,
   logoutUser,
 } from '../controllers/authController.js';
-import { verifyToken } from '../middleware/jwtMiddleware.js'; // ✅ правильный импорт
 
-const router = express.Router();
+import { verifyToken } from '../middleware/jwtMiddleware.js';
 
-// Регистрация
+const router = express.Router(); 
+
+// Маршрут для регистрации нового пользователя
 router.post('/register', registerUser);
 
-// Логин
+// Маршрут для входа пользователя в систему (логин)
 router.post('/login', loginUser);
 
-// Выход
+// Маршрут для выхода пользователя из системы
 router.post('/logout', logoutUser);
 
-// 🔐 Защищённый маршрут — получить профиль
-router.get('/profile', verifyToken, getProfile); // ✅ исправлено
+// Защищённый маршрут: получение данных профиля текущего пользователя
+router.get('/profile', verifyToken, getProfile);
 
-export default router;
+export default router; 

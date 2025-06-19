@@ -1,19 +1,24 @@
 import express from "express";
-import { createEscrow, releaseFunds, refundFunds, getTransactionHistory } from "../controllers/escrowController.js";
-import { verifyToken } from "../middleware/jwtMiddleware.js"; // ✅ ESM-совместимый импорт
+import {
+  createEscrow,
+  releaseFunds,
+  refundFunds,
+  getTransactionHistory
+} from "../controllers/escrowController.js";
+import { verifyToken } from "../middleware/jwtMiddleware.js"; 
 
 const router = express.Router();
 
-// 💰 Работодатель замораживает средства
+// Маршрут для создания escrow (работодатель замораживает средства при начале проекта)
 router.post("/", verifyToken, createEscrow);
 
-// ✅ Работодатель выпускает средства
+// Маршрут для выпуска средств фрилансеру после принятия выполненной работы
 router.post("/:escrowId/release", verifyToken, releaseFunds);
 
-// ❌ Возврат средств работодателю
+// Маршрут для возврата средств работодателю (например, если работа отклонена)
 router.post("/:escrowId/refund", verifyToken, refundFunds);
 
-// 📄 История транзакций
+// Маршрут для получения истории всех транзакций текущего пользователя
 router.get("/history", verifyToken, getTransactionHistory);
 
 export default router;

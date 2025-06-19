@@ -1,7 +1,7 @@
 import Chat from "../models/chat.js";
 import Message from "../models/message.js";
 
-// ✅ Создание чата (оставляем как есть)
+// Функция для создания чата между двумя пользователями
 export const createChat = async (req, res) => {
   const { receiverId } = req.body;
   const senderId = req.user.id;
@@ -16,7 +16,7 @@ export const createChat = async (req, res) => {
   res.status(201).json(newChat);
 };
 
-// ✅ Получение всех чатов пользователя
+// Функция для получения всех чатов, в которых участвует текущий пользователь
 export const getUserChats = async (req, res) => {
   const userId = req.user.id;
 
@@ -27,7 +27,7 @@ export const getUserChats = async (req, res) => {
       select: "content sender createdAt",
     });
 
-  // Для каждого чата посчитаем кол-во непрочитанных
+  // Подсчёт количества непрочитанных сообщений в каждом чате
   const enrichedChats = await Promise.all(
     chats.map(async (chat) => {
       const partner = chat.members.find((m) => m._id.toString() !== userId);
@@ -50,13 +50,12 @@ export const getUserChats = async (req, res) => {
   res.json(enrichedChats);
 };
 
-
-// ✅ Получение всех сообщений в чате
+// Функция для получения всех сообщений из конкретного чата
 export const getChatMessages = async (req, res) => {
   const { chatId } = req.params;
   const userId = req.user.id;
 
-  // 🟩 Сделаем непрочитанные сообщения прочитанными
+  // Отметка всех входящих сообщений как прочитанных
   await Message.updateMany(
     { chatId, sender: { $ne: userId }, read: false },
     { $set: { read: true } }
@@ -66,7 +65,7 @@ export const getChatMessages = async (req, res) => {
   res.json(messages);
 };
 
-// ✅ Отправка сообщения
+// Функция для отправки сообщения в чат
 export const sendMessage = async (req, res) => {
   try {
     const { content } = req.body;
@@ -86,10 +85,9 @@ export const sendMessage = async (req, res) => {
 
     const chat = await Chat.findById(chatId);
 
-    // Определяем получателя
+    // Определяем получателя и обновляем список непрочитанных
     const receiver = chat.members.find((m) => m.toString() !== sender);
 
-    // Обновляем чат
     chat.lastMessage = newMsg._id;
     if (!chat.unreadBy.includes(receiver)) {
       chat.unreadBy.push(receiver);
@@ -100,13 +98,11 @@ export const sendMessage = async (req, res) => {
     const populated = await newMsg.populate("sender", "name");
     res.status(201).json(populated);
   } catch (error) {
-    // console.error("❌ Ошибка при отправке сообщения:", error);
     res.status(500).json({ message: "Внутренняя ошибка сервера" });
   }
 };
 
-
-// ✅ Отметить все сообщения как прочитанные (по сокету или вручную)
+// Функция для отметки всех сообщений в чате как прочитанных
 export const markMessagesAsRead = async (req, res) => {
   const { chatId } = req.params;
   const userId = req.user.id;
@@ -118,14 +114,13 @@ export const markMessagesAsRead = async (req, res) => {
       { $set: { read: true } }
     );
 
-    // Удалить пользователя из unreadBy в чате
+    // Удалить пользователя из списка непрочитавших в чате
     await Chat.findByIdAndUpdate(chatId, {
       $pull: { unreadBy: userId },
     });
 
     res.json({ message: "Сообщения помечены как прочитанные" });
   } catch (error) {
-    // console.error("❌ Ошибка при обновлении read:", error);
     res.status(500).json({ message: "Ошибка при обновлении" });
   }
 };

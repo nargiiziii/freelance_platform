@@ -34,7 +34,6 @@ export const store = configureStore({
     escrow: escrowReducer,
     messages: messageReducer,
   },
-
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

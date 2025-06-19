@@ -7,11 +7,11 @@ import {
   topUpBalance,
   getFreelancers
 } from '../controllers/userController.js';
-import { verifyToken } from '../middleware/jwtMiddleware.js'; // ✅ Исправлено
+import { verifyToken } from '../middleware/jwtMiddleware.js';
 
 const router = express.Router();
 
-// 📂 Настройка хранения файлов
+// Настройка хранения файлов для загрузки
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -24,17 +24,19 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// ✅ Маршруты
+// Обновление данных пользователя
 router.put('/:id', updateUser);
 
-// ✅ Добавляем проверку токена перед загрузкой портфолио
+// Загрузка элемента портфолио (требует токен)
 router.post('/portfolio', verifyToken, upload.single('image'), addPortfolioItem);
 
-// ✅ Получение пользователя по ID
+// Получение пользователя по ID
 router.get('/:id', getUser);
 
+// Пополнение баланса (требует токен)
 router.post("/top-up", verifyToken, topUpBalance);
-// для страницы фрилансеров
+
+// Получение списка всех фрилансеров
 router.get('/freelancers/all', getFreelancers);
 
 export default router;

@@ -1,6 +1,8 @@
+// Импорт модели пользователя и mongoose для работы с базой данных
 import User from "../models/user.js";
 import mongoose from "mongoose";
 
+// Контроллер для обновления профиля пользователя (имя, email, аватар, био)
 export const updateUser = async (req, res) => {
   try {
     const { name, email, avatar, bio } = req.body;
@@ -15,12 +17,11 @@ export const updateUser = async (req, res) => {
   }
 };
 
+// Контроллер для добавления одного элемента в портфолио пользователя
 export const addPortfolioItem = async (req, res) => {
   try {
     const { title, description, link, technologies, date } = req.body;
     const userId = req.user.id;
-
-    // console.log("userId из токена:", userId);
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ message: "Некорректный userId" });
@@ -52,8 +53,7 @@ export const addPortfolioItem = async (req, res) => {
   }
 };
 
-
-// Получение пользователя по id (GET /users/:id)
+// Контроллер для получения информации о пользователе по ID
 export const getUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -64,8 +64,7 @@ export const getUser = async (req, res) => {
   }
 };
 
-
-// 📤 Пополнение баланса
+// Контроллер для пополнения баланса текущего пользователя
 export const topUpBalance = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -83,14 +82,13 @@ export const topUpBalance = async (req, res) => {
   }
 };
 
-
-// Получить фрилансеров
+// Контроллер для получения списка фрилансеров, с возможностью фильтрации по категории
 export const getFreelancers = async (req, res) => {
   try {
     const { category } = req.query;
     const filter = { role: "freelancer" };
     if (category) {
-      filter.category = { $regex: new RegExp(`^${category}$`, "i") }; // 🔍 ignore case
+      filter.category = { $regex: new RegExp(`^${category}$`, "i") }; // фильтрация без учёта регистра
     }
 
     const freelancers = await User.find(filter).select("-password");

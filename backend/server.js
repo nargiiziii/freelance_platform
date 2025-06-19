@@ -1,3 +1,4 @@
+// Базовые модули
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -8,6 +9,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 import connectDB from './src/config/db.js';
 
+// Роуты
 import authRoutes from './src/routes/authRoutes.js';
 import refreshRoutes from './src/routes/refreshTokenRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
@@ -17,18 +19,21 @@ import proposalRoutes from './src/routes/proposalRoutes.js';
 import escrowRoutes from './src/routes/escrowRoutes.js';
 import messageRoutes from './src/routes/messageRoutes.js';
 
+// Загрузка .env
 dotenv.config();
 
+// Путь к текущей директории
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Инициализация приложения
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// ✅ Оборачиваем Express в HTTP-сервер
+// HTTP-сервер
 const server = http.createServer(app);
 
-// ✅ Настройка Socket.IO
+// Socket.IO
 const io = new Server(server, {
   cors: {
     origin: 'http://localhost:5173',
@@ -36,11 +41,11 @@ const io = new Server(server, {
   },
 });
 
-// ✅ Храним активные соединения
+// Активные пользователи
 const onlineUsers = new Map();
 
+// Обработка событий Socket.IO
 io.on("connection", (socket) => {
-
   socket.on("join", (userId) => {
     onlineUsers.set(userId, socket.id);
     socket.userId = userId;
@@ -78,25 +83,23 @@ io.on("connection", (socket) => {
   });
 });
 
-// ✅ CORS + КУКИ
+// CORS и cookies
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true,
   methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-
-// ✅ Парсинг JSON и cookies
 app.use(cookieParser());
 app.use(express.json());
 
-// ✅ Папка для загрузок
+// Папка загрузок
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ✅ Подключение к БД
+// Подключение к БД
 connectDB();
 
-// ✅ Роуты
+// API-роуты
 app.use('/api/auth', authRoutes);
 app.use('/api/auth', refreshRoutes);
 app.use('/api/users', userRoutes);
@@ -106,12 +109,12 @@ app.use('/api/proposals', proposalRoutes);
 app.use('/api/escrow', escrowRoutes);
 app.use('/api/messages', messageRoutes);
 
-// ✅ Проверка сервера
+// Проверка сервера
 app.get('/', (req, res) => {
   res.send('Backend is running');
 });
 
-// ✅ Запуск сервера
+// Запуск
 server.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
 });

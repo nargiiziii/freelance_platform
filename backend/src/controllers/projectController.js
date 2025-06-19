@@ -1,8 +1,9 @@
-// backend/src/controllers/projectController.js
+// Импорт моделей проекта, отклика и пользователя
 import Project from "../models/project.js";
 import Proposal from "../models/proposal.js";
-import User from "../models/user.js"; // 💡 было нужно для completeProject
+import User from "../models/user.js";
 
+// Функция для получения проектов, над которыми работает текущий фрилансер
 export const getFreelancerProjects = async (req, res) => {
   try {
     const freelancerId = req.user._id;
@@ -10,7 +11,7 @@ export const getFreelancerProjects = async (req, res) => {
     const proposals = await Proposal.find({
       freelancer: freelancerId,
       status: "accepted",
-    }).populate({ path: "project", strictPopulate: false }); // 💥 главное отличие
+    }).populate({ path: "project", strictPopulate: false });
 
     const activeProjects = proposals
       .filter(
@@ -30,7 +31,7 @@ export const getFreelancerProjects = async (req, res) => {
   }
 };
 
-// Создать проект (employer)
+// Функция для создания нового проекта (наниматель создаёт задание)
 export const createProject = async (req, res) => {
   try {
     const { title, description, skillsRequired, budget, category } = req.body;
@@ -54,7 +55,7 @@ export const createProject = async (req, res) => {
   }
 };
 
-// Получить проекты текущего нанимателя
+// Функция для получения проектов текущего нанимателя (личный кабинет)
 export const getEmployerProjects = async (req, res) => {
   try {
     const { status } = req.query;
@@ -62,7 +63,7 @@ export const getEmployerProjects = async (req, res) => {
     if (status) filter.status = status;
 
     const projects = await Project.find(filter)
-      .populate("escrow") // 💥 ← вот этого не хватало
+      .populate("escrow")
       .populate({
         path: "proposals",
         populate: {
@@ -78,7 +79,7 @@ export const getEmployerProjects = async (req, res) => {
   }
 };
 
-// Получить все открытые проекты для фрилансера
+// Функция для получения всех открытых проектов (фрилансер ищет работу)
 export const getOpenProjects = async (req, res) => {
   try {
     const { category } = req.query;
@@ -92,10 +93,11 @@ export const getOpenProjects = async (req, res) => {
   }
 };
 
+// Функция для отправки выполненной работы фрилансером
 export const submitWork = async (req, res) => {
   try {
     const { projectId } = req.params;
-    const { submittedFileUrl } = req.body; // например, ссылка на работу
+    const { submittedFileUrl } = req.body;
 
     const project = await Project.findById(projectId);
     if (!project) return res.status(404).json({ message: "Project not found" });
@@ -110,23 +112,24 @@ export const submitWork = async (req, res) => {
   }
 };
 
+// Функция для завершения проекта и выплаты средств фрилансеру
 export const completeProject = async (req, res) => {
   try {
     const { projectId } = req.params;
     const project = await Project.findById(projectId).populate("escrow");
     if (!project) return res.status(404).json({ message: "Project not found" });
 
-    // Завершение проекта
+    // Изменяем статус проекта
     project.status = "completed";
     await project.save();
 
-    // Выплата из escrow
+    // Выпускаем средства из escrow
     const escrow = project.escrow;
     if (escrow) {
       escrow.status = "released";
       await escrow.save();
 
-      // Пополнение баланса фрилансера
+      // Начисляем средства фрилансеру
       await User.findByIdAndUpdate(escrow.freelancer, {
         $inc: { balance: escrow.amount },
       });
@@ -138,10 +141,11 @@ export const completeProject = async (req, res) => {
   }
 };
 
+// Функция для получения одного проекта по ID (детали проекта)
 export const getProjectById = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id)
-      .populate("escrow") // 💥 ОСТАВЬ ОБЯЗАТЕЛЬНО
+      .populate("escrow")
       .populate({
         path: "proposals",
         populate: {
@@ -157,6 +161,7 @@ export const getProjectById = async (req, res) => {
   }
 };
 
+// Функция для обновления проекта (редактирование нанимателем)
 export const updateProjectById = async (req, res) => {
   try {
     const project = await Project.findOneAndUpdate(
@@ -171,6 +176,7 @@ export const updateProjectById = async (req, res) => {
   }
 };
 
+// Функция для удаления проекта (наниматель удаляет свой проект)
 export const deleteProjectById = async (req, res) => {
   try {
     const project = await Project.findOneAndDelete({

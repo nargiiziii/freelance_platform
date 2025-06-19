@@ -3,18 +3,28 @@ import { useDispatch } from "react-redux";
 import {
   acceptProposal,
   rejectProposal,
+  getProposalsByProject,
 } from "../../redux/features/proposalSlice";
 import { getEmployerProjects } from "../../redux/features/projectSlice";
+import { releaseFunds, refundFunds } from "../../redux/features/escrowSlice";
 import style from "./ProposalList.module.scss";
-import { releaseFunds } from "../../redux/features/escrowSlice";
 
-const ProposalList = ({ proposals = [] }) => {
+const ProposalList = ({ projectId }) => {
   const dispatch = useDispatch();
-  const [localProposals, setLocalProposals] = useState(proposals);
+  const [localProposals, setLocalProposals] = useState([]);
 
   useEffect(() => {
-    setLocalProposals(proposals);
-  }, [proposals]);
+    const fetchProposals = async () => {
+      try {
+        const result = await dispatch(getProposalsByProject(projectId)).unwrap();
+        setLocalProposals(result);
+      } catch (err) {
+        console.error("Ошибка загрузки откликов:", err);
+      }
+    };
+
+    fetchProposals();
+  }, [dispatch, projectId]);
 
   const handleAccept = (proposalId) => {
     dispatch(acceptProposal({ proposalId }))
@@ -32,6 +42,63 @@ const ProposalList = ({ proposals = [] }) => {
       });
   };
 
+  const handleReleaseFunds = (proposal) => {
+    const escrow = proposal.project?.escrow;
+    if (!escrow || escrow.status !== "funded") return;
+
+    dispatch(releaseFunds(escrow._id))
+      .unwrap()
+      .then((updatedEscrow) => {
+        const updatedList = localProposals.map((p) => {
+          if (p.project?.escrow?._id === updatedEscrow.escrow._id) {
+            return {
+              ...p,
+              project: {
+                ...p.project,
+                escrow: { ...escrow, status: "released" },
+              },
+              status: "released",
+            };
+          }
+          return p;
+        });
+        setLocalProposals(updatedList);
+      })
+      .catch((err) => {
+        console.error("Ошибка при переводе средств:", err);
+        alert("Не удалось перевести оплату");
+      });
+  };
+
+  const handleRefund = (proposal) => {
+    const escrow = proposal.project?.escrow;
+    if (!escrow || escrow.status !== "funded") return;
+
+    dispatch(refundFunds(escrow._id))
+      .unwrap()
+      .then((updatedEscrow) => {
+        const updatedList = localProposals.map((p) => {
+          if (p.project?.escrow?._id === updatedEscrow.escrow._id) {
+            return {
+              ...p,
+              project: {
+                ...p.project,
+                escrow: { ...escrow, status: "refunded" },
+              },
+              status: "refunded",
+            };
+          }
+          return p;
+        });
+        setLocalProposals(updatedList);
+        alert("💰 Средства возвращены работодателю");
+      })
+      .catch((err) => {
+        console.error("Ошибка при возврате средств:", err);
+        alert("Не удалось вернуть средства");
+      });
+  };
+
   return (
     <div className={style.proposalList}>
       {localProposals.length > 0 && <h4 className={style.heading}>Отклики</h4>}
@@ -41,6 +108,8 @@ const ProposalList = ({ proposals = [] }) => {
         localProposals
           .filter((proposal) => proposal.status !== "rejected")
           .map((proposal) => {
+            const escrow = proposal.project?.escrow;
+
             return (
               <div key={proposal._id} className={style.proposalCard}>
                 <div className={style.infoBlock}>
@@ -81,10 +150,7 @@ const ProposalList = ({ proposals = [] }) => {
                             setLocalProposals(updatedList);
                           })
                           .catch((err) => {
-                            console.error(
-                              "Ошибка при отклонении отклика:",
-                              err
-                            );
+                            console.error("Ошибка при отклонении:", err);
                             alert("Ошибка: не удалось отклонить отклик");
                           });
                       }}
@@ -95,80 +161,52 @@ const ProposalList = ({ proposals = [] }) => {
                 )}
 
                 {proposal.status === "submitted" && proposal.workFile && (
-                  <div>
-                    <strong>Фрилансер сдал работу:</strong>
-                    <br />
+                  <div className={style.workBlock}>
+                    <p>
+                      <strong>Фрилансер сдал работу:</strong>
+                    </p>
                     <a
                       href={`http://localhost:3000/api/proposals/download/${proposal.workFile}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={style.downloadLink}
                     >
                       📥 Скачать файл
                     </a>
 
-                    {/* Обёртка — самовызывающаяся функция */}
-                    {(() => {
-                      const escrow =
-                        proposal.project?.escrow || proposal.escrow;
-
-                      if (!escrow) {
-                        return (
-                          <p style={{ color: "red", marginTop: 10 }}>
-                            ❗ Escrow не найден — кнопка скрыта
+                    {escrow ? (
+                      <>
+                        {escrow.status === "funded" ? (
+                          <div style={{ marginTop: 10 }}>
+                            <button
+                              className={style.acceptButton}
+                              onClick={() => handleReleaseFunds(proposal)}
+                            >
+                              💸 Принять работу и оплатить
+                            </button>
+                            <button
+                              className={style.rejectButton}
+                              onClick={() => handleRefund(proposal)}
+                              style={{ marginLeft: "10px" }}
+                            >
+                              ⛔ Отклонить и вернуть деньги
+                            </button>
+                          </div>
+                        ) : escrow.status === "refunded" ? (
+                          <p style={{ color: "blue", marginTop: 10 }}>
+                            💰 Средства возвращены
                           </p>
-                        );
-                      }
-
-                      if (escrow.status !== "funded") {
-                        return (
-                          <p style={{ color: "orange", marginTop: 10 }}>
-                            💡 Средства уже переведены
+                        ) : (
+                          <p style={{ color: "green", marginTop: 10 }}>
+                            ✅ Работа оплачена
                           </p>
-                        );
-                      }
-
-                      return (
-                        <button
-                          className={style.acceptButton}
-                          onClick={() => {
-                            dispatch(releaseFunds(escrow._id))
-                              .unwrap()
-                              .then((updatedEscrow) => {
-                                const updatedList = localProposals.map((p) => {
-                                  const currentEscrow =
-                                    p.project?.escrow || p.escrow;
-                                  if (
-                                    currentEscrow &&
-                                    currentEscrow._id ===
-                                      updatedEscrow.escrow._id
-                                  ) {
-                                    // Обновим статус на "released"
-                                    const updatedEscrowData = {
-                                      ...currentEscrow,
-                                      status: "released",
-                                    };
-
-                                    return {
-                                      ...p,
-                                      project: {
-                                        ...p.project,
-                                        escrow: updatedEscrowData,
-                                      },
-                                      escrow: updatedEscrowData,
-                                    };
-                                  }
-                                  return p;
-                                });
-                                setLocalProposals(updatedList);
-                              })
-                              .catch((err) => {
-                                console.error("❌ releaseFunds error:", err);
-                                alert("Ошибка при переводе средств");
-                              });
-                          }}
-                        >
-                          💸 Принять работу и оплатить
-                        </button>
-                      );
-                    })()}
+                        )}
+                      </>
+                    ) : (
+                      <p style={{ color: "red", marginTop: 10 }}>
+                        ❗ Escrow не найден
+                      </p>
+                    )}
                   </div>
                 )}
               </div>

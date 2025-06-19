@@ -71,16 +71,13 @@ export const submitWork = [
       const updatedProposal = await Proposal.findById(proposal._id)
         .populate({
           path: "project",
-          populate: {
-            path: "escrow", // ✅ ПОЛНОСТЬЮ подтяни escrow
-          },
+          populate: { path: "escrow" }, // ✅ подтягиваем escrow!
         })
         .populate({
           path: "freelancer",
           select: "name",
         });
 
-  
       if (proposal.project) {
         const project = await Project.findById(proposal.project);
         project.status = "submitted";
@@ -208,15 +205,65 @@ export const acceptProposal = async (req, res) => {
 export const getProposalsByProject = async (req, res) => {
   try {
     const { projectId } = req.params;
+
     const proposals = await Proposal.find({ project: projectId })
-      .populate("freelancer", "name avatar")
       .populate({
         path: "project",
-        populate: { path: "escrow" }, // 🔥 ключевой момент!
-      });
+        populate: {
+          path: "escrow",
+        },
+      })
+      .populate("freelancer");
 
-    res.json(proposals);
+    res.status(200).json(proposals);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+export const acceptWorkSubmission = async (req, res) => {
+  try {
+    const { proposalId } = req.params;
+
+    const proposal = await Proposal.findById(proposalId).populate("project");
+    if (!proposal)
+      return res.status(404).json({ message: "Proposal not found" });
+
+    const project = proposal.project;
+    const userId = req.user._id || req.user.id;
+
+    if (
+      !project.employer ||
+      project.employer.toString() !== userId.toString()
+    ) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    // Найдём escrow
+    const escrow = await Escrow.findOne({ project: project._id });
+    if (!escrow) return res.status(404).json({ message: "Escrow not found" });
+
+    // Проверим статус
+    if (escrow.status !== "funded") {
+      return res
+        .status(400)
+        .json({ message: "Escrow already released or refunded" });
+    }
+
+    // Выпустим средства
+    const freelancer = await User.findById(escrow.freelancer);
+    if (!freelancer)
+      return res.status(404).json({ message: "Freelancer not found" });
+
+    freelancer.balance += escrow.amount;
+    escrow.status = "released";
+    project.status = "closed";
+
+    await Promise.all([freelancer.save(), escrow.save(), project.save()]);
+
+    res.status(200).json({ message: "Work accepted and paid" });
+  } catch (err) {
+    console.error("❌ Ошибка в acceptWorkSubmission:", err.message);
+    res.status(500).json({ message: err.message || "Ошибка при оплате" });
   }
 };

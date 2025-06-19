@@ -1,9 +1,16 @@
 import express from 'express';
-import { createProposal, acceptProposal, getProposalsByProject } from '../controllers/proposalController.js';
 import { verifyToken } from '../middleware/jwtMiddleware.js'; // ✅ исправлено
-import { rejectProposal, submitWork } from "../controllers/proposalController.js";
-import { getMyProposals } from "../controllers/proposalController.js";
-import { downloadWorkFile } from "../controllers/proposalController.js";
+import {
+  createProposal,
+  acceptProposal,
+  getProposalsByProject,
+  acceptWorkSubmission,
+  rejectProposal,
+  submitWork,
+  getMyProposals,
+  downloadWorkFile,
+} from "../controllers/proposalController.js";
+
 
 const router = express.Router();
 
@@ -15,5 +22,7 @@ router.patch("/reject", verifyToken, rejectProposal);
 router.post("/submit-work", verifyToken, submitWork);
 router.get("/my", verifyToken, getMyProposals);
 router.get("/download/:filename", downloadWorkFile);
+router.post("/:proposalId/accept-work", verifyToken, acceptWorkSubmission);
+
 
 export default router;

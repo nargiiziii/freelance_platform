@@ -1,5 +1,5 @@
 import express from "express";
-import { createEscrow, releaseFunds, refundFunds } from "../controllers/escrowController.js";
+import { createEscrow, releaseFunds, refundFunds, getTransactionHistory } from "../controllers/escrowController.js";
 import { verifyToken } from "../middleware/jwtMiddleware.js"; // ✅ ESM-совместимый импорт
 
 const router = express.Router();
@@ -12,5 +12,8 @@ router.post("/:escrowId/release", verifyToken, releaseFunds);
 
 // ❌ Возврат средств работодателю
 router.post("/:escrowId/refund", verifyToken, refundFunds);
+
+// 📄 История транзакций
+router.get("/history", verifyToken, getTransactionHistory);
 
 export default router;

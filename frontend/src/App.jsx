@@ -20,6 +20,8 @@ import ProjectDetails from "./pages/projectDetails/ProjectDetails";
 import FreelancersList from "./pages/freelancersList/FreelancersList";
 import MessagesPage from "./pages/messagesPage/MessagesPage";
 import ChatRoom from "./pages/сhatRoom/ChatRoom";
+import MyJobs from "./pages/myJobs/MyJobs";
+import EditProject from "./pages/editProject/EditProject";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +46,9 @@ const router = createBrowserRouter([
       { path: "/my-proposals", element: <MyProposals /> },
       { path: "/create-project", element: <CreateProjectPage /> },
       { path: "/freelancers", element: <FreelancersList /> },
+      { path: "/my-jobs", element: <MyJobs /> },
       { path: "/employer/project/:id", element: <ProjectDetails /> },
+      { path: "/edit-project/:id", element: <EditProject /> },
     ],
   },
 ]);

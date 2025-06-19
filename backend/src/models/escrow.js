@@ -19,7 +19,7 @@ const escrowSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
   status: {
     type: String,
-    enum: ["pending", "funded", "released", "refunded", "disputed"], // 🔥 добавлено funded
+    enum: ["pending", "funded", "released", "rejected", "disputed"], 
     default: "pending",
   },
 

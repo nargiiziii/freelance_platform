@@ -10,19 +10,23 @@ export const getFreelancerProjects = async (req, res) => {
     const proposals = await Proposal.find({
       freelancer: freelancerId,
       status: "accepted",
-    }).populate("project");
+    }).populate({ path: "project", strictPopulate: false }); // 💥 главное отличие
 
     const activeProjects = proposals
       .filter(
         (p) =>
           p.project &&
+          typeof p.project.status === "string" &&
           ["in_progress", "submitted", "completed"].includes(p.project.status)
       )
       .map((p) => p.project);
 
-    res.json(activeProjects);
+    res.status(200).json(activeProjects);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("❌ Ошибка getFreelancerProjects:", err.stack);
+    res.status(500).json({
+      message: "Ошибка сервера при получении проектов фрилансера",
+    });
   }
 };
 
@@ -53,18 +57,21 @@ export const createProject = async (req, res) => {
 // Получить проекты текущего нанимателя
 export const getEmployerProjects = async (req, res) => {
   try {
-    const projects = await Project.find({ employer: req.user.id }).populate({
-      path: "proposals",
-      populate: [
-        { path: "freelancer", select: "name" },
-        {
-          path: "project",
-          populate: { path: "escrow" }, // 🔥 ЭТО ГЛАВНОЕ!
-        },
-      ],
-    });
+    const { status } = req.query;
+    const filter = { employer: req.user.id };
+    if (status) filter.status = status;
 
-    // console.log("Найдено проектов:", projects.length);
+    const projects = await Project.find(filter)
+      .populate("escrow") // 💥 ← вот этого не хватало
+      .populate({
+        path: "proposals",
+        populate: {
+          path: "freelancer",
+          select: "name email avatar rating",
+        },
+      })
+      .sort({ createdAt: -1 });
+
     res.json(projects);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -126,6 +133,52 @@ export const completeProject = async (req, res) => {
     }
 
     res.json({ message: "Project completed and funds released", project });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const getProjectById = async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id)
+      .populate("escrow") // 💥 ОСТАВЬ ОБЯЗАТЕЛЬНО
+      .populate({
+        path: "proposals",
+        populate: {
+          path: "freelancer",
+          select: "name email avatar rating",
+        },
+      });
+
+    if (!project) return res.status(404).json({ message: "Проект не найден" });
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const updateProjectById = async (req, res) => {
+  try {
+    const project = await Project.findOneAndUpdate(
+      { _id: req.params.id, employer: req.user.id },
+      req.body,
+      { new: true }
+    );
+    if (!project) return res.status(404).json({ message: "Проект не найден" });
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const deleteProjectById = async (req, res) => {
+  try {
+    const project = await Project.findOneAndDelete({
+      _id: req.params.id,
+      employer: req.user.id,
+    });
+    if (!project) return res.status(404).json({ message: "Проект не найден" });
+    res.json({ message: "Проект удалён" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

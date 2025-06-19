@@ -47,7 +47,7 @@ export const acceptProposal = createAsyncThunk(
 );
 
 // 🔁 Получить отклики по projectId
-export const fetchProposalsByProject = createAsyncThunk(
+export const getProposalsByProject = createAsyncThunk(
   "proposal/fetchByProject",
   async (projectId, thunkAPI) => {
     try {
@@ -65,13 +65,15 @@ export const fetchProposalsByProject = createAsyncThunk(
         );
       }
 
+      // ✅ Просто верни массив откликов напрямую
       const proposals = await response.json();
-      return { projectId, proposals };
+      return proposals;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }
   }
 );
+
 
 // 🔁 Отклонение отклика
 export const rejectProposal = createAsyncThunk(
@@ -134,6 +136,29 @@ export const getMyProposals = createAsyncThunk(
   }
 );
 
+// 🔁 Принятие сданной работы и выплата фрилансеру
+export const acceptWorkSubmission = createAsyncThunk(
+  "proposal/acceptWorkSubmission",
+  async ({ proposalId }, thunkAPI) => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/proposals/${proposalId}/accept-work`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+      if (!res.ok) {
+        const error = await res.json();
+        return thunkAPI.rejectWithValue(error.message || "Ошибка при оплате");
+      }
+      return await res.json(); // { message }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
 // 📦 Slice
 const proposalSlice = createSlice({
   name: "proposal",
@@ -188,15 +213,15 @@ const proposalSlice = createSlice({
       })
 
       // ✅ Получение откликов по проекту
-      .addCase(fetchProposalsByProject.pending, (state) => {
+      .addCase(getProposalsByProject .pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchProposalsByProject.fulfilled, (state, action) => {
+      .addCase(getProposalsByProject .fulfilled, (state, action) => {
         state.status = "succeeded";
         const { projectId, proposals } = action.payload;
         state.proposalsByProjectId[projectId] = proposals;
       })
-      .addCase(fetchProposalsByProject.rejected, (state, action) => {
+      .addCase(getProposalsByProject .rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       }) // ✅ Отклонение
@@ -226,6 +251,16 @@ const proposalSlice = createSlice({
         state.myProposals = action.payload;
       })
       .addCase(getMyProposals.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(acceptWorkSubmission.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(acceptWorkSubmission.fulfilled, (state) => {
+        state.status = "succeeded";
+      })
+      .addCase(acceptWorkSubmission.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

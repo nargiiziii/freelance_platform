@@ -8,8 +8,19 @@ const SubmitWorkModal = ({ projectId, onClose }) => {
 
   const handleSubmit = () => {
     if (!file) return;
-    dispatch(submitWork({ projectId, file }));
-    onClose();
+    dispatch(submitWork({ projectId, file }))
+      .unwrap()
+      .then(async () => {
+        const res = await fetch(
+          `http://localhost:3000/api/proposals/project/${projectId}`
+        );
+        const updatedProposals = await res.json();
+        // 🔁 Обнови localProposals (через колбэк, или прокинь setProposals из родителя)
+        window.dispatchEvent(
+          new CustomEvent("proposalsUpdated", { detail: updatedProposals })
+        );
+        onClose();
+      });
   };
 
   return (

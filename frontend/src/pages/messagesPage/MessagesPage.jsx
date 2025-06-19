@@ -12,19 +12,26 @@ const MessagesPage = () => {
     dispatch(fetchChats());
   }, [dispatch]);
 
+  // Фильтруем только валидные чаты
+  const safeChats = (chats || []).filter(
+    (chat) => chat && (chat.partner || (chat.members && chat.members.length > 0))
+  );
+
   return (
     <div style={{ padding: "20px" }}>
       <h2>Ваши чаты</h2>
-      {chats.length === 0 ? (
+      {safeChats.length === 0 ? (
         <p>Нет чатов</p>
       ) : (
-        chats.map((chat) => {
-          const partner = chat.partner || chat.members.find(
-            (m) => String(m._id) !== String(user.id)
-          );
+        safeChats.map((chat) => {
+          const partner =
+            chat?.partner ||
+            chat?.members?.find((m) => m && String(m._id) !== String(user?.id));
 
-          const lastMsg = chat.lastMessage?.content || "Нет сообщений";
-          const unreadCount = chat.unreadCount || 0;
+          const lastMsg = chat?.lastMessage?.content || "Нет сообщений";
+          const unreadCount = chat?.unreadCount || 0;
+
+          if (!partner) return null; // Пропускаем, если нет собеседника
 
           return (
             <Link

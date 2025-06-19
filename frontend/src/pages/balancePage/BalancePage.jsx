@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { topUpBalance } from "../../redux/features/authSlice";
-import { useEffect } from "react";
-import { getProfile } from "../../redux/features/authSlice";
+import { topUpBalance, getProfile } from "../../redux/features/authSlice";
+import axios from "../../axiosInstance";
+import style from "./BalancePage.module.scss";
 
 function BalancePage() {
   const dispatch = useDispatch();
@@ -10,9 +10,15 @@ function BalancePage() {
   const [amount, setAmount] = useState(0);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-                                
+  const [transactions, setTransactions] = useState([]);
+
   useEffect(() => {
     dispatch(getProfile());
+
+    axios
+      .get("/escrow/history")
+      .then((res) => setTransactions(res.data))
+      .catch((err) => console.error("Ошибка загрузки истории", err));
   }, [dispatch]);
 
   const handleTopUp = async () => {
@@ -32,21 +38,18 @@ function BalancePage() {
   if (!user) return <p>Вы не авторизованы</p>;
 
   return (
-    <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md">
-      <h2 className="text-xl font-bold mb-4">💰 Ваш баланс</h2>
+    <div className={style.balanceContainer}>
+      <h2 className={style.heading}>💰 Ваш баланс</h2>
 
-      <p className="text-lg mb-4">
+      <p className={style.balanceText}>
         Текущий баланс: <strong>{user.balance} монет</strong>
       </p>
 
-      <div className="mb-4">
-        <label htmlFor="amount" className="block font-medium">
-          Сумма пополнения:
-        </label>
+      <div className={style.inputGroup}>
+        <label htmlFor="amount">Сумма пополнения:</label>
         <input
           type="number"
           id="amount"
-          className="mt-1 p-2 border rounded w-full"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
@@ -54,13 +57,58 @@ function BalancePage() {
 
       <button
         onClick={handleTopUp}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        className={style.topUpButton}
         disabled={loading || amount <= 0}
       >
         {loading ? "Пополнение..." : "Пополнить баланс"}
       </button>
 
-      {message && <p className="mt-4 text-sm text-green-700">{message}</p>}
+      {message && <p className={style.message}>{message}</p>}
+
+      <h3 className={style.subheading}>🧾 История транзакций</h3>
+      <div className={style.tableWrapper}>
+        <table className={style.table}>
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>От</th>
+              <th>Кому</th>
+              <th>Сумма</th>
+              <th>Статус</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.length === 0 ? (
+              <tr>
+                <td
+                  className={style.tableCell}
+                  colSpan="5"
+                  style={{ textAlign: "center" }}
+                >
+                  Нет транзакций
+                </td>
+              </tr>
+            ) : (
+              transactions.map((t, idx) => {
+                const isIncome = t.direction === "income";
+                const colorClass = isIncome ? style.greenText : style.redText;
+
+                return (
+                  <tr key={idx}>
+                    <td className={style.tableCell}>{t.date}</td>
+                    <td className={style.tableCell}>{t.from}</td>
+                    <td className={style.tableCell}>{t.to}</td>
+                    <td className={`${style.tableCell} ${colorClass}`}>
+                      {t.amount}
+                    </td>
+                    <td className={style.tableCell}>{t.status}</td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

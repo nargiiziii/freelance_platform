@@ -1,17 +1,18 @@
-// ChatRoom.jsx (already styled better)
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "../../axiosInstance";
 import io from "socket.io-client";
 import DoneIcon from "@mui/icons-material/Done";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import style from "./ChatRoom.module.scss";
+import { fetchChats } from "../../redux/features/messageSlice";
 
 const socket = io("http://localhost:3000", { withCredentials: true });
 
 const ChatRoom = () => {
   const { userId } = useParams();
+  const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user);
   const [messages, setMessages] = useState([]);
   const [newMsg, setNewMsg] = useState("");
@@ -46,13 +47,16 @@ const ChatRoom = () => {
           chatId: cId,
           reader: currentUser.id,
         });
+
+        // 👇 после пометки как прочитано — обновляем чаты
+        dispatch(fetchChats());
       } catch (err) {
         console.error("Ошибка загрузки чата:", err);
       }
     };
 
     fetchChat();
-  }, [userId, currentUser.id]);
+  }, [userId, currentUser.id, dispatch]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -120,6 +124,9 @@ const ChatRoom = () => {
         chatId,
         reader: currentUser.id,
       });
+
+      // 👇 также обновляем список чатов после отправки сообщения
+      dispatch(fetchChats());
     } catch (err) {
       console.error("Ошибка при отправке сообщения:", err);
       alert("Не удалось отправить сообщение");

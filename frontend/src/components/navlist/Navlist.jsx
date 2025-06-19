@@ -1,16 +1,17 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutUser } from "../../redux/features/authSlice"; // 👈 обновлённый thunk
+import { logoutUser } from "../../redux/features/authSlice";
 import style from "./Navlist.module.scss";
 
 const Navlist = () => {
   const user = useSelector((state) => state.auth.user);
+  const chats = useSelector((state) => state.messages.chats);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await dispatch(logoutUser()); // 👈 отправка запроса на /auth/logout
+    await dispatch(logoutUser());
     navigate("/");
   };
 
@@ -19,6 +20,11 @@ const Navlist = () => {
     if (user?.role === "employer") return "/employee-dash";
     return "/";
   };
+
+  // Подсчёт общего количества непрочитанных сообщений
+  const totalUnread = chats?.reduce((acc, chat) => {
+    return acc + (chat.unreadCount || 0);
+  }, 0);
 
   return (
     <ul className={style.ul}>
@@ -50,11 +56,29 @@ const Navlist = () => {
           <li className={style.li}>
             <Link to="/freelancer/projects">My Projects</Link>
           </li>
-          <li className={style.li}>
-            <Link to="/messages">Messages</Link>
+          <li className={style.li} style={{ position: "relative" }}>
+            <Link to="/messages">
+              Messages
+              {totalUnread > 0 && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "-6px",
+                    right: "-10px",
+                    background: "red",
+                    color: "white",
+                    borderRadius: "50%",
+                    padding: "2px 6px",
+                    fontSize: "12px",
+                  }}
+                >
+                  {totalUnread}
+                </span>
+              )}
+            </Link>
           </li>
           <li className={style.li}>
-            <Link to="/escrow">Escrow</Link> {/* Секция для управления эскроу */}
+            <Link to="/escrow">Escrow</Link>
           </li>
         </>
       )}
@@ -65,16 +89,34 @@ const Navlist = () => {
             <Link to="/create-project">Post a Job</Link>
           </li>
           <li className={style.li}>
-            <Link to="/employer/jobs">My Jobs</Link>
+            <Link to="/my-jobs">My Jobs</Link>
           </li>
-          <li className={style.li}>
-            <Link to="/messages">Messages</Link>
+          <li className={style.li} style={{ position: "relative" }}>
+            <Link to="/messages">
+              Messages
+              {totalUnread > 0 && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "-6px",
+                    right: "-10px",
+                    background: "red",
+                    color: "white",
+                    borderRadius: "50%",
+                    padding: "2px 6px",
+                    fontSize: "12px",
+                  }}
+                >
+                  {totalUnread}
+                </span>
+              )}
+            </Link>
           </li>
           <li className={style.li}>
             <Link to="/freelancers">Find Freelancers</Link>
-          </li> 
+          </li>
           <li className={style.li}>
-            <Link to="/escrow">Escrow</Link> {/* Секция для управления эскроу */}
+            <Link to="/escrow">Escrow</Link>
           </li>
         </>
       )}

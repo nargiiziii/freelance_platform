@@ -8,6 +8,7 @@ import {
 import { getEmployerProjects } from "../../redux/features/projectSlice";
 import { releaseFunds, refundFunds } from "../../redux/features/escrowSlice";
 import style from "./ProposalList.module.scss";
+import { toast } from "react-toastify";
 
 const ProposalList = ({ projectId }) => {
   const dispatch = useDispatch();
@@ -16,10 +17,13 @@ const ProposalList = ({ projectId }) => {
   useEffect(() => {
     const fetchProposals = async () => {
       try {
-        const result = await dispatch(getProposalsByProject(projectId)).unwrap();
+        const result = await dispatch(
+          getProposalsByProject(projectId)
+        ).unwrap();
         setLocalProposals(result);
       } catch (err) {
         console.error("Ошибка загрузки откликов:", err);
+        toast.error("❌ Не удалось загрузить отклики");
       }
     };
 
@@ -35,10 +39,11 @@ const ProposalList = ({ projectId }) => {
         );
         setLocalProposals(updatedList);
         dispatch(getEmployerProjects());
+        toast.success("✅ Отклик принят");
       })
       .catch((err) => {
         console.error("Ошибка при принятии отклика:", err);
-        alert("Ошибка: не удалось принять отклик");
+        toast.error("❌ Не удалось принять отклик");
       });
   };
 
@@ -63,10 +68,11 @@ const ProposalList = ({ projectId }) => {
           return p;
         });
         setLocalProposals(updatedList);
+        toast.success("💸 Оплата отправлена фрилансеру");
       })
       .catch((err) => {
         console.error("Ошибка при переводе средств:", err);
-        alert("Не удалось перевести оплату");
+        toast.error("❌ Не удалось перевести оплату");
       });
   };
 
@@ -91,13 +97,16 @@ const ProposalList = ({ projectId }) => {
           return p;
         });
         setLocalProposals(updatedList);
-        alert("💰 Средства возвращены работодателю");
+        toast.success("💰 Средства возвращены работодателю");
       })
       .catch((err) => {
         console.error("Ошибка при возврате средств:", err);
-        alert("Не удалось вернуть средства");
+        toast.error("❌ Не удалось вернуть средства");
       });
   };
+
+  const activeProposals = localProposals.filter((p) => p.status !== "rejected");
+  const rejectedProposals = localProposals.filter((p) => p.status === "rejected");
 
   return (
     <div className={style.proposalList}>
@@ -105,9 +114,8 @@ const ProposalList = ({ projectId }) => {
       {localProposals.length === 0 ? (
         <p className={style.noProposals}>Откликов пока нет</p>
       ) : (
-        localProposals
-          .filter((proposal) => proposal.status !== "rejected")
-          .map((proposal) => {
+        <>
+          {activeProposals.map((proposal) => {
             const escrow = proposal.project?.escrow;
 
             return (
@@ -160,58 +168,89 @@ const ProposalList = ({ projectId }) => {
                   </div>
                 )}
 
-                {proposal.status === "submitted" && proposal.workFile && (
-                  <div className={style.workBlock}>
-                    <p>
-                      <strong>Фрилансер сдал работу:</strong>
-                    </p>
-                    <a
-                      href={`http://localhost:3000/api/proposals/download/${proposal.workFile}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={style.downloadLink}
-                    >
-                      📥 Скачать файл
-                    </a>
-
-                    {escrow ? (
-                      <>
-                        {escrow.status === "funded" ? (
-                          <div style={{ marginTop: 10 }}>
-                            <button
-                              className={style.acceptButton}
-                              onClick={() => handleReleaseFunds(proposal)}
-                            >
-                              💸 Принять работу и оплатить
-                            </button>
-                            <button
-                              className={style.rejectButton}
-                              onClick={() => handleRefund(proposal)}
-                              style={{ marginLeft: "10px" }}
-                            >
-                              ⛔ Отклонить и вернуть деньги
-                            </button>
-                          </div>
-                        ) : escrow.status === "refunded" ? (
-                          <p style={{ color: "blue", marginTop: 10 }}>
-                            💰 Средства возвращены
-                          </p>
-                        ) : (
-                          <p style={{ color: "green", marginTop: 10 }}>
-                            ✅ Работа оплачена
-                          </p>
-                        )}
-                      </>
-                    ) : (
-                      <p style={{ color: "red", marginTop: 10 }}>
-                        ❗ Escrow не найден
+                {["submitted", "accepted"].includes(proposal.status) &&
+                  proposal.workFile &&
+                  proposal.project?.status !== "closed" && (
+                    <div className={style.workBlock}>
+                      <p>
+                        <strong>Фрилансер сдал работу:</strong>
                       </p>
-                    )}
-                  </div>
-                )}
+                      <a
+                        href={`http://localhost:3000/api/proposals/download/${proposal.workFile}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={style.downloadLink}
+                      >
+                        📥 Скачать файл
+                      </a>
+
+                      {escrow ? (
+                        <>
+                          {escrow.status === "funded" ? (
+                            <div style={{ marginTop: 10 }}>
+                              <button
+                                className={style.acceptButton}
+                                onClick={() => handleReleaseFunds(proposal)}
+                              >
+                                💸 Принять работу и оплатить
+                              </button>
+                              <button
+                                className={style.rejectButton}
+                                onClick={() => handleRefund(proposal)}
+                                style={{ marginLeft: "10px" }}
+                              >
+                                ⛔ Отклонить и вернуть деньги
+                              </button>
+                            </div>
+                          ) : escrow.status === "refunded" ? (
+                            <p style={{ color: "blue", marginTop: 10 }}>
+                              💰 Средства возвращены
+                            </p>
+                          ) : (
+                            <p style={{ color: "green", marginTop: 10 }}>
+                              ✅ Работа оплачена
+                            </p>
+                          )}
+                        </>
+                      ) : (
+                        <p style={{ color: "red", marginTop: 10 }}>
+                          ❗ Escrow не найден
+                        </p>
+                      )}
+                    </div>
+                  )}
               </div>
             );
-          })
+          })}
+
+          {rejectedProposals.length > 0 && (
+            <div style={{ marginTop: "40px" }}>
+              <h4 className={style.heading}>Отклонённые отклики</h4>
+              {rejectedProposals.map((proposal) => (
+                <div
+                  key={proposal._id}
+                  className={style.proposalCard}
+                  style={{ backgroundColor: "#f0f0f0", color: "#999" }}
+                >
+                  <div className={style.infoBlock}>
+                    <p>
+                      <strong>Фрилансер:</strong> {proposal.freelancer?.name || "Без имени"}
+                    </p>
+                    <p>
+                      <strong>Письмо:</strong> {proposal.coverLetter}
+                    </p>
+                    <p>
+                      <strong>Цена:</strong> {proposal.price}₽
+                    </p>
+                    <p>
+                      <strong>Статус:</strong> {proposal.status}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

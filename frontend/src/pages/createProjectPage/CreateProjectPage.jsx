@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProject } from "../../redux/features/projectSlice";
 import style from "./CreateProjectPage.module.scss";
+import { toast } from "react-toastify";
 
 const CreateProjectPage = () => {
   const [title, setTitle] = useState("");
@@ -45,7 +46,7 @@ const CreateProjectPage = () => {
         description: trimmedDescription,
         skillsRequired: skillsArray,
         budget: parsedBudget,
-        category, 
+        category,
       })
     )
       .unwrap()
@@ -53,7 +54,8 @@ const CreateProjectPage = () => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        alert("Ошибка при создании проекта: " + err);
+        const message = err?.response?.data?.message || "Your balance is empty!";
+        toast.error(message);
       });
   };
 

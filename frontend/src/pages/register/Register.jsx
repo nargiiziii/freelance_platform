@@ -13,7 +13,7 @@ export default function Register() {
     password: "",
     bio: "",
     category: "",
-    skills: [],
+    skills: [""],
     portfolio: [],
   });
 
@@ -33,6 +33,22 @@ export default function Register() {
     }
   };
 
+  const handleSkillChange = (index, value) => {
+    const updatedSkills = [...form.skills];
+    updatedSkills[index] = value;
+    setForm((prev) => ({ ...prev, skills: updatedSkills }));
+  };
+
+  const addSkillField = () => {
+    setForm((prev) => ({ ...prev, skills: [...prev.skills, ""] }));
+  };
+
+  const removeSkillField = (index) => {
+    const updatedSkills = [...form.skills];
+    updatedSkills.splice(index, 1);
+    setForm((prev) => ({ ...prev, skills: updatedSkills }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -50,8 +66,10 @@ export default function Register() {
         formData.append("avatar", avatarFile);
       }
 
-      if (form.skills.length)
-        formData.append("skills", JSON.stringify(form.skills));
+      const filteredSkills = form.skills.filter((skill) => skill.trim() !== "");
+      if (filteredSkills.length)
+        formData.append("skills", JSON.stringify(filteredSkills));
+
       if (form.portfolio.length)
         formData.append("portfolio", JSON.stringify(form.portfolio));
 
@@ -61,8 +79,6 @@ export default function Register() {
       });
 
       console.log("Успешно зарегистрированы");
-
-      // 🔁 Вместо getProfile — переходим на логин
       navigate("/login");
     } catch (err) {
       console.error("Ошибка регистрации:", err.response?.data || err.message);
@@ -115,20 +131,52 @@ export default function Register() {
         onChange={handleChange}
         className={style.textarea}
       />
+
       {form.role === "freelancer" && (
-        <select
-          name="category"
-          value={form.category}
-          onChange={handleChange}
-          className={style.select}
-          required
-        >
-          <option value="">Выберите профессию</option>
-          <option value="Web Development">Web Development</option>
-          <option value="Design">Design</option>
-          <option value="Writing">Writing</option>
-          <option value="Marketing">Marketing</option>
-        </select>
+        <>
+          <select
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+            className={style.select}
+            required
+          >
+            <option value="">Выберите профессию</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Design">Design</option>
+            <option value="Writing">Writing</option>
+            <option value="Marketing">Marketing</option>
+          </select>
+
+          <label className={style.label}>Skills:</label>
+          {form.skills.map((skill, index) => (
+            <div key={index} className={style.skillRow}>
+              <input
+                type="text"
+                value={skill}
+                onChange={(e) => handleSkillChange(index, e.target.value)}
+                className={style.input}
+                placeholder={`Skill ${index + 1}`}
+              />
+              {form.skills.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeSkillField(index)}
+                  className={style.removeButton}
+                >
+                  ❌
+                </button>
+              )}
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addSkillField}
+            className={style.addButton}
+          >
+            ➕ Add Skill
+          </button>
+        </>
       )}
 
       <label className={style.fileLabel}>

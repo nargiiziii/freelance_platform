@@ -2,6 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { getProfile } from "./redux/features/authSlice";
+import "./App.css";
+// Toastify
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Общие страницы
 import Layout from "./pages/Layout";
@@ -36,7 +40,6 @@ const router = createBrowserRouter([
       </div>
     ),
     children: [
-      // Общие маршруты
       { path: "/", element: <Home /> },
       { path: "/register", element: <Register /> },
       { path: "/login", element: <Login /> },
@@ -46,13 +49,9 @@ const router = createBrowserRouter([
       { path: "/messages", element: <MessagesPage /> },
       { path: "/chatRoom/:userId", element: <ChatRoom /> },
       { path: "/freelancers", element: <FreelancersList /> },
-
-      // Маршруты фрилансера
       { path: "/freelancer-dash", element: <FreelancerDash /> },
       { path: "/jobs", element: <ProjectListForFreelancer /> },
       { path: "/my-proposals", element: <MyProposals /> },
-
-      // Маршруты работодателя
       { path: "/employee-dash", element: <EmployeeDash /> },
       { path: "/create-project", element: <CreateProjectPage /> },
       { path: "/my-jobs", element: <MyJobs /> },
@@ -72,7 +71,24 @@ function App() {
     }
   }, [dispatch, user]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer
+        position="top-left"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        className="toast-container" 
+      />
+    </>
+  );
 }
 
 export default App;

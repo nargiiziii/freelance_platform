@@ -109,10 +109,21 @@ function FreelancerDash() {
               <p>
                 <strong>Биография:</strong> {user.bio || "Нет описания"}
               </p>
-              <p>
-                <strong>Навыки:</strong>{" "}
-                {user.skills?.length ? user.skills.join(", ") : "Нет навыков"}
-              </p>
+              <div className={style.skillsContainer}>
+                <strong>Навыки:</strong>
+                {user.skills?.length ? (
+                  <div className={style.skillsList}>
+                    {user.skills.map((skill, index) => (
+                      <span key={index} className={style.skillBadge}>
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <span> Нет навыков </span>
+                )}
+              </div>
+
               <p>
                 <strong>Статус:</strong>{" "}
                 {user.isAvailable ? "Доступен" : "Не доступен"}

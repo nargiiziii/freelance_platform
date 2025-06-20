@@ -122,9 +122,12 @@ export const getTransactionHistory = async (req, res) => {
 
     const formatted = escrows
       .filter((e) => {
-        // Фрилансер видит только завершённые переводы
         const isUserFreelancer = String(e.freelancer._id) === userId;
+        const isUserEmployer = String(e.employer._id) === userId;
+
+        if (e.status === "funded") return false;
         if (isUserFreelancer && e.status !== "released") return false;
+
         return true;
       })
       .map((e) => {
@@ -136,12 +139,10 @@ export const getTransactionHistory = async (req, res) => {
 
         let direction = "outcome";
 
-        // Определение типа транзакции: доход для фрилансера
         if (e.status === "released" && isUserFreelancer) {
           direction = "income";
         }
 
-        // Возврат — доход для работодателя
         if (e.status === "rejected" && isUserEmployer) {
           direction = "income";
         }
@@ -154,15 +155,11 @@ export const getTransactionHistory = async (req, res) => {
           to,
           amount: signAmount,
           status:
-            e.status === "funded"
-              ? "Успешно"
-              : e.status === "pending"
-              ? "В процессе"
-              : e.status === "released"
+            e.status === "released"
               ? "Завершено"
               : e.status === "rejected"
               ? "Возврат"
-              : "Спор",
+              : "Неизвестно",
           direction,
         };
       });
@@ -173,3 +170,4 @@ export const getTransactionHistory = async (req, res) => {
     res.status(500).json({ message: "Ошибка при получении истории" });
   }
 };
+

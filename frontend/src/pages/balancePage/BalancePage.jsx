@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { topUpBalance, getProfile } from "../../redux/features/authSlice";
 import axios from "../../axiosInstance";
 import style from "./BalancePage.module.scss";
+import { toast } from "react-toastify";
 
 function BalancePage() {
   const dispatch = useDispatch();
@@ -26,10 +27,12 @@ function BalancePage() {
       setLoading(true);
       setMessage("");
       await dispatch(topUpBalance(Number(amount))).unwrap();
-      setMessage("Баланс успешно пополнен!");
+      toast.success("Balance successfully replenished!");
       setAmount(0);
     } catch (err) {
-      setMessage(err || "Ошибка при пополнении");
+      const msg = err?.response?.data?.message || "Error while replenishing";
+      toast.error(msg);
+      setMessage(msg);
     } finally {
       setLoading(false);
     }
@@ -39,7 +42,7 @@ function BalancePage() {
 
   return (
     <div className={style.balanceContainer}>
-      <h2 className={style.heading}>💰 Ваш баланс</h2>
+      <h2 className={style.heading}> Ваш баланс</h2>
 
       <p className={style.balanceText}>
         Текущий баланс: <strong>{user.balance} монет</strong>

@@ -1,0 +1,31 @@
+.toast-container {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+}
+
+/* Главный стиль тоста */
+.Toastify__toast {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 10px 16px;
+}
+
+.Toastify__toast--success {
+  background: #f3f3f3 !important;
+  color: #e9fee3;
+}
+
+.Toastify__toast--error {
+  background: #f3f3f3 !important;
+  color: #eacaca;
+}
+
+.Toastify__toast--info {
+  background: #6c63ff !important;
+  color: #fff;
+}
+
+.Toastify__close-button {
+  color: #fff !important;
+  font-size: 16px;
+}

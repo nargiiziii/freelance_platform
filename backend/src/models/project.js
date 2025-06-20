@@ -12,7 +12,7 @@ const projectSchema = new mongoose.Schema({
   budget: { type: Number, required: true },
   status: {
     type: String,
-    enum: ["open", "in_progress", "submitted", "completed", "closed"], 
+    enum: ["open", "in_progress", "submitted", "closed"], 
     default: "open",
   },
   proposals: [{ type: mongoose.Schema.Types.ObjectId, ref: "Proposal" }],

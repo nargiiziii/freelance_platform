@@ -18,7 +18,7 @@ export const getFreelancerProjects = async (req, res) => {
         (p) =>
           p.project &&
           typeof p.project.status === "string" &&
-          ["in_progress", "submitted", "completed"].includes(p.project.status)
+          ["in_progress", "submitted", "closed"].includes(p.project.status)
       )
       .map((p) => p.project);
 
@@ -35,14 +35,21 @@ export const getFreelancerProjects = async (req, res) => {
 export const createProject = async (req, res) => {
   try {
     const { title, description, skillsRequired, budget, category } = req.body;
-    const employer = req.user.id;
+    const employerId = req.user.id;
+
+    const employer = await User.findById(employerId);
+    if (!employer) return res.status(404).json({ message: "Пользователь не найден" });
+
+    if (employer.balance < budget) {
+      return res.status(400).json({ message: "Недостаточно средств для публикации проекта." });
+    }
 
     const project = new Project({
       title,
       description,
       skillsRequired,
       budget,
-      employer,
+      employer: employerId,
       status: "open",
       category,
     });
@@ -54,6 +61,7 @@ export const createProject = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // Функция для получения проектов текущего нанимателя (личный кабинет)
 export const getEmployerProjects = async (req, res) => {
@@ -120,7 +128,7 @@ export const completeProject = async (req, res) => {
     if (!project) return res.status(404).json({ message: "Project not found" });
 
     // Изменяем статус проекта
-    project.status = "completed";
+    project.status = "closed";
     await project.save();
 
     // Выпускаем средства из escrow

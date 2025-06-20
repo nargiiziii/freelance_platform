@@ -63,7 +63,7 @@
   height: fit-content;
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -168,4 +168,26 @@ ul {
 li {
   margin-bottom: 0.7rem;
   line-height: 1.3;
+}
+
+.skillsContainer {
+  margin-top: 8px;
+}
+
+.skillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.skillBadge {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  white-space: nowrap;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }

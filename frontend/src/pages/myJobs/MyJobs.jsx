@@ -3,31 +3,56 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styles from "./MyJobs.module.scss";
 import axios from "../../axiosInstance";
-import ConfirmModal from "../../components/confirmModal/ConfirmModal"; // 💡 импорт модалки
+import ConfirmModal from "../../components/confirmModal/ConfirmModal";
 
 const MyJobs = () => {
   const { user } = useSelector((state) => state.auth);
   const [projects, setProjects] = useState([]);
   const [statusFilter, setStatusFilter] = useState("");
+  const [sortBy, setSortBy] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.role === "employer") {
-      fetchProjects();
-    }
+    if (user?.role === "employer") fetchProjects();
   }, [statusFilter]);
 
   const fetchProjects = async () => {
+    closed;
     try {
       const res = await axios.get(
         `/projects/my-projects${statusFilter ? `?status=${statusFilter}` : ""}`
       );
-      setProjects(res.data);
+      setProjects(sortProjects(res.data));
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const sortProjects = (projects) => {
+    const sorted = [...projects];
+
+    if (sortBy === "date_desc") {
+      sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    } else if (sortBy === "date_asc") {
+      sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    } else if (sortBy === "responses_desc") {
+      sorted.sort(
+        (a, b) => (b.proposals?.length || 0) - (a.proposals?.length || 0)
+      );
+    } else if (sortBy === "responses_asc") {
+      sorted.sort(
+        (a, b) => (a.proposals?.length || 0) - (b.proposals?.length || 0)
+      );
+    }
+
+    return sorted;
+  };
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+    setProjects((prev) => sortProjects(prev));
   };
 
   const confirmDelete = (id) => {
@@ -51,42 +76,87 @@ const MyJobs = () => {
     setProjectToDelete(null);
   };
 
+  const isCompleted = (status) => status === "closed";
+
   return (
     <div className={styles.myJobs}>
       <h2>📄 Мои проекты</h2>
 
-      <select onChange={(e) => setStatusFilter(e.target.value)} defaultValue="">
-        <option value="">Все</option>
-        <option value="open">Открыт</option>
-        <option value="in_progress">В работе</option>
-        <option value="submitted">Отправлена работа</option>
-        <option value="completed">Завершён</option>
-      </select>
+      <div className={styles.filters}>
+        <select
+          onChange={(e) => setStatusFilter(e.target.value)}
+          defaultValue=""
+        >
+          <option value="">Все статусы</option>
+          <option value="open">Открыт</option>
+          <option value="in_progress">В работе</option>
+          <option value="submitted">Отправлена работа</option>
+          <option value="closed">Завершён</option>
+        </select>
 
-      {projects.map((project) => (
-        <div key={project._id} className={styles.card}>
-          <h3>📌 {project.title}</h3>
-          <p>📂 Категория: {project.category}</p>
-          <p>💰 Бюджет: {project.budget}₽</p>
-          <p>🗓 Дата: {new Date(project.createdAt).toLocaleDateString()}</p>
-          <p>👥 Откликов: {project.proposals?.length || 0}</p>
-          <p>⏳ Статус: {project.status}</p>
+        <select onChange={handleSortChange} defaultValue="">
+          <option value="">Сортировать по</option>
+          <option value="date_desc">Новые сначала</option>
+          <option value="date_asc">Старые сначала</option>
+          <option value="responses_desc">Больше откликов</option>
+          <option value="responses_asc">Меньше откликов</option>
+        </select>
+      </div>
 
-          <button onClick={() => navigate(`/proposals/${project._id}`)}>
-            📥 Посмотреть предложения
-          </button>
-          {project.status === "open" && (
-            <>
-              <button onClick={() => navigate(`/edit-project/${project._id}`)}>
-                ✏️ Редактировать
+      {projects.map((project) => {
+        const completed = isCompleted(project.status);
+        const noProposals = project.proposals?.length === 0;
+
+        return (
+          <div
+            key={project._id}
+            className={`${styles.card} ${
+              completed ? styles.completedCard : ""
+            }`}
+          >
+            <h3>
+              📌 {project.title}{" "}
+              {completed && (
+                <span className={styles.completedLabel}>✔ Завершено</span>
+              )}
+            </h3>
+            <p>🧾 {project.description.slice(0, 100)}...</p>
+            <p>📂 Категория: {project.category}</p>
+            <p>💰 Бюджет: {project.budget}₽</p>
+            <p>🗓 Дата: {new Date(project.createdAt).toLocaleDateString()}</p>
+            <p>
+              👥 Откликов:{" "}
+              {project.proposals?.filter((p) => p.status !== "rejected")
+                .length || 0}
+            </p>
+            <p>⏳ Статус: {project.status}</p>
+
+            <div className={styles.buttonGroup}>
+              <button
+                onClick={() => navigate(`/employer/project/${project._id}`)}
+              >
+                🔍 Подробнее о проекте
               </button>
-              <button onClick={() => confirmDelete(project._id)}>
-                🗑 Удалить
-              </button>
-            </>
-          )}
-        </div>
-      ))}
+
+              {!completed && project.status === "open" && (
+                <>
+                  <button
+                    onClick={() => navigate(`/edit-project/${project._id}`)}
+                  >
+                    ✏️ Редактировать
+                  </button>
+
+                  {noProposals && (
+                    <button onClick={() => confirmDelete(project._id)}>
+                      🗑 Удалить
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        );
+      })}
 
       {showModal && (
         <ConfirmModal

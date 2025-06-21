@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "../../axiosInstance";
 import ProposalList from "../../components/proposalList/ProposalList";
 import style from "./ProjectDetails.module.scss";
+import ReviewForm from "../../components/reviewForm/ReviewForm";
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -46,7 +47,7 @@ const ProjectDetails = () => {
 
       {/* 🔹 Отклики */}
       <section style={{ marginTop: "30px" }}>
-        <ProposalList projectId={project._id} />
+        <ProposalList projectId={project._id} onProjectUpdated={setProject} />
       </section>
 
       {/* 🔹 Принятый фрилансер */}
@@ -75,6 +76,18 @@ const ProjectDetails = () => {
               />
             )}
             {!acceptedProposal.workFile && <p>Фрилансер ещё не сдал работу.</p>}
+            {/* ✅ Форма отзыва работодателя — после завершения проекта и оплаты */}
+            {project.status === "closed" &&
+              project.escrow?.status === "released" &&
+              acceptedProposal?.workFile && (
+                <div style={{ marginTop: "20px" }}>
+                  <h3>Оцените фрилансера</h3>
+                  <ReviewForm
+                    toUserId={freelancer._id}
+                    projectId={project._id}
+                  />
+                </div>
+              )}
           </div>
         ) : (
           <p>Фрилансер ещё не выбран.</p>

@@ -9,6 +9,7 @@ import {
 } from "../../redux/features/escrowSlice";
 import { getEmployerProjects } from "../../redux/features/projectSlice";
 import style from "./Employee_dash.module.scss";
+import { fetchUserReviews } from "../../redux/features/reviewSlice";
 
 function EmployeeDash() {
   const dispatch = useDispatch();
@@ -17,6 +18,8 @@ function EmployeeDash() {
   const user = useSelector((state) => state.auth.user);
   const projects = useSelector((state) => state.projects.employerProjects);
   const status = useSelector((state) => state.projects.status);
+  const reviews = useSelector((state) => state.reviews.reviews);
+  const loading = useSelector((state) => state.reviews.loading);
 
   const [activeSection, setActiveSection] = useState("Размещение задания");
   const [filterStatus, setFilterStatus] = useState("all");
@@ -35,6 +38,12 @@ function EmployeeDash() {
       setFilteredProjects(projects.filter((p) => p.status === filterStatus));
     }
   }, [filterStatus, projects]);
+
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(fetchUserReviews(user.id));
+    }
+  }, [dispatch, user]);
 
   if (!user) return <p>Загрузка данных пользователя...</p>;
 
@@ -171,12 +180,18 @@ function EmployeeDash() {
           {activeSection === "Отзывы" && (
             <section className={style.section}>
               <h3>Отзывы</h3>
-              {user.reviews?.length ? (
+              {loading ? (
+                <p>Загрузка отзывов...</p>
+              ) : reviews.length > 0 ? (
                 <ul>
-                  {user.reviews.map((review, i) => (
-                    <li key={review.id || i}>
-                      <strong>{review.authorName || "Аноним"}:</strong>{" "}
+                  {reviews.map((review, i) => (
+                    <li key={review._id || i}>
+                      <strong>{review.fromUser?.name || "Аноним"}:</strong>{" "}
                       {review.comment} — Оценка: ⭐ {review.rating}
+                      <br />
+                      <small>
+                        {new Date(review.createdAt).toLocaleDateString()}
+                      </small>
                     </li>
                   ))}
                 </ul>

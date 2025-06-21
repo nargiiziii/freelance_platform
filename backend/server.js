@@ -18,6 +18,7 @@ import projectRoutes from './src/routes/projectRoutes.js';
 import proposalRoutes from './src/routes/proposalRoutes.js';
 import escrowRoutes from './src/routes/escrowRoutes.js';
 import messageRoutes from './src/routes/messageRoutes.js';
+import reviewRoutes from "./src/routes/reviewRoutes.js";
 
 // Загрузка .env
 dotenv.config();
@@ -108,6 +109,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/proposals', proposalRoutes);
 app.use('/api/escrow', escrowRoutes);
 app.use('/api/messages', messageRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 // Проверка сервера
 app.get('/', (req, res) => {

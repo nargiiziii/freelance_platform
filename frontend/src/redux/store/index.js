@@ -17,6 +17,7 @@ import projectReducer from "../features/projectSlice";
 import proposalReducer from "../features/proposalSlice";
 import escrowReducer from "../features/escrowSlice";
 import messageReducer from "../features/messageSlice";
+import reviewsReducer from "../features/reviewSlice";
 
 const persistConfig = {
   key: "auth",
@@ -29,10 +30,11 @@ export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     user: userReducer,
-    projects: projectReducer, 
+    projects: projectReducer,
     proposal: proposalReducer,
     escrow: escrowReducer,
     messages: messageReducer,
+    reviews: reviewsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

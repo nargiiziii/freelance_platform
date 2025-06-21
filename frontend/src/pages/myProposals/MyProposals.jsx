@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyProposals, submitWork } from "../../redux/features/proposalSlice";
+import { fetchUserReviews } from "../../redux/features/reviewSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import style from "./MyProposals.module.scss";
+import ReviewForm from "../../components/reviewForm/ReviewForm";
 
 const MyProposals = () => {
   const dispatch = useDispatch();
   const { myProposals, status, error } = useSelector((state) => state.proposal);
+  const { reviews } = useSelector((state) => state.reviews);
+
   const [selectedFile, setSelectedFile] = useState({});
   const [submitting, setSubmitting] = useState({});
 
   useEffect(() => {
     dispatch(getMyProposals());
+    dispatch(fetchUserReviews());
   }, [dispatch]);
 
   const handleFileChange = (proposalId, file) => {
@@ -19,12 +26,22 @@ const MyProposals = () => {
 
   const handleSubmit = async (proposalId, projectId) => {
     const file = selectedFile[proposalId];
-    if (!file) return;
+    if (!file) {
+      toast.warn("Выберите файл перед отправкой.");
+      return;
+    }
 
     setSubmitting((prev) => ({ ...prev, [proposalId]: true }));
-    await dispatch(submitWork({ projectId, file }));
-    await dispatch(getMyProposals());
-    setSubmitting((prev) => ({ ...prev, [proposalId]: false }));
+
+    try {
+      await dispatch(submitWork({ projectId, file })).unwrap();
+      toast.success("Работа успешно отправлена!");
+      await dispatch(getMyProposals());
+    } catch (err) {
+      toast.error("Ошибка при отправке файла.");
+    } finally {
+      setSubmitting((prev) => ({ ...prev, [proposalId]: false }));
+    }
   };
 
   return (
@@ -36,54 +53,93 @@ const MyProposals = () => {
         <p>Вы пока не отправляли откликов.</p>
       ) : (
         <ul className={style.list}>
-          {myProposals.map((proposal) => (
-            <li key={proposal._id} className={style.card}>
-              <h3>{proposal.project?.title || "Проект удалён"}</h3>
-              <p>
-                <strong>Ваше сообщение:</strong> {proposal.coverLetter}
-              </p>
-              <p>
-                <strong>Цена:</strong> {proposal.price}₽
-              </p>
-              <p>
-                <strong>Статус:</strong>{" "}
-                {proposal.status === "pending" && "⏳ На рассмотрении"}
-                {proposal.status === "accepted" && "✅ Принят"}
-                {proposal.status === "rejected" && "❌ Отклонён"}
-                {proposal.status === "submitted" && "📤 Работа отправлена"}
-              </p>
+          {myProposals.map((proposal) => {
+            const hasLeftReview = reviews.some(
+              (rev) => rev.project === proposal.project?._id
+            );
 
-              {/* 📤 Отправка файла, если принято */}
-              {proposal.status === "accepted" && (
-                <div className={style.submitBlock}>
-                  <input
-                    type="file"
-                    onChange={(e) => handleFileChange(proposal._id, e.target.files[0])}
-                  />
-                  <button
-                    onClick={() => handleSubmit(proposal._id, proposal.project._id)}
-                    disabled={submitting[proposal._id]}
-                  >
-                    {submitting[proposal._id] ? "Отправка..." : "📤 Отправить работу"}
-                  </button>
-                </div>
-              )}
+            return (
+              <li key={proposal._id} className={style.card}>
+                <h3>{proposal.project?.title || "Проект удалён"}</h3>
 
-              {/* 🔗 Если работа уже отправлена — показать ссылку */}
-              {proposal.status === "submitted" && proposal.workFile && (
+                {proposal.project?.status === "closed" &&
+                  proposal.project?.escrow?.status === "released" && (
+                    <p className={style.completedLabel}>
+                      ✅ Работа завершена — оплата получена
+                    </p>
+                  )}
+
+                {proposal.project?.status === "closed" &&
+                  proposal.escrow?.status === "released" && (
+                    <p className={style.statusPaid}>💰 Проект оплачен</p>
+                  )}
+
                 <p>
-                  📎 Вы отправили файл:{" "}
-                  <a
-                    href={`http://localhost:3000/uploads/${proposal.workFile}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {proposal.workFile}
-                  </a>
+                  <strong>Ваше сообщение:</strong> {proposal.coverLetter}
                 </p>
-              )}
-            </li>
-          ))}
+                <p>
+                  <strong>Цена:</strong> {proposal.price}₽
+                </p>
+                <p>
+                  <strong>Статус:</strong>{" "}
+                  {proposal.status === "pending" && "⏳ На рассмотрении"}
+                  {proposal.status === "accepted" && "✅ Принят"}
+                  {proposal.status === "rejected" && "❌ Отклонён"}
+                  {proposal.status === "submitted" && "📤 Работа отправлена"}
+                </p>
+
+                {proposal.status === "accepted" && (
+                  <div className={style.submitBlock}>
+                    <input
+                      type="file"
+                      onChange={(e) =>
+                        handleFileChange(proposal._id, e.target.files[0])
+                      }
+                    />
+                    <button
+                      onClick={() =>
+                        handleSubmit(proposal._id, proposal.project._id)
+                      }
+                      disabled={submitting[proposal._id]}
+                    >
+                      {submitting[proposal._id]
+                        ? "Отправка..."
+                        : "📤 Отправить работу"}
+                    </button>
+                  </div>
+                )}
+
+                {proposal.status === "submitted" && proposal.workFile && (
+                  <p>
+                    📎 Вы отправили файл:{" "}
+                    <a
+                      href={`http://localhost:3000/uploads/${proposal.workFile}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {proposal.workFile}
+                    </a>
+                  </p>
+                )}
+
+                {proposal.project?.status === "closed" &&
+                  proposal.project?.escrow?.status === "released" &&
+                  !hasLeftReview && (
+                    <div
+                      className={style.reviewBlock}
+                      style={{ marginTop: "15px" }}
+                    >
+                      <h4>Оцените заказчика</h4>
+                      <ReviewForm
+                        toUserId={proposal.project?.employer?._id}
+                        projectId={proposal.project?._id}
+                        onSubmitSuccess={() => dispatch(fetchUserReviews())}
+                      />
+                    </div>
+                  )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

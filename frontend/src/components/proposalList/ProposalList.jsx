@@ -7,10 +7,13 @@ import {
 } from "../../redux/features/proposalSlice";
 import { getEmployerProjects } from "../../redux/features/projectSlice";
 import { releaseFunds, refundFunds } from "../../redux/features/escrowSlice";
+import { getProfile } from "../../redux/features/authSlice";
 import style from "./ProposalList.module.scss";
 import { toast } from "react-toastify";
 
-const ProposalList = ({ projectId }) => {
+import axios from "../../axiosInstance";
+
+const ProposalList = ({ projectId, onProjectUpdated }) => {
   const dispatch = useDispatch();
   const [localProposals, setLocalProposals] = useState([]);
 
@@ -42,38 +45,54 @@ const ProposalList = ({ projectId }) => {
         toast.success("✅ Отклик принят");
       })
       .catch((err) => {
-        console.error("Ошибка при принятии отклика:", err);
-        toast.error("❌ Не удалось принять отклик");
+        const message =
+          typeof err === "string"
+            ? err
+            : err?.message || "❌ Не удалось принять отклик";
+        toast.error(message);
       });
   };
 
-  const handleReleaseFunds = (proposal) => {
+  const handleReleaseFunds = async (proposal) => {
     const escrow = proposal.project?.escrow;
     if (!escrow || escrow.status !== "funded") return;
 
-    dispatch(releaseFunds(escrow._id))
-      .unwrap()
-      .then((updatedEscrow) => {
-        const updatedList = localProposals.map((p) => {
-          if (p.project?.escrow?._id === updatedEscrow.escrow._id) {
-            return {
-              ...p,
-              project: {
-                ...p.project,
-                escrow: { ...escrow, status: "released" },
-              },
-              status: "released",
-            };
-          }
-          return p;
-        });
-        setLocalProposals(updatedList);
-        toast.success("💸 Оплата отправлена фрилансеру");
-      })
-      .catch((err) => {
-        console.error("Ошибка при переводе средств:", err);
-        toast.error("❌ Не удалось перевести оплату");
+    try {
+      const updatedEscrow = await dispatch(releaseFunds(escrow._id)).unwrap();
+
+      // 🔄 Обновляем локальные отклики
+      const updatedList = localProposals.map((p) => {
+        if (p.project?.escrow?._id === updatedEscrow.escrow._id) {
+          return {
+            ...p,
+            project: {
+              ...p.project,
+              escrow: { ...escrow, status: "released" },
+            },
+            status: "released",
+          };
+        }
+        return p;
       });
+      setLocalProposals(updatedList);
+
+      dispatch(getProfile());
+
+      toast.success("💸 Оплата отправлена фрилансеру");
+
+      // 🆕 Добавляем запрос на обновление проекта и передаём в ProjectDetails
+      if (onProjectUpdated) {
+        try {
+          const res = await axios.get(`/projects/${projectId}`);
+          onProjectUpdated(res.data); // 🔁 обновляем данные проекта в ProjectDetails
+        } catch (err) {
+          console.error("❌ Ошибка при обновлении проекта:", err);
+        }
+      }
+    } catch (err) {
+      console.error("Ошибка при переводе средств:", err);
+      toast.error("❌ Не удалось перевести оплату");
+    }
   };
 
   const handleRefund = (proposal) => {
@@ -106,7 +125,9 @@ const ProposalList = ({ projectId }) => {
   };
 
   const activeProposals = localProposals.filter((p) => p.status !== "rejected");
-  const rejectedProposals = localProposals.filter((p) => p.status === "rejected");
+  const rejectedProposals = localProposals.filter(
+    (p) => p.status === "rejected"
+  );
 
   return (
     <div className={style.proposalList}>
@@ -234,7 +255,8 @@ const ProposalList = ({ projectId }) => {
                 >
                   <div className={style.infoBlock}>
                     <p>
-                      <strong>Фрилансер:</strong> {proposal.freelancer?.name || "Без имени"}
+                      <strong>Фрилансер:</strong>{" "}
+                      {proposal.freelancer?.name || "Без имени"}
                     </p>
                     <p>
                       <strong>Письмо:</strong> {proposal.coverLetter}

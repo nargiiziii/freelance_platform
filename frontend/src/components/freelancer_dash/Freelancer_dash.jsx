@@ -7,12 +7,15 @@ import style from "./Freelancer_dash.module.scss";
 import ProjectListForFreelancer from "../projectListForFreelancer/ProjectListForFreelancer";
 import SubmitWorkModal from "../submitWork/SubmitWorkModal";
 import EscrowCardd from "../escrowCardd/EscrowCardd";
+import { fetchUserReviews } from "../../redux/features/reviewSlice";
 
 function FreelancerDash() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const projects = useSelector((state) => state.projects.freelancerProjects);
+  const reviews = useSelector((state) => state.reviews.reviews);
+  const loading = useSelector((state) => state.reviews.loading);
 
   const [activeSection, setActiveSection] = useState("Профиль");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,9 +29,10 @@ function FreelancerDash() {
   useEffect(() => {
     dispatch(getFreelancerProjects());
   }, [dispatch]);
-  useEffect(() => {
-    console.log("Projects:", projects);
-  }, [projects]);
+
+  // useEffect(() => {
+  //   console.log("Projects:", projects);
+  // }, [projects]);
 
   useEffect(() => {
     if (user?.portfolio) setPortfolio(user.portfolio);
@@ -43,6 +47,11 @@ function FreelancerDash() {
       );
     }
   }, [filterStatus, projects]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    dispatch(fetchUserReviews(user.id));
+  }, [user?.id, dispatch]);
 
   const handleProjectAdded = (updatedUser) => {
     setPortfolio(updatedUser.portfolio || []);
@@ -220,12 +229,17 @@ function FreelancerDash() {
           {activeSection === "Отзывы" && (
             <section className={style.section}>
               <h3>Отзывы</h3>
-              {user.reviews?.length ? (
+              {loading ? (
+                <p>Загрузка отзывов...</p>
+              ) : reviews.length ? (
                 <ul>
-                  {user.reviews.map((review, i) => (
-                    <li key={review.id || i}>
-                      <strong>{review.authorName || "Аноним"}:</strong>{" "}
-                      {review.comment} — Оценка: ⭐ {review.rating}
+                  {reviews.map((review, i) => (
+                    <li key={review._id || i}>
+                      <strong>{review.fromUser?.name || "Аноним"}:</strong>{" "}
+                      {review.comment} — Оценка: ⭐ {review.rating} <br />
+                      <small>
+                        {new Date(review.createdAt).toLocaleDateString()}
+                      </small>
                     </li>
                   ))}
                 </ul>

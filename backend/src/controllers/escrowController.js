@@ -39,11 +39,11 @@ export const releaseFunds = async (req, res) => {
       return res.status(404).json({ message: "Фрилансер не найден" });
 
     freelancer.balance += escrow.amount;
+    freelancer.completedProjectsCount += 1;
     escrow.status = "released";
 
     await Promise.all([freelancer.save(), escrow.save()]);
 
-    // Обновление статуса проекта на "closed" после выплаты
     const project = await Project.findById(escrow.project);
     if (project) {
       project.status = "closed";
@@ -147,7 +147,8 @@ export const getTransactionHistory = async (req, res) => {
           direction = "income";
         }
 
-        const signAmount = direction === "income" ? `+${e.amount}` : `-${e.amount}`;
+        const signAmount =
+          direction === "income" ? `+${e.amount}` : `-${e.amount}`;
 
         return {
           date: e.createdAt.toLocaleDateString(),
@@ -170,4 +171,3 @@ export const getTransactionHistory = async (req, res) => {
     res.status(500).json({ message: "Ошибка при получении истории" });
   }
 };
-

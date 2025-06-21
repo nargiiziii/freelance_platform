@@ -18,7 +18,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-
 // Контроллер для отклонения отклика фрилансера
 export const rejectProposal = async (req, res) => {
   try {
@@ -43,7 +42,6 @@ export const rejectProposal = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
 
 // Контроллер для загрузки выполненной работы фрилансером
 export const submitWork = [
@@ -93,13 +91,18 @@ export const submitWork = [
   },
 ];
 
-
 // Контроллер для получения всех откликов фрилансера
 export const getMyProposals = async (req, res) => {
   try {
     const freelancerId = req.user._id || req.user.id;
     const proposals = await Proposal.find({ freelancer: freelancerId })
-      .populate("project", "title status")
+      .populate({
+        path: "project",
+        populate: [
+          { path: "escrow" },
+          { path: "employer", select: "name _id" }, 
+        ],
+      })
       .sort({ createdAt: -1 });
 
     res.json(proposals);
@@ -107,7 +110,6 @@ export const getMyProposals = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
 
 // Контроллер для скачивания загруженного файла работы
 export const downloadWorkFile = (req, res) => {
@@ -120,7 +122,6 @@ export const downloadWorkFile = (req, res) => {
 
   res.download(filePath);
 };
-
 
 // Контроллер для создания нового отклика фрилансера на проект
 export const createProposal = async (req, res) => {
@@ -144,7 +145,6 @@ export const createProposal = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
 
 // Контроллер для принятия отклика работодателем и создания Escrow
 export const acceptProposal = async (req, res) => {
@@ -206,7 +206,6 @@ export const acceptProposal = async (req, res) => {
   }
 };
 
-
 // Контроллер для получения всех откликов на конкретный проект
 export const getProposalsByProject = async (req, res) => {
   try {
@@ -226,7 +225,6 @@ export const getProposalsByProject = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
 
 // Контроллер для принятия выполненной работы работодателем и выплаты через Escrow
 export const acceptWorkSubmission = async (req, res) => {
@@ -261,8 +259,10 @@ export const acceptWorkSubmission = async (req, res) => {
       return res.status(404).json({ message: "Freelancer not found" });
 
     freelancer.balance += escrow.amount;
+    freelancer.completedProjectsCount += 1;
     escrow.status = "released";
     project.status = "closed";
+    console.log("✅ Увеличиваем completedProjectsCount для:", freelancer._id);
 
     await Promise.all([freelancer.save(), escrow.save(), project.save()]);
 

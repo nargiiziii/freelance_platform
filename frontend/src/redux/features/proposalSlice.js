@@ -39,13 +39,20 @@ export const acceptProposal = createAsyncThunk(
         body: JSON.stringify({ proposalId }),
       });
 
-      if (!res.ok) throw new Error("Ошибка при принятии отклика");
+      if (!res.ok) {
+        const error = await res.json(); // получаем текст ошибки с сервера
+        return thunkAPI.rejectWithValue(
+          error?.message || "Ошибка при принятии отклика"
+        );
+      }
+
       return await res.json(); // возвращает обновлённый отклик
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.message);
+      return thunkAPI.rejectWithValue("Ошибка подключения к серверу");
     }
   }
 );
+
 
 // Получение всех откликов, связанных с конкретным проектом
 export const getProposalsByProject = createAsyncThunk(

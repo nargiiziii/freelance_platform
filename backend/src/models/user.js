@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema(
     rating: { type: Number, default: 0 },
     completedProjectsCount: { type: Number, default: 0 },
     isAvailable: { type: Boolean, default: true },
-    category: { type: String }, // специализация фрилансера
+    category: { type: String }, 
 
     // Общие поля, связанные с деньгами и отзывами
     balance: { type: Number, default: 0 },

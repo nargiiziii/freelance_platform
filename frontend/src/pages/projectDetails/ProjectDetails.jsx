@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../axiosInstance";
-import ProposalList from "../../components/proposalList/ProposalList";
+import ProposalListEmp from "../../components/proposalListEmp/ProposalListEmp";
 import style from "./ProjectDetails.module.scss";
 import ReviewForm from "../../components/reviewForm/ReviewForm";
 import useNotificationCleaner from "../../hooks/useNotificationCleaner";
@@ -23,7 +23,7 @@ const ProjectDetails = () => {
     fetchProject();
   }, [id]);
 
-  if (!project) return <p>Загрузка проекта...</p>;
+  if (!project) return <p className={style.loading}>Загрузка проекта...</p>;
 
   const acceptedProposal = project.proposals?.find(
     (p) =>
@@ -34,67 +34,68 @@ const ProjectDetails = () => {
   const freelancer = acceptedProposal?.freelancer;
 
   return (
-    <div className={style.projectPage} style={{ padding: "40px" }}>
-      <h1>{project.title}</h1>
-      <p>{project.description}</p>
-      <p>
-        <strong>Бюджет:</strong> {project.budget}₽
-      </p>
-      <p>
-        <strong>Статус:</strong> {project.status}
-      </p>
-      <p>
-        <strong>Создан:</strong> {new Date(project.createdAt).toLocaleString()}
-      </p>
-
-      {/* 🔹 Отклики */}
-      <section style={{ marginTop: "30px" }}>
-        <ProposalList projectId={project._id} onProjectUpdated={setProject} />
-      </section>
-
-      {/* 🔹 Принятый фрилансер */}
-      <section style={{ marginTop: "30px" }}>
-        <h2>Принятый фрилансер</h2>
-        {acceptedProposal && freelancer ? (
-          <div>
-            <p>
-              <strong>Имя:</strong> {freelancer.name || "Без имени"}
-            </p>
-            <p>
-              <strong>Email:</strong> {freelancer.email}
-            </p>
-            <p>
-              <strong>Рейтинг:</strong> {freelancer.rating || "—"}
-            </p>
-            {freelancer.avatar && (
-              <img
-                src={`http://localhost:3000/${freelancer.avatar}`}
-                alt="Avatar"
-                style={{
-                  width: "100px",
-                  borderRadius: "50%",
-                  marginTop: "10px",
-                }}
-              />
-            )}
-            {!acceptedProposal.workFile && <p>Фрилансер ещё не сдал работу.</p>}
-            {/* ✅ Форма отзыва работодателя — после завершения проекта и оплаты */}
-            {project.status === "closed" &&
-              project.escrow?.status === "released" &&
-              acceptedProposal?.workFile && (
-                <div style={{ marginTop: "20px" }}>
-                  <h3>Оцените фрилансера</h3>
-                  <ReviewForm
-                    toUserId={freelancer._id}
-                    projectId={project._id}
-                  />
-                </div>
-              )}
+    <div className={style.projectPage}>
+      <div className={style.layout}>
+        {/* Левая колонка — Инфо о проекте и фрилансер */}
+        <div className={style.leftColumn}>
+          <div className={style.projectHeader}>
+            <h1 className={style.title}>{project.title}</h1>
+            <p className={style.description}>{project.description}</p>
           </div>
-        ) : (
-          <p>Фрилансер ещё не выбран.</p>
-        )}
-      </section>
+          <div className={style.infoBox}>
+            <p><strong>Бюджет:</strong> {project.budget}₽</p>
+            <p><strong>Статус:</strong> {project.status}</p>
+            <p><strong>Создан:</strong> {new Date(project.createdAt).toLocaleString()}</p>
+          </div>
+
+          <section className={style.section}>
+            <h2 className={style.sectionTitle}>Принятый фрилансер</h2>
+            {acceptedProposal && freelancer ? (
+              <div className={style.freelancerCard}>
+                <div className={style.freelancerInfo}>
+                  <div className={style.freelancerText}>
+                    <p><strong>Имя:</strong> {freelancer.name || "Без имени"}</p>
+                    <p><strong>Email:</strong> {freelancer.email}</p>
+                    <p><strong>Рейтинг:</strong> {freelancer.rating || "—"}</p>
+                    {!acceptedProposal.workFile && (
+                      <p className={style.notice}>Фрилансер ещё не сдал работу.</p>
+                    )}
+                  </div>
+                  {freelancer.avatar && (
+                    <img
+                      src={`http://localhost:3000/${freelancer.avatar}`}
+                      alt="Avatar"
+                      className={style.avatar}
+                    />
+                  )}
+                </div>
+
+                {project.status === "closed" &&
+                  project.escrow?.status === "released" &&
+                  acceptedProposal?.workFile && (
+                    <div className={style.reviewBox}>
+                      <h3 className={style.sectionTitle}>Оцените фрилансера</h3>
+                      <ReviewForm
+                        toUserId={freelancer._id}
+                        projectId={project._id}
+                      />
+                    </div>
+                  )}
+              </div>
+            ) : (
+              <p className={style.notice}>Фрилансер ещё не выбран.</p>
+            )}
+          </section>
+        </div>
+
+        {/* Правая колонка — отклики */}
+        <div className={style.rightColumn}>
+          <section className={style.section}>
+            <h2 className={style.sectionTitle}>Отклики</h2>
+            <ProposalListEmp projectId={project._id} onProjectUpdated={setProject} />
+          </section>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import axios from "../../axiosInstance"; // ✅ Путь подгони под структуру
+import axios from "../../axiosInstance";
+import { useDispatch } from "react-redux";
+import { getProfile } from "../../redux/features/authSlice"; // 🔹 Импортируем getProfile
 import style from "./AddPortfolioModal.module.scss";
 
-const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
+const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
+  const dispatch = useDispatch(); // 🔹 Хук для вызова Redux действий
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [link, setLink] = useState("");
@@ -36,18 +40,18 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/users/portfolio",
-        formData
-      );
+      await axios.post("http://localhost:3000/api/users/portfolio", formData);
 
-      const newProject =
-        response.data.newProject || response.data.project || response.data;
+      // 🔄 Обновляем пользователя в Redux, чтобы подтянуть новое портфолио
+      await dispatch(getProfile());
 
-      onProjectAdded(newProject);
       onClose();
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Ошибка при добавлении проекта");
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Ошибка при добавлении проекта"
+      );
     } finally {
       setLoading(false);
     }
@@ -56,6 +60,10 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
   return (
     <div className={style.overlay}>
       <div className={style.modal}>
+        <button className={style.closeIcon} onClick={onClose} type="button">
+          ×
+        </button>
+
         <h2>Добавить проект в портфолио</h2>
         <form onSubmit={handleSubmit}>
           <div className={style.field}>
@@ -122,11 +130,7 @@ const AddPortfolioModal = ({ isOpen, onClose, onProjectAdded, userId }) => {
             <button type="submit" disabled={loading}>
               {loading ? "Сохраняем..." : "Добавить проект"}
             </button>
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={loading}
-            >
+            <button type="button" onClick={onClose} disabled={loading}>
               Отмена
             </button>
           </div>

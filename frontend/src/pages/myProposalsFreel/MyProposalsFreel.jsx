@@ -4,11 +4,11 @@ import { getMyProposals, submitWork } from "../../redux/features/proposalSlice";
 import { fetchUserReviews } from "../../redux/features/reviewSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import style from "./MyProposals.module.scss";
+import style from "./MyProposalsFreel.module.scss";
 import ReviewForm from "../../components/reviewForm/ReviewForm";
 import { removeNotification } from "../../redux/features/notificationSlice";
 
-const MyProposals = () => {
+const MyProposalsFreel = () => {
   const dispatch = useDispatch();
   const { myProposals, status, error } = useSelector((state) => state.proposal);
   const { reviews } = useSelector((state) => state.reviews);
@@ -155,4 +155,4 @@ const MyProposals = () => {
   );
 };
 
-export default MyProposals;
+export default MyProposalsFreel;

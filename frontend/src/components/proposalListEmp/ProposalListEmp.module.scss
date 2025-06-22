@@ -1,0 +1,110 @@
+.proposalList {
+  padding: 20px 0;
+  color: #2e0f4f;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.heading {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #6a41c2;
+  margin-bottom: 12px;
+}
+
+.noProposals {
+  font-style: italic;
+  color: #a38ccf;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.proposalGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.proposalCard {
+  background: white;
+  border: 1px solid #ded2f4;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(144, 118, 240, 0.08);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.infoBlock {
+  p {
+    margin: 6px 0;
+    font-size: 1rem;
+    strong {
+      color: #5e3ea1;
+    }
+  }
+}
+
+.buttons {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.acceptButton {
+  padding: 8px 14px;
+  background-color: #7a5cd4;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background-color: #654bb9;
+  }
+}
+
+.rejectButton {
+  padding: 8px 14px;
+  background-color: #f8e0e6;
+  border: none;
+  color: #a32539;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background-color: #f5c6cf;
+  }
+}
+
+.workBlock {
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px dashed #ccc;
+
+  p {
+    margin: 6px 0;
+  }
+}
+
+.downloadLink {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 6px 12px;
+  background: #e8def8;
+  color: #5b3ab3;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #d6c8f0;
+  }
+}

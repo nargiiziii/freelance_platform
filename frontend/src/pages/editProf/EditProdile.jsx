@@ -31,10 +31,6 @@ function EditProfile() {
     }
   }, [user]);
 
-  // useEffect(() => {
-  //   console.log("Current user from Redux store:", user);
-  // }, [user]);
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -53,9 +49,6 @@ function EditProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // console.log("user перед отправкой:", user);
-    // console.log("user._id перед отправкой:", user?.id);
-
     if (!user?.id) {
       alert(
         "Ошибка: пользователь не найден или не загружен (user.id отсутствует)"
@@ -69,12 +62,9 @@ function EditProfile() {
       if (avatarFile) {
         const formData = new FormData();
         formData.append("image", avatarFile, avatarFile.name);
-        // console.log("Отправляемый файл:", avatarFile.name);
 
         const res = await axios.post("/upload", formData);
-        // console.log("URL аватара после загрузки:", res.data.url);
-
-        avatarUrl = res.data.url.replace(/^\/+/, ""); // Убираем ведущий слэш
+        avatarUrl = res.data.url.replace(/^\/+/, "");
       }
 
       const updated = {
@@ -84,9 +74,7 @@ function EditProfile() {
         avatar: avatarUrl,
       };
 
-      // Используем user._id для запроса
       const res = await axios.put(`/users/${user.id}`, updated);
-
       dispatch(setUser(res.data));
       navigate("/dashboard");
     } catch (err) {
@@ -98,29 +86,68 @@ function EditProfile() {
   return (
     <div className={style.container}>
       <h2 className={style.title}>Редактировать профиль</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Имя"
-          required
-        />
-        <input
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="Email"
-          required
-        />
-        <textarea
-          name="bio"
-          value={form.bio}
-          onChange={handleChange}
-          placeholder="О себе"
-        />
-        <input key={form.avatar} type="file" onChange={handleFileChange} />
-        <button type="submit">Сохранить</button>
+      <form onSubmit={handleSubmit} className={style.form}>
+        <div className={style.field}>
+          <label>Имя</label>
+          <input
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Имя"
+            required
+          />
+        </div>
+        <div className={style.field}>
+          <label>Email</label>
+          <input
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Email"
+            required
+          />
+        </div>
+        <div className={style.field}>
+          <label>О себе</label>
+          <textarea
+            name="bio"
+            value={form.bio}
+            onChange={handleChange}
+            placeholder="Расскажите о себе..."
+          />
+        </div>
+        <div className={style.avatarField}>
+          <label>Аватар</label>
+          <div className={style.avatarWrapper}>
+            <div className={style.avatarUploadBox}>
+              {avatarFile || form.avatar ? (
+                <img
+                  src={
+                    avatarFile
+                      ? URL.createObjectURL(avatarFile)
+                      : `/${form.avatar}`
+                  }
+                  alt="Аватар"
+                  className={style.avatarPreview}
+                />
+              ) : (
+                <div className={style.avatarPlaceholder}>
+                  Выбрать изображение
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className={style.avatarInput}
+              />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" className={style.submitBtn}>
+          Сохранить
+        </button>
       </form>
     </div>
   );

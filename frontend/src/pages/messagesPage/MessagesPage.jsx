@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChats } from "../../redux/features/messageSlice";
 import { Link } from "react-router-dom";
-import style from "./MessagesPage.module.scss"
+import style from "./MessagesPage.module.scss";
 
 const MessagesPage = () => {
   const dispatch = useDispatch();
@@ -13,16 +13,52 @@ const MessagesPage = () => {
     dispatch(fetchChats());
   }, [dispatch]);
 
-  // Фильтруем только валидные чаты
   const safeChats = (chats || []).filter(
-    (chat) => chat && (chat.partner || (chat.members && chat.members.length > 0))
+    (chat) =>
+      chat && (chat.partner || (chat.members && chat.members.length > 0))
   );
 
+
+const renderGlowDots = () => {
+  const dots = [];
+  for (let i = 0; i < 35; i++) {
+    const top = Math.random() * 100;
+    const left = Math.random() * 100;
+    const size = 40 + Math.random() * 40; // 40–80px
+    const delay = Math.random() * 10;
+    const duration = 14 + Math.random() * 6;
+
+    dots.push(
+      <span
+        key={i}
+        style={{
+          top: `${top}%`,
+          left: `${left}%`,
+          width: `${size}px`,
+          height: `${size}px`,
+          animationDelay: `${delay}s`,
+          animationDuration: `${duration}s`,
+        }}
+      />
+    );
+  }
+  return dots;
+};
+
+
   return (
-    <div style={{ padding: "20px" }} className={style.messages}>
-      <h2>Ваши чаты</h2>
+    <div className={style.messagesWrapper}>
+<div className={style.glowDots}>{renderGlowDots()}</div>
+
+
+
+      <h2 className={style.title}>Ваши чаты</h2>
+
       {safeChats.length === 0 ? (
-        <p>Нет чатов</p>
+        <div className={style.emptyState}>
+          <img src="/images/empty_chat.svg" alt="Нет чатов" />
+          <p>Пока нет ни одного диалога. Начните общение!</p>
+        </div>
       ) : (
         safeChats.map((chat) => {
           const partner =
@@ -30,45 +66,47 @@ const MessagesPage = () => {
             chat?.members?.find((m) => m && String(m._id) !== String(user?.id));
 
           const lastMsg = chat?.lastMessage?.content || "Нет сообщений";
+          const lastMsgDate = chat?.lastMessage?.createdAt
+            ? new Date(chat.lastMessage.createdAt).toLocaleDateString()
+            : null;
           const unreadCount = chat?.unreadCount || 0;
 
-          if (!partner) return null; // Пропускаем, если нет собеседника
+          if (!partner) return null;
 
           return (
             <Link
               to={`/chatRoom/${partner._id}`}
               key={chat._id}
-              style={{
-                display: "block",
-                padding: "12px",
-                marginBottom: "12px",
-                border: "1px solid #ccc",
-                borderRadius: "10px",
-                textDecoration: "none",
-                color: "#333",
-                position: "relative",
-              }}
+              className={style.chatCard}
             >
-              <strong>{partner.name}</strong>
-              <p style={{ fontSize: "14px", marginTop: "5px", color: "#666" }}>
-                {lastMsg.length > 40 ? lastMsg.slice(0, 40) + "..." : lastMsg}
-              </p>
+              <div className={style.chatLeft}>
+                {partner.avatar ? (
+                  <img
+                    src={partner.avatar}
+                    alt={partner.name}
+                    className={style.avatar}
+                  />
+                ) : (
+                  <div className={style.avatarPlaceholder}>
+                    {partner.name.charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </div>
+
+              <div className={style.chatContent}>
+                <div className={style.chatHeader}>
+                  <span className={style.partnerName}>{partner.name}</span>
+                  {lastMsgDate && (
+                    <span className={style.chatDate}>{lastMsgDate}</span>
+                  )}
+                </div>
+                <p className={style.lastMessage}>
+                  {lastMsg.length > 60 ? lastMsg.slice(0, 60) + "..." : lastMsg}
+                </p>
+              </div>
 
               {unreadCount > 0 && (
-                <span
-                  style={{
-                    position: "absolute",
-                    top: "12px",
-                    right: "12px",
-                    background: "red",
-                    color: "white",
-                    borderRadius: "50%",
-                    padding: "4px 8px",
-                    fontSize: "12px",
-                  }}
-                >
-                  {unreadCount}
-                </span>
+                <span className={style.unreadBadge}>{unreadCount}</span>
               )}
             </Link>
           );

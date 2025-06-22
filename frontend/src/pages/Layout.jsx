@@ -4,7 +4,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChats } from "../redux/features/messageSlice";
 import Footer from "../components/footer/Footer";
-
+import "../index.scss"
 const Layout = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
@@ -16,7 +16,9 @@ const Layout = () => {
     }
   }, [dispatch, user]);
 
-  const hideFooter = location.pathname.startsWith("/chat");
+  const hideFooter =
+    location.pathname.startsWith("/chat") ||
+    location.pathname === "/create-project";
 
   return (
     <div className="app-wrapper">

@@ -1,172 +1,210 @@
-.employeeContent {
-  color: #2c2c2c;
-  display: flex;
-  justify-content: center;
-  gap: 20rem;
-}
+// Стили для EmployeeDash.module.scss (обновлённый hover: оттенок фиолетового вместо белого)
 
-/* Профиль */
-.profile {
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$muted: #8a6cae;
+$card-bg: #ffffff;
+$border: #e8def8;
+$hover-bg: #f0eaff;
+$hoverAccent: #d3baf8; // новый оттенок фиолетового для hover
+
+.employeeContent {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  background: #fafafa;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  position: relative;
+  padding: 2rem 6%;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: $primary;
+  min-height: 100vh;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 2rem;
+  }
+}
+
+.profile {
+  background: $card-bg;
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba($darkAccent, 0.1);
+  max-width: 320px;
 }
 
 .avatar {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 2px solid #6d079c;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 3px solid $accent;
 }
 
 .avatarPlaceholder {
-  width: 120px;
-  height: 120px;
-  background-color: #ccc;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
+  background-color: $accent;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
-  font-weight: bold;
-  color: #fff;
-  border: 2px solid #6d079c;
-  position: absolute;
-  bottom: 20rem;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 .info {
-  margin: 2rem 0;
-
   .name {
-    font-size: 4rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $text;
   }
 
   .role {
-    font-size: 2rem;
-    padding: 0.5rem 0;
+    color: $muted;
+    margin-top: 0.5rem;
   }
 
   .balance {
-    font-size: 1.4rem;
+    margin-top: 1rem;
+    color: darken($muted, 20%);
+    font-weight: 500;
   }
 
   .editButton {
-    background-color: #aa00ff;
-    color: white;
-    font-size: 1.6rem;
-    padding: 1.3rem 6rem;
-    margin: 1rem 0;
+    margin-top: 1.5rem;
+    padding: 0.6rem 1.4rem;
     border: none;
-    border-radius: 2rem;
+    background-color: $darkAccent;
+    color: white;
+    border-radius: 12px;
     cursor: pointer;
-    font-weight: bold;
     transition: background 0.3s;
-  }
-
-  .editButton:hover {
-    background-color: #8300b3;
-  }
-}
-
-/* Навигация */
-.sidebar {
-  position: relative;
-  height: fit-content;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #df9efd;
-    pointer-events: none;
-    z-index: 1;
-    margin: 1rem 0;
-  }
-
-  ul {
-    display: flex;
-    gap: 1rem;
-    list-style: none;
-    padding: 0;
-    margin: 0 0 4px 0;
-    position: relative;
-    z-index: 2;
-  }
-
-  li {
-    padding: 1rem 1.2rem 1.5rem 1.2rem;
-    cursor: pointer;
-    font-weight: 600;
-    color: #6d079c;
-    user-select: none;
-    border-bottom: 3px solid transparent;
-    transition: color 0.3s, border-color 0.3s;
-    position: relative;
-    z-index: 3;
-    margin: 1rem 0;
-    font-size: 1.6rem;
-    line-height: 1.4;
 
     &:hover {
-      color: #3c0864;
-    }
-
-    &.activeSection {
-      color: #a402f5;
-      font-weight: 700;
-      border-bottom-color: #a402f5;
+      background-color: darken($darkAccent, 10%);
     }
   }
 }
 
-/* Секции */
-.section {
-  background: #e5cbfd86;
-  padding: 1.8rem 2rem;
+.rightSide {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+  }
+}
+
+.sectionContent {
+  flex: 1;
+  background: $card-bg;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 4px 24px rgba($darkAccent, 0.08);
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+  }
 
   h3 {
     font-size: 1.6rem;
-    margin-bottom: 1rem;
-    font-weight: 700;
-    color: #6d079c;
+    color: $text;
+    margin-bottom: 1.5rem;
+  }
+
+  button {
+    padding: 0.6rem 1.2rem;
+    background-color: $darkAccent;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: background 0.3s;
+
+    &:hover {
+      background-color: darken($darkAccent, 10%);
+    }
+  }
+
+  .projectList {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+
+    @media (min-width: 600px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .projectCard {
+    border: 1px solid $border;
+    border-radius: 14px;
+    padding: 1.2rem 1.5rem;
+    background-color: #fdfcff;
+    box-shadow: 0 2px 12px rgba($accent, 0.08);
+
+    h4 {
+      font-size: 1.2rem;
+      color: $darkAccent;
+    }
+
+    p {
+      margin: 0.4rem 0;
+      color: $text;
+    }
+  }
+
+  ul {
+    li {
+      background-color: lighten($primary, 2%);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      color: $text;
+      box-shadow: 0 1px 6px rgba($accent, 0.1);
+    }
   }
 }
 
-/* Списки */
-ul {
-  padding-left: 1.2rem;
-  color: #333;
-}
+.tabMenu {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  border-bottom: 2px solid $border;
+  padding-bottom: 1rem;
 
-li {
-  margin-bottom: 0.7rem;
-  line-height: 1.3;
-}
+  .tabButton {
+    background-color: $hover-bg;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 12px;
+    color: $muted;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
 
-.projectTitle {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #6d079c;
-}
+    &:hover {
+      background-color: $hoverAccent;
+      color: darken($muted, 10%);
+    }
+  }
 
-.projectDescription {
-  margin: 0 0 0.6rem 0;
-  color: #555;
-  font-size: 1.1rem;
-}
+  .activeTab {
+    background-color: $darkAccent;
+    color: white;
+    font-weight: 600;
 
-.projectInfo {
-  margin: 0.3rem 0;
-  color: #333;
-  font-size: 1rem;
+    &:hover {
+      background-color: darken($darkAccent, 5%);
+      color: white;
+    }
+  }
 }

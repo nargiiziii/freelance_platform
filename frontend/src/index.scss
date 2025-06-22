@@ -35,3 +35,15 @@ a {
   color: black;
   text-decoration: none;
 }
+
+
+// layout.scss
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}

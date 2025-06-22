@@ -1,191 +1,297 @@
+// SCSS стили для Freelancer_dash.module.scss с той же современной светло-фиолетовой стилистикой и улучшенной секцией портфолио
+
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$muted: #8a6cae;
+$card-bg: #ffffff;
+$border: #e8def8;
+$hover-bg: #f0eaff;
+$hoverAccent: #d3baf8;
+
 .freelancerContent {
-  color: #2c2c2c;
   display: flex;
-  justify-content: center;
-  gap: 20rem;
+  flex-direction: column;
+  padding: 2rem 6%;
+  font-family: "Segoe UI", sans-serif;
+  background-color: $primary;
+  min-height: 100vh;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 2rem;
+  }
 }
 
 .profile {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  background: #fafafa;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+  background: $card-bg;
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba($darkAccent, 0.1);
+  max-width: 320px;
 }
 
 .avatar {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 2px solid #6d079c;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 3px solid $accent;
+}
+
+.avatarPlaceholder {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: $accent;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 .info {
-  margin: 2rem 0;
-
   .name {
-    font-size: 4rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $text;
   }
 
   .role {
-    font-size: 2rem;
-    padding: 0.5rem 0;
+    color: $muted;
+    margin-top: 0.5rem;
   }
 
   .balance {
-    font-size: 1.4rem;
+    margin-top: 1rem;
+    color: darken($muted, 20%);
+    font-weight: 500;
   }
 
   .editButton {
-    background-color: #aa00ff;
-    color: white;
-    font-size: 1.6rem;
-    padding: 1.3rem 6rem;
-    margin: 1rem 0;
+    margin-top: 1.5rem;
+    padding: 0.6rem 1.4rem;
     border: none;
-    border-radius: 2rem;
+    background-color: $darkAccent;
+    color: white;
+    border-radius: 12px;
     cursor: pointer;
-    font-weight: bold;
     transition: background 0.3s;
-  }
-
-  .editButton:hover {
-    background-color: #8300b3;
-  }
-}
-
-.sidebar {
-  position: relative;
-  height: fit-content;
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #df9efd;
-    pointer-events: none;
-    z-index: 1;
-    margin: 1rem 0;
-  }
-
-  ul {
-    display: flex;
-    gap: 1rem;
-    list-style: none;
-    padding: 0;
-    margin: 0 0 4px 0;
-    position: relative;
-    z-index: 2;
-  }
-
-  li {
-    padding: 1rem 1.2rem 1.5rem 1.2rem;
-    cursor: pointer;
-    font-weight: 600;
-    color: #6d079c;
-    user-select: none;
-    border-bottom: 3px solid transparent;
-    transition: color 0.3s, border-color 0.3s;
-    position: relative;
-    z-index: 3;
-    margin-bottom: 0;
-    font-size: 1.6rem;
-    line-height: 1.4;
-    margin: 1rem 0;
 
     &:hover {
-      color: #3c0864;
-    }
-
-    &.activeSection {
-      color: #a402f5;
-      font-weight: 700;
-      border-bottom-color: #a402f5;
+      background-color: darken($darkAccent, 10%);
     }
   }
 }
 
-.section {
-  background: #e5cbfd86;
-  padding: 1.8rem 2rem;
+.rightSide {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+  }
+}
+
+.sectionContent {
+  flex: 1;
+  background: $card-bg;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 4px 24px rgba($darkAccent, 0.08);
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+  }
 
   h3 {
     font-size: 1.6rem;
-    margin-bottom: 1rem;
-    font-weight: 700;
-    color: #6d079c;
-  }
-}
-
-.portfolioGrid {
-  display: grid;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.portfolioItem {
-  border-radius: 8px;
-
-  strong {
-    display: block;
-    margin-bottom: 0.4rem;
-    color: #6d079c;
+    color: $text;
+    margin-bottom: 1.5rem;
   }
 
-  a {
-    display: inline-block;
-    margin-top: 0.4rem;
-    color: #aa00ff;
-    text-decoration: none;
-    font-weight: 600;
+  .addProjectButton {
+    padding: 0.6rem 1.2rem;
+    background-color: $darkAccent;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: background 0.3s;
 
     &:hover {
-      text-decoration: underline;
+      background-color: darken($darkAccent, 10%);
+    }
+  }
+
+  ul {
+    li {
+      background-color: lighten($primary, 2%);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      color: $text;
+      box-shadow: 0 1px 6px rgba($accent, 0.1);
+    }
+  }
+
+  .skillsContainer {
+    margin-top: 1rem;
+
+    .skillsList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .skillBadge {
+      background-color: $hover-bg;
+      color: $text;
+      padding: 0.4rem 0.8rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+  }
+
+  .portfolioGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+
+    @media (min-width: 600px) {
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    }
+  }
+
+  .portfolioItem {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgba($darkAccent, 0.08);
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 12px 28px rgba($darkAccent, 0.15); 
+    }
+
+    .portfolioImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(94%);
+    }
+
+    .overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(14px);
+      padding: 1.3rem 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba($accent, 0.2);
+      color: $text;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.4rem; // 🔽 Ещё меньше промежуток
+      pointer-events: auto;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .portfolioContent {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: 1;
+      width: 100%;
+      gap: 0.4rem; // 🔽 И тут уменьшено
+    }
+
+    .portfolioText {
+      flex: 1;
+
+      strong {
+        font-size: 1.9rem;
+        font-weight: 700;
+        display: block;
+        color: $text;
+        margin-bottom: 0.2rem;
+      }
+
+      p {
+        font-size: 1.35rem;
+        color: $muted;
+        margin: 0;
+      }
+    }
+
+    .viewButton {
+      padding: 0.9rem 1.7rem;
+      background-color: $darkAccent;
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background-color: mix(black, $darkAccent, 10%);
+      }
     }
   }
 }
 
-.portfolioImage {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  display: block;
-  border-radius: 1rem;
-}
-
-ul {
-  padding-left: 1.2rem;
-  color: #333;
-}
-
-li {
-  margin-bottom: 0.7rem;
-  line-height: 1.3;
-}
-
-.skillsContainer {
-  margin-top: 8px;
-}
-
-.skillsList {
+.tabMenu {
   display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 6px;
-}
+  border-bottom: 2px solid $border;
+  padding-bottom: 1rem;
 
-.skillBadge {
-  background-color: #f0f0f0;
-  color: #333;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 14px;
-  white-space: nowrap;
-  border: 1px solid #ccc;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  .tabButton {
+    background-color: $hover-bg;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 12px;
+    color: $muted;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+
+    &:hover {
+      background-color: $hoverAccent;
+      color: darken($muted, 10%);
+    }
+  }
+
+  .activeTab {
+    background-color: $darkAccent;
+    color: white;
+    font-weight: 600;
+
+    &:hover {
+      background-color: darken($darkAccent, 5%);
+      color: white;
+    }
+  }
 }

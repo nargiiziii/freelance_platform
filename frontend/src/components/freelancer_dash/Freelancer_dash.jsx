@@ -84,26 +84,19 @@ function FreelancerDash() {
       </div>
 
       <div className={style.rightSide}>
-        <aside className={style.sidebar}>
-          <ul>
-            {sections.map((section) => (
-              <li
-                key={section}
-                className={activeSection === section ? style.activeSection : ""}
-                onClick={() => setActiveSection(section)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    setActiveSection(section);
-                  }
-                }}
-              >
-                {section}
-              </li>
-            ))}
-          </ul>
-        </aside>
+        <div className={style.tabMenu}>
+          {sections.map((section) => (
+            <button
+              key={section}
+              className={`${style.tabButton} ${
+                activeSection === section ? style.activeTab : ""
+              }`}
+              onClick={() => setActiveSection(section)}
+            >
+              {section}
+            </button>
+          ))}
+        </div>
 
         <main className={style.sectionContent}>
           {activeSection === "Профиль" && (
@@ -155,21 +148,26 @@ function FreelancerDash() {
                         src={
                           item.image
                             ? `http://localhost:3000/uploads/${item.image}`
-                            : "https://via.placeholder.com/200x150"
+                            : "https://via.placeholder.com/400x300"
                         }
                         alt={item.title || "Project image"}
                         className={style.portfolioImage}
                       />
-                      <div>
-                        <strong>{item.title}</strong>
-                        <p>{item.description}</p>
-                        <a
-                          href={item.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Смотреть
-                        </a>
+                      <div className={style.overlay}>
+                        <div className={style.portfolioContent}>
+                          <div className={style.portfolioText}>
+                            <strong>{item.title}</strong>
+                            <p>{item.description}</p>
+                          </div>
+                          <a
+                            href={item.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={style.viewButton}
+                          >
+                            Смотреть
+                          </a>
+                        </div>
                       </div>
                     </div>
                   ))}

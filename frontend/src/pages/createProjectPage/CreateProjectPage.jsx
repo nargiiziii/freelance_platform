@@ -100,7 +100,7 @@ const CreateProjectPage = () => {
           required
         />
         <button type="submit">Создать</button>
-        <button type="button" onClick={() => navigate("/dashboard")}>
+        <button type="button" onClick={() => navigate("/my-jobs")}>
           Отмена
         </button>
       </form>

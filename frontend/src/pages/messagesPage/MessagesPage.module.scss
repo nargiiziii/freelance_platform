@@ -1,3 +1,209 @@
-.messages{
-    height: 100vh;
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$muted: #666;
+$unread-bg: #d32f2f;
+$white: #ffffff;
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.messagesWrapper {
+  position: relative;
+  padding: 60px 80px;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+  overflow: hidden;
+  background: $primary;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: $darkAccent;
+  margin-bottom: 50px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.chatCard {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #e6dfff;
+  border-radius: 20px;
+  padding: 26px 34px;
+  margin-bottom: 30px;
+  position: relative;
+  color: $text;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease;
+  z-index: 1;
+  backdrop-filter: blur(6px);
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(163, 117, 240, 0.25);
+    transform: translateY(-4px);
+  }
+}
+
+.chatLeft {
+  margin-right: 24px;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid $accent;
+}
+
+.avatarPlaceholder {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: $accent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $white;
+  font-weight: bold;
+  font-size: 28px;
+}
+
+.chatContent {
+  flex: 1;
+}
+
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.partnerName {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: $darkAccent;
+}
+
+.chatDate {
+  font-size: 0.95rem;
+  color: $muted;
+}
+
+.lastMessage {
+  font-size: 1.1rem;
+  color: $muted;
+  margin: 0;
+  font-style: italic;
+}
+
+.unreadBadge {
+  background-color: $unread-bg;
+  color: $white;
+  border-radius: 50%;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  position: absolute;
+  right: 28px;
+  top: 28px;
+}
+
+.emptyState {
+  text-align: center;
+  margin-top: 80px;
+  color: $muted;
+  z-index: 1;
+
+  img {
+    width: 220px;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .messagesWrapper {
+    padding: 30px 20px;
+  }
+
+  .chatCard {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 22px;
+  }
+
+  .chatLeft {
+    margin-bottom: 16px;
+  }
+
+  .partnerName {
+    font-size: 1.2rem;
+  }
+
+  .lastMessage {
+    font-size: 1rem;
+  }
+
+  .chatDate {
+    font-size: 0.9rem;
+  }
+
+  .unreadBadge {
+    right: 20px;
+    top: 20px;
+  }
+}
+
+.glowDots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  span {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(177, 135, 251, 0.3), transparent);
+    box-shadow:
+      0 0 12px rgba(175, 136, 242, 0.4),
+      0 0 20px rgba(167, 111, 252, 0.25);
+    animation: glowMove 18s infinite ease-in-out;
+    opacity: 0.4;
+  }
+}
+
+@keyframes glowMove {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translateY(-120px) scale(1.15);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.25;
+  }
 }

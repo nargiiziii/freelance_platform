@@ -79,37 +79,27 @@ function EmployeeDash() {
       </div>
 
       <div className={style.rightSide}>
-        <aside className={style.sidebar}>
-          <ul>
+        <main className={style.sectionContent}>
+          <div className={style.tabMenu}>
             {["Размещение задания", "Размещённые проекты", "Отзывы"].map(
               (section) => (
-                <li
+                <button
                   key={section}
-                  className={
-                    activeSection === section ? style.activeSection : ""
-                  }
+                  className={`${style.tabButton} ${
+                    activeSection === section ? style.activeTab : ""
+                  }`}
                   onClick={() => setActiveSection(section)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ")
-                      setActiveSection(section);
-                  }}
                 >
                   {section}
-                </li>
+                </button>
               )
             )}
-          </ul>
-        </aside>
+          </div>
 
-        <main className={style.sectionContent}>
           {activeSection === "Размещение задания" && (
             <section className={style.section}>
               <h3>Размещение задания</h3>
-              <button onClick={() => navigate("/create-project")}>
-                + Новое задание
-              </button>
+              <button onClick={() => navigate("/create-project")}>+ Новое задание</button>
             </section>
           )}
 
@@ -118,12 +108,8 @@ function EmployeeDash() {
               <h3>Размещённые проекты</h3>
               <div>
                 <button onClick={() => setFilterStatus("all")}>Все</button>
-                <button onClick={() => setFilterStatus("open")}>
-                  Открытые
-                </button>
-                <button onClick={() => setFilterStatus("closed")}>
-                  Завершённые
-                </button>
+                <button onClick={() => setFilterStatus("open")}>Открытые</button>
+                <button onClick={() => setFilterStatus("closed")}>Завершённые</button>
               </div>
               {status === "loading" ? (
                 <p>Загрузка проектов...</p>
@@ -138,35 +124,18 @@ function EmployeeDash() {
                     return (
                       <div key={project._id} className={style.projectCard}>
                         <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                          }}
+                          style={{ display: "flex", alignItems: "center", gap: "8px" }}
                         >
                           <h4>{project.title}</h4>
                           {hasPendingProposal && (
-                            <span style={{ color: "green", fontSize: "20px" }}>
-                              🟢
-                            </span>
+                            <span style={{ color: "green", fontSize: "20px" }}>🟢</span>
                           )}
                         </div>
                         <p>{project.description}</p>
-                        <p>
-                          <strong>Бюджет:</strong> {project.budget}₽
-                        </p>
-                        <p>
-                          <strong>Статус:</strong> {project.status}
-                        </p>
-                        <p>
-                          <strong>Создан:</strong>{" "}
-                          {new Date(project.createdAt).toLocaleDateString()}
-                        </p>
-                        <button
-                          onClick={() =>
-                            navigate(`/employer/project/${project._id}`)
-                          }
-                        >
+                        <p><strong>Бюджет:</strong> {project.budget}₽</p>
+                        <p><strong>Статус:</strong> {project.status}</p>
+                        <p><strong>Создан:</strong> {new Date(project.createdAt).toLocaleDateString()}</p>
+                        <button onClick={() => navigate(`/employer/project/${project._id}`)}>
                           📂 Подробнее
                         </button>
                       </div>
@@ -186,12 +155,9 @@ function EmployeeDash() {
                 <ul>
                   {reviews.map((review, i) => (
                     <li key={review._id || i}>
-                      <strong>{review.fromUser?.name || "Аноним"}:</strong>{" "}
-                      {review.comment} — Оценка: ⭐ {review.rating}
+                      <strong>{review.fromUser?.name || "Аноним"}:</strong> {review.comment} — Оценка: ⭐ {review.rating}
                       <br />
-                      <small>
-                        {new Date(review.createdAt).toLocaleDateString()}
-                      </small>
+                      <small>{new Date(review.createdAt).toLocaleDateString()}</small>
                     </li>
                   ))}
                 </ul>

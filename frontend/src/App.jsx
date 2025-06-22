@@ -22,7 +22,7 @@ import FreelancersList from "./pages/freelancersList/FreelancersList";
 // Страницы фрилансера
 import FreelancerDash from "./components/freelancer_dash/Freelancer_dash";
 import ProjectListForFreelancer from "./components/projectListForFreelancer/ProjectListForFreelancer";
-import MyProposals from "./pages/myProposals/MyProposals";
+import MyProposalsFreel from "./pages/myProposalsFreel/MyProposalsFreel";
 
 // Страницы работодателя
 import EmployeeDash from "./components/employee_dash/Employee_dash";
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <div style={{ marginTop: "110px" }}>
+      <div style={{ marginTop: "95px" }}>
         <Layout />
       </div>
     ),
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
       { path: "/freelancers", element: <FreelancersList /> },
       { path: "/freelancer-dash", element: <FreelancerDash /> },
       { path: "/jobs", element: <ProjectListForFreelancer /> },
-      { path: "/my-proposals", element: <MyProposals /> },
+      { path: "/my-proposals", element: <MyProposalsFreel /> },
       { path: "/employee-dash", element: <EmployeeDash /> },
       { path: "/create-project", element: <CreateProjectPage /> },
       { path: "/my-jobs", element: <MyJobs /> },

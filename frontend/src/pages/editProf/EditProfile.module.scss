@@ -1,76 +1,160 @@
+@use "sass:color";
+
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$muted: #8a6cae;
+$card-bg: #ffffff;
+$border: #e8def8;
+$hover-bg: #f0eaff;
+
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4rem 2rem;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #c490f4, #8b3fce, #6426a2);
-  color: white;
+  max-width: 600px;
+  margin: 4rem auto;
+  background: $card-bg;
+  border: 1px solid $border;
+  border-radius: 20px;
+  padding: 3rem 3.5rem;
+  font-family: "Segoe UI", sans-serif;
+  box-shadow: 0 8px 30px rgba(163, 117, 240, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 .title {
-  font-size: 2.8rem;
-  font-weight: bold;
-  margin-bottom: 3rem;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: $text;
   text-align: center;
-  color: white;
+  margin-bottom: 3rem;
 }
 
-form {
-  background-color: #fdf7ff;
-  padding: 3rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 0 20px rgba(138, 43, 226, 0.2);
+.form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 500px;
-  color: #333;
+  gap: 2rem;
+  font-size: 1.15rem;
 }
 
-input[type="text"],
-input[type="email"],
-textarea {
-  padding: 1.2rem 1.5rem;
-  font-size: 1.4rem;
-  border: 2px solid #d3a3ff;
-  border-radius: 1rem;
-  outline: none;
-  transition: border-color 0.3s;
-  background-color: white;
+.field {
+  display: flex;
+  flex-direction: column;
 
-  &:focus {
-    border-color: #8b3fce;
+  label {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text;
+    margin-bottom: 0.6rem;
+  }
+
+  input,
+  textarea {
+    padding: 1rem 1.2rem;
+    border: 1px solid $border;
+    border-radius: 14px;
+    font-size: 1.15rem;
+    background-color: $primary;
+    color: $text;
+    transition: 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $accent;
+      background-color: $hover-bg;
+    }
+  }
+
+  textarea {
+    min-height: 140px;
+    resize: vertical;
   }
 }
 
-textarea {
-  min-height: 100px;
-  resize: vertical;
+.avatarField {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text;
+    margin-bottom: 0.8rem;
+    text-align: center;
+  }
 }
 
-input[type="file"] {
-  background-color: #f1e0ff;
-  padding: 1rem;
-  border: 2px dashed #d3a3ff;
-  border-radius: 1rem;
-  cursor: pointer;
-  color: #6d079c;
+.avatarWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
 }
 
-button {
-  padding: 1.2rem;
-  background-color: #aa00ff;
-  color: white;
-  font-size: 1.6rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 2rem;
+.avatarUploadBox {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border: 2px dashed $border;
+  border-radius: 50%;
+  background-color: $primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background 0.3s;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
 
   &:hover {
-    background-color: #8300b3;
+    border-color: $accent;
+  }
+}
+
+.avatarPreview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatarInput {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+}
+
+.avatarPlaceholder {
+  font-size: 0.95rem;
+  color: $muted;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.submitBtn {
+  background-color: $darkAccent;
+  color: white;
+  padding: 1rem 1.6rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: color.adjust($darkAccent, $lightness: -10%);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

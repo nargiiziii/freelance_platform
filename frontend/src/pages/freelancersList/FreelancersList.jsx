@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const FreelancersList = () => {
   const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState(""); // 💡 сохраняем выбранную категорию
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const fetchFreelancers = (category = "") => {
     setLoading(true);
@@ -23,7 +23,7 @@ const FreelancersList = () => {
   };
 
   useEffect(() => {
-    fetchFreelancers(); // загрузка всех при старте
+    fetchFreelancers();
   }, []);
 
   const handleCategoryChange = (e) => {
@@ -32,19 +32,26 @@ const FreelancersList = () => {
     fetchFreelancers(selected);
   };
 
-  if (loading) return <p>Загрузка фрилансеров...</p>;
+  if (loading) return <p className={style.loading}>Загрузка фрилансеров...</p>;
 
   return (
     <div className={style.freelancerList}>
-      <select value={selectedCategory} onChange={handleCategoryChange}>
-        <option value="">Все категории</option>
-        <option value="Web Development">Web Development</option>
-        <option value="Design">Design</option>
-        <option value="Writing">Writing</option>
-        <option value="Marketing">Marketing</option>
-      </select>
-
       <h2>Список фрилансеров</h2>
+
+      <div className={style.topBar}>
+        <select
+          className={style.select}
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+        >
+          <option value="">Все категории</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Design">Design</option>
+          <option value="Writing">Writing</option>
+          <option value="Marketing">Marketing</option>
+        </select>
+      </div>
+
       <div className={style.cards}>
         {freelancers.map((user) => (
           <div key={user._id} className={style.card}>
@@ -59,11 +66,13 @@ const FreelancersList = () => {
               )}
             </div>
             <div className={style.info}>
-              <h3>{user.name}</h3>
-              <p>{user.email}</p>
-              <p>{user.bio}</p>
+              <div className={style.nameEmail}>
+                <h3 className={style.name}>{user.name}</h3>
+                <p className={style.email}>{user.email}</p>
+              </div>
+              <p className={style.bio}>{user.bio}</p>
               <Link to={`/chatRoom/${user._id}`}>
-                <button>Отправить сообщение</button>
+                <button className={style.button}>Отправить сообщение</button>
               </Link>
             </div>
           </div>

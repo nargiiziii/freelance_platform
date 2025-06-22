@@ -1,99 +1,171 @@
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$muted: #8a6cae;
+$card-bg: #ffffff;
+$border: #e8def8;
+$hover-bg: #f0eaff;
+$error: #e57373;
+
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background-color: rgba(46, 15, 79, 0.2);
+  backdrop-filter: blur(6px); // ✅ лёгкий фон
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   z-index: 1000;
+  animation: overlayFade 0.25s ease-in-out;
 }
 
 .modal {
-  background-color: #fdf7ff;
-  border-radius: 1.5rem;
+  background: $card-bg;
   padding: 2.5rem;
-  width: 90%;
-  max-width: 520px;
-  box-shadow: 0 0 20px rgba(138, 43, 226, 0.2);
-  color: #333;
-}
+  border-radius: 20px;
+  width: 95%;
+  max-width: 560px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+  font-family: "Segoe UI", sans-serif;
+  position: relative;
 
-h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  color: #6d079c;
-}
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: $text;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
 }
 
 .field {
   display: flex;
   flex-direction: column;
-}
 
-label {
-  font-size: 1.4rem;
-  margin-bottom: 0.5rem;
-  color: #6d079c;
-}
-
-input,
-textarea {
-  padding: 1rem 1.3rem;
-  font-size: 1.4rem;
-  border: 2px solid #d3a3ff;
-  border-radius: 1rem;
-  outline: none;
-  background-color: white;
-
-  &:focus {
-    border-color: #8b3fce;
+  label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: $text;
   }
-}
 
-textarea {
-  resize: vertical;
-  min-height: 100px;
+  input,
+  textarea {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: 1px solid $border;
+    background: #fff;
+    font-size: 1rem;
+    color: $text;
+    transition: border 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: $accent;
+      box-shadow: 0 0 0 3px rgba(198, 165, 247, 0.2);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
 }
 
 .buttons {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 1rem;
   margin-top: 1rem;
-}
 
-button {
-  padding: 1rem 2.5rem;
-  background-color: #aa00ff;
-  color: white;
-  font-size: 1.4rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 2rem;
-  cursor: pointer;
-  transition: background 0.3s;
+  button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: "Segoe UI", sans-serif;
 
-  &:hover {
-    background-color: #8300b3;
-  }
+    &:first-child {
+      background-color: $darkAccent;
+      color: white;
 
-  &:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+      &:hover {
+        background-color: darken($darkAccent, 8%);
+      }
+
+      &:disabled {
+        background-color: lighten($darkAccent, 10%);
+        cursor: not-allowed;
+      }
+    }
+
+    &:last-child {
+      background-color: $hover-bg;
+      color: $text;
+
+      &:hover {
+        background-color: $border;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
   }
 }
 
 .error {
-  color: #d30000;
-  font-size: 1.3rem;
+  color: $error;
+  font-size: 0.95rem;
+  margin-top: -0.5rem;
+  margin-bottom: -0.5rem;
   text-align: center;
+}
+
+.closeIcon {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: $muted;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $darkAccent;
+  }
+}
+
+// Анимации
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes overlayFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import style from "./MyProposals.module.scss";
 import ReviewForm from "../../components/reviewForm/ReviewForm";
+import { removeNotification } from "../../redux/features/notificationSlice";
 
 const MyProposals = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,17 @@ const MyProposals = () => {
     dispatch(getMyProposals());
     dispatch(fetchUserReviews());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (myProposals.length > 0) {
+      const idsToRemove = [
+        "msg",
+        ...myProposals.map((p) => `acc-${p._id}`),
+        ...myProposals.map((p) => `esc-${p._id}`),
+      ];
+      idsToRemove.forEach((id) => dispatch(removeNotification(id)));
+    }
+  }, [myProposals, dispatch]);
 
   const handleFileChange = (proposalId, file) => {
     setSelectedFile((prev) => ({ ...prev, [proposalId]: file }));
@@ -125,10 +137,7 @@ const MyProposals = () => {
                 {proposal.project?.status === "closed" &&
                   proposal.project?.escrow?.status === "released" &&
                   !hasLeftReview && (
-                    <div
-                      className={style.reviewBlock}
-                      style={{ marginTop: "15px" }}
-                    >
+                    <div className={style.reviewBlock} style={{ marginTop: "15px" }}>
                       <h4>Оцените заказчика</h4>
                       <ReviewForm
                         toUserId={proposal.project?.employer?._id}

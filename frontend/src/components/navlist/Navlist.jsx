@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/features/authSlice";
 import style from "./Navlist.module.scss";
+import NotificationDropdown from "../notificationDropdown/NotificationDropdown";
 
 const Navlist = () => {
   const user = useSelector((state) => state.auth.user);
@@ -52,9 +53,6 @@ const Navlist = () => {
           </li>
           <li className={style.li}>
             <Link to="/my-proposals">My Proposals</Link>
-          </li>
-          <li className={style.li}>
-            <Link to="/freelancer/projects">My Projects</Link>
           </li>
           <li className={style.li} style={{ position: "relative" }}>
             <Link to="/messages">
@@ -123,6 +121,11 @@ const Navlist = () => {
 
       {user && (
         <>
+          {/* 🔔 Уведомления добавлены сюда */}
+          <li className={style.li}>
+            <NotificationDropdown role={user.role} />
+          </li>
+
           <li className={style.li}>
             <Link to={getDashboardPath()} className={style.profileLink}>
               {user.avatar ? (
@@ -138,6 +141,7 @@ const Navlist = () => {
               )}
             </Link>
           </li>
+
           <li className={style.li}>
             <button className={style.button} onClick={handleLogout}>
               Logout

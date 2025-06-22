@@ -9,7 +9,10 @@
   flex-direction: column;
   background-color: #f3eaff;
   z-index: 999;
-  margin-top: 9rem;
+  margin-top: 9rem !important;
+  height: 85vh;
+  width: 90vh;
+  margin: 0 auto;
 }
 
 .fixedHeader {
@@ -121,4 +124,24 @@
 
 .sendButton:hover {
   background-color: #742fff;
+}
+.fixedHeader {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }

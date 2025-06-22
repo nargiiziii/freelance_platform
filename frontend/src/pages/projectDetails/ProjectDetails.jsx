@@ -4,10 +4,12 @@ import axios from "../../axiosInstance";
 import ProposalList from "../../components/proposalList/ProposalList";
 import style from "./ProjectDetails.module.scss";
 import ReviewForm from "../../components/reviewForm/ReviewForm";
+import useNotificationCleaner from "../../hooks/useNotificationCleaner";
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
+  useNotificationCleaner([`new-${id}`, `sub-${id}`]);
 
   useEffect(() => {
     const fetchProject = async () => {

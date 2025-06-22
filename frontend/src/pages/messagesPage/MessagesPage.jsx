@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChats } from "../../redux/features/messageSlice";
 import { Link } from "react-router-dom";
+import style from "./MessagesPage.module.scss"
 
 const MessagesPage = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const MessagesPage = () => {
   );
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "20px" }} className={style.messages}>
       <h2>Ваши чаты</h2>
       {safeChats.length === 0 ? (
         <p>Нет чатов</p>

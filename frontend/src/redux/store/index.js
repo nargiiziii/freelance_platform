@@ -18,6 +18,7 @@ import proposalReducer from "../features/proposalSlice";
 import escrowReducer from "../features/escrowSlice";
 import messageReducer from "../features/messageSlice";
 import reviewsReducer from "../features/reviewSlice";
+import notificationsReducer from "../features/notificationSlice";
 
 const persistConfig = {
   key: "auth",
@@ -35,6 +36,7 @@ export const store = configureStore({
     escrow: escrowReducer,
     messages: messageReducer,
     reviews: reviewsReducer,
+    notifications: notificationsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import Navbar from "../components/navbar/Navbar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChats } from "../redux/features/messageSlice";
+import Footer from "../components/footer/Footer";
 
 const Layout = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const location = useLocation();
 
   useEffect(() => {
     if (user) {
@@ -14,11 +16,15 @@ const Layout = () => {
     }
   }, [dispatch, user]);
 
+  const hideFooter = location.pathname.startsWith("/chat");
+
   return (
-    <div>
+    <div className="app-wrapper">
       <Navbar />
-      <Outlet />
-      {/* <Footer /> */}
+      <main className="main-content">
+        <Outlet />
+      </main>
+      {!hideFooter && <Footer />}
     </div>
   );
 };

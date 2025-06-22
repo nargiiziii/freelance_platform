@@ -4,9 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getFreelancerProjects } from "../../redux/features/projectSlice";
 import AddPortfolioModal from "../addPortfolioModal/AddPortfolioModal";
 import style from "./Freelancer_dash.module.scss";
-import ProjectListForFreelancer from "../projectListForFreelancer/ProjectListForFreelancer";
 import SubmitWorkModal from "../submitWork/SubmitWorkModal";
-import EscrowCardd from "../escrowCardd/EscrowCardd";
 import { fetchUserReviews } from "../../redux/features/reviewSlice";
 
 function FreelancerDash() {
@@ -24,15 +22,11 @@ function FreelancerDash() {
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [filterStatus, setFilterStatus] = useState("all");
 
-  const sections = ["Профиль", "Портфолио", "Активные проекты", "Отзывы"];
+  const sections = ["Профиль", "Портфолио", "Отзывы"];
 
   useEffect(() => {
     dispatch(getFreelancerProjects());
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   console.log("Projects:", projects);
-  // }, [projects]);
 
   useEffect(() => {
     if (user?.portfolio) setPortfolio(user.portfolio);
@@ -141,40 +135,6 @@ function FreelancerDash() {
                 <strong>Выполнено проектов:</strong>{" "}
                 {user.completedProjectsCount || 0}
               </p>
-            </section>
-          )}
-
-          {activeSection === "Активные проекты" && (
-            <section className={style.section}>
-              <h3>Активные проекты</h3>
-              <div>
-                <button onClick={() => setFilterStatus("all")}>Все</button>
-                <button onClick={() => setFilterStatus("open")}>
-                  Открытые
-                </button>
-                <button onClick={() => setFilterStatus("completed")}>
-                  Завершенные
-                </button>
-              </div>
-              {filteredProjects?.length ? (
-                <ul>
-                  {filteredProjects.map((project) => (
-                    <li key={project._id}>
-                      <h4>
-                        {project.title} - Статус: {project.status}
-                      </h4>
-                      {project.status === "in_progress" && (
-                        <button onClick={() => setShowSubmitModal(project._id)}>
-                          📤 Отправить работу
-                        </button>
-                      )}
-                      <EscrowCardd project={project} />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>У вас нет активных проектов</p>
-              )}
             </section>
           )}
 

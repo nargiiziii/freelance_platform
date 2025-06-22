@@ -4,6 +4,7 @@ import {
   acceptProposal,
   rejectProposal,
   getProposalsByProject,
+  getMyProposals,
 } from "../../redux/features/proposalSlice";
 import { getEmployerProjects } from "../../redux/features/projectSlice";
 import { releaseFunds, refundFunds } from "../../redux/features/escrowSlice";
@@ -36,13 +37,23 @@ const ProposalList = ({ projectId, onProjectUpdated }) => {
   const handleAccept = (proposalId) => {
     dispatch(acceptProposal({ proposalId }))
       .unwrap()
-      .then(({ proposal: updated }) => {
+      .then(async ({ proposal: updated }) => {
         const updatedList = localProposals.map((p) =>
           p._id === updated._id ? { ...updated } : { ...p, status: "rejected" }
         );
         setLocalProposals(updatedList);
         dispatch(getEmployerProjects());
+        dispatch(getMyProposals());
         toast.success("✅ Отклик принят");
+
+        if (onProjectUpdated) {
+          try {
+            const res = await axios.get(`/projects/${projectId}`);
+            onProjectUpdated(res.data);
+          } catch (err) {
+            console.error("❌ Ошибка при обновлении проекта:", err);
+          }
+        }
       })
       .catch((err) => {
         const message =
@@ -77,8 +88,8 @@ const ProposalList = ({ projectId, onProjectUpdated }) => {
       setLocalProposals(updatedList);
 
       dispatch(getProfile());
-
-      toast.success("💸 Оплата отправлена фрилансеру");
+      dispatch(getMyProposals()); 
+      toast.success("✅ Отклик принят");
 
       // 🆕 Добавляем запрос на обновление проекта и передаём в ProjectDetails
       if (onProjectUpdated) {

@@ -1,0 +1,87 @@
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  cursor: pointer;
+  position: relative;
+  font-size: 22px;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    color: #333;
+  }
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.dropdown {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 260px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  overflow: hidden;
+}
+
+.title {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  background-color: #fafafa;
+}
+
+.item {
+  display: block;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #f1f1f1;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+.viewAll {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  background-color: #fafafa;
+  border-top: 1px solid #eee;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+}

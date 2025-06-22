@@ -15,14 +15,22 @@ export const createEscrow = async (req, res) => {
       amount,
     });
 
-    // Привязка escrow к проекту
-    await Project.findByIdAndUpdate(projectId, { escrow: escrow._id });
+    const updatedProject = await Project.findByIdAndUpdate(
+      projectId,
+      { escrow: escrow._id },
+      { new: true }
+    );
+
+    if (!updatedProject) {
+      return res.status(404).json({ message: "Проект не найден" });
+    }
 
     res.status(201).json(escrow);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // Функция для выпуска средств фрилансеру после принятия работы
 export const releaseFunds = async (req, res) => {
@@ -125,30 +133,23 @@ export const getTransactionHistory = async (req, res) => {
         const isUserFreelancer = String(e.freelancer._id) === userId;
         const isUserEmployer = String(e.employer._id) === userId;
 
-        if (e.status === "funded") return false;
-        if (isUserFreelancer && e.status !== "released") return false;
-
-        return true;
+        // Только завершённые или отменённые показываем
+        return (e.status === "released" || e.status === "rejected") &&
+               (isUserFreelancer || isUserEmployer);
       })
       .map((e) => {
-        const isUserEmployer = String(e.employer._id) === userId;
         const isUserFreelancer = String(e.freelancer._id) === userId;
+        const isUserEmployer = String(e.employer._id) === userId;
 
         const from = e.employer.name;
         const to = e.freelancer.name;
 
-        let direction = "outcome";
+        let direction = "outcome"; // по умолчанию, если ты отправлял
 
-        if (e.status === "released" && isUserFreelancer) {
-          direction = "income";
-        }
+        if (e.status === "released" && isUserFreelancer) direction = "income";
+        if (e.status === "rejected" && isUserEmployer) direction = "income";
 
-        if (e.status === "rejected" && isUserEmployer) {
-          direction = "income";
-        }
-
-        const signAmount =
-          direction === "income" ? `+${e.amount}` : `-${e.amount}`;
+        const signAmount = direction === "income" ? `+${e.amount}` : `-${e.amount}`;
 
         return {
           date: e.createdAt.toLocaleDateString(),
@@ -171,3 +172,4 @@ export const getTransactionHistory = async (req, res) => {
     res.status(500).json({ message: "Ошибка при получении истории" });
   }
 };
+

@@ -4,6 +4,7 @@ import { topUpBalance, getProfile } from "../../redux/features/authSlice";
 import axios from "../../axiosInstance";
 import style from "./BalancePage.module.scss";
 import { toast } from "react-toastify";
+import useNotificationCleaner from "../../hooks/useNotificationCleaner";
 
 function BalancePage() {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function BalancePage() {
   };
 
   if (!user) return <p>Вы не авторизованы</p>;
+  useNotificationCleaner("esc");
 
   return (
     <div className={style.balanceContainer}>

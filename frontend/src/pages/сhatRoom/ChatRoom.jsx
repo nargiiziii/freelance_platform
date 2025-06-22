@@ -7,10 +7,13 @@ import DoneIcon from "@mui/icons-material/Done";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import style from "./ChatRoom.module.scss";
 import { fetchChats } from "../../redux/features/messageSlice";
+import useNotificationCleaner from "../../hooks/useNotificationCleaner";
 
 const socket = io("http://localhost:3000", { withCredentials: true });
 
 const ChatRoom = () => {
+  useNotificationCleaner("msg");
+
   const { userId } = useParams();
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user);
@@ -48,7 +51,6 @@ const ChatRoom = () => {
           reader: currentUser.id,
         });
 
-        // 👇 после пометки как прочитано — обновляем чаты
         dispatch(fetchChats());
       } catch (err) {
         console.error("Ошибка загрузки чата:", err);
@@ -125,7 +127,6 @@ const ChatRoom = () => {
         reader: currentUser.id,
       });
 
-      // 👇 также обновляем список чатов после отправки сообщения
       dispatch(fetchChats());
     } catch (err) {
       console.error("Ошибка при отправке сообщения:", err);
@@ -155,7 +156,18 @@ const ChatRoom = () => {
   return (
     <div className={style.chatWrapper}>
       <div className={style.fixedHeader}>
-        <h2 className={style.chatHeader}>{receiverInfo?.name || "пользователем"}</h2>
+        <div className={style.userInfo}>
+          {receiverInfo?.avatar && (
+            <img
+              src={receiverInfo.avatar}
+              alt="avatar"
+              className={style.avatar}
+            />
+          )}
+          <h2 className={style.chatHeader}>
+            {receiverInfo?.name || "пользователем"}
+          </h2>
+        </div>
       </div>
 
       <div className={style.chatBox}>
@@ -164,14 +176,19 @@ const ChatRoom = () => {
           return (
             <div
               key={msg._id}
-              className={`${style.messageRow} ${isMine ? style.myMessage : style.theirMessage}`}
+              className={`${style.messageRow} ${
+                isMine ? style.myMessage : style.theirMessage
+              }`}
             >
               <div className={style.messageBubble}>
                 {msg.content}
                 {isMine && (
                   <span className={style.statusIcon}>
                     {msg.read ? (
-                      <DoneAllIcon fontSize="small" className={style.readIcon} />
+                      <DoneAllIcon
+                        fontSize="small"
+                        className={style.readIcon}
+                      />
                     ) : (
                       <DoneIcon fontSize="small" className={style.unreadIcon} />
                     )}

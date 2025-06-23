@@ -94,6 +94,8 @@ $hover-bg: #f0eaff;
 
       .nameEmail {
         margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
 
         .name {
           font-size: 1.8rem;
@@ -106,6 +108,13 @@ $hover-bg: #f0eaff;
           font-size: 1.4rem;
           color: $muted;
         }
+      }
+
+      .category {
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: $darkAccent;
+        margin-bottom: 1rem;
       }
 
       .bio {
@@ -128,7 +137,7 @@ $hover-bg: #f0eaff;
         transition: background-color 0.3s ease;
 
         &:hover {
-          background-color: #8c5be0; 
+          background-color: #8c5be0;
         }
       }
     }

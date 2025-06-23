@@ -2,14 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createEscrow,
-  releaseFunds,
-  refundFunds,
-} from "../../redux/features/escrowSlice";
 import { getEmployerProjects } from "../../redux/features/projectSlice";
-import style from "./Employee_dash.module.scss";
 import { fetchUserReviews } from "../../redux/features/reviewSlice";
+import style from "./Employee_dash.module.scss";
 
 function EmployeeDash() {
   const dispatch = useDispatch();
@@ -45,17 +40,32 @@ function EmployeeDash() {
     }
   }, [dispatch, user]);
 
+  const renderStatus = (status) => {
+    switch (status) {
+      case "open":
+        return <span className={style.statusOpen}>🟣 Открыт</span>;
+      case "in_progress":
+        return <span className={style.statusInProgress}>🟢 В работе</span>;
+      case "closed":
+        return <span className={style.statusClosed}>🔴 Закрыт</span>;
+      default:
+        return <span>{status}</span>;
+    }
+  };
+
   if (!user) return <p>Загрузка данных пользователя...</p>;
 
+  const totalProjects = projects.length;
+  const newProposals = projects.reduce((count, project) => {
+    return count + (project.proposals?.filter(p => p.status === "pending").length || 0);
+  }, 0);
+  const inProgress = projects.filter(p => p.status === "in_progress").length;
+
   return (
-    <div className={style.employeeContent} style={{ marginTop: "110px" }}>
+    <div className={style.employeeContent}>
       <div className={style.profile}>
         {user.avatar ? (
-          <img
-            className={style.avatar}
-            src={`http://localhost:3000/${user.avatar}`}
-            alt="Avatar"
-          />
+          <img className={style.avatar} src={`http://localhost:3000/${user.avatar}`} alt="Avatar" />
         ) : (
           <div className={style.avatarPlaceholder}>
             {user.name?.[0]?.toUpperCase() || "U"}
@@ -66,83 +76,85 @@ function EmployeeDash() {
           <p className={style.name}>{user.name}</p>
           <p className={style.role}>{user.role}</p>
           <p className={style.balance}>
-            <strong>Баланс:</strong>{" "}
-            {user.balance?.toLocaleString("ru-RU") || 0}₽
+            <strong>Баланс:</strong> {user.balance?.toLocaleString("ru-RU") || 0}₽
           </p>
-          <button
-            onClick={() => navigate("/edit-profile")}
-            className={style.editButton}
-          >
+          <button onClick={() => navigate("/edit-profile")} className={style.editButton}>
             Редактировать профиль
           </button>
+
+          <div className={style.stats}>
+            <p>👷 Проектов размещено: {totalProjects}</p>
+            <p>✉️ Новых откликов: {newProposals}</p>
+            <p>🛠️ В работе: {inProgress}</p>
+            <p>
+              💸 Баланс: {user.balance?.toLocaleString("ru-RU") || 0}₽
+              <button onClick={() => navigate("/escrow")} className={style.topUpButton}>
+                Пополнить
+              </button>
+            </p>
+          </div>
         </div>
       </div>
 
       <div className={style.rightSide}>
         <main className={style.sectionContent}>
           <div className={style.tabMenu}>
-            {["Размещение задания", "Размещённые проекты", "Отзывы"].map(
-              (section) => (
-                <button
-                  key={section}
-                  className={`${style.tabButton} ${
-                    activeSection === section ? style.activeTab : ""
-                  }`}
-                  onClick={() => setActiveSection(section)}
-                >
-                  {section}
-                </button>
-              )
-            )}
+            {["Размещение задания", "Отзывы"].map((section) => (
+              <button
+                key={section}
+                className={`${style.tabButton} ${activeSection === section ? style.activeTab : ""}`}
+                onClick={() => setActiveSection(section)}
+              >
+                {section}
+              </button>
+            ))}
           </div>
 
           {activeSection === "Размещение задания" && (
             <section className={style.section}>
               <h3>Размещение задания</h3>
-              <button onClick={() => navigate("/create-project")}>+ Новое задание</button>
-            </section>
-          )}
+              <button onClick={() => navigate("/create-project")}>
+                + Новое задание
+              </button>
 
-          {activeSection === "Размещённые проекты" && (
-            <section className={style.section}>
-              <h3>Размещённые проекты</h3>
-              <div>
-                <button onClick={() => setFilterStatus("all")}>Все</button>
-                <button onClick={() => setFilterStatus("open")}>Открытые</button>
-                <button onClick={() => setFilterStatus("closed")}>Завершённые</button>
-              </div>
-              {status === "loading" ? (
-                <p>Загрузка проектов...</p>
-              ) : filteredProjects.length === 0 ? (
-                <p>Вы ещё не разместили ни одного проекта.</p>
-              ) : (
-                <div className={style.projectList}>
-                  {filteredProjects.map((project) => {
-                    const hasPendingProposal = project.proposals?.some(
-                      (proposal) => proposal.status === "pending"
-                    );
-                    return (
-                      <div key={project._id} className={style.projectCard}>
-                        <div
-                          style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                        >
-                          <h4>{project.title}</h4>
-                          {hasPendingProposal && (
-                            <span style={{ color: "green", fontSize: "20px" }}>🟢</span>
-                          )}
-                        </div>
-                        <p>{project.description}</p>
-                        <p><strong>Бюджет:</strong> {project.budget}₽</p>
-                        <p><strong>Статус:</strong> {project.status}</p>
-                        <p><strong>Создан:</strong> {new Date(project.createdAt).toLocaleDateString()}</p>
-                        <button onClick={() => navigate(`/employer/project/${project._id}`)}>
-                          📂 Подробнее
-                        </button>
-                      </div>
-                    );
-                  })}
+              <div className={style.projectSection}>
+                <h4>Мои размещённые проекты</h4>
+                <div className={style.statusFilter}>
+                  <button onClick={() => setFilterStatus("all")}>Все</button>
+                  <button onClick={() => setFilterStatus("open")}>Открытые</button>
+                  <button onClick={() => setFilterStatus("in progress")}>В работе</button>
+                  <button onClick={() => setFilterStatus("closed")}>Закрытые</button>
                 </div>
-              )}
+
+                {status === "loading" ? (
+                  <p>Загрузка проектов...</p>
+                ) : filteredProjects.length === 0 ? (
+                  <p>Вы ещё не разместили ни одного проекта.</p>
+                ) : (
+                  <div className={style.projectList}>
+                    {filteredProjects.map((project) => {
+                      const hasPendingProposal = project.proposals?.some(
+                        (proposal) => proposal.status === "pending"
+                      );
+                      return (
+                        <div key={project._id} className={style.projectCard}>
+                          <div className={style.projectHeader}>
+                            <h4>{project.title}</h4>
+                            {hasPendingProposal && <span className={style.hasNew}>🟢</span>}
+                          </div>
+                          <p>{project.description}</p>
+                          <p><strong>Бюджет:</strong> {project.budget}₽</p>
+                          <p><strong>Статус:</strong> {renderStatus(project.status)}</p>
+                          <p><strong>Создан:</strong> {new Date(project.createdAt).toLocaleDateString()}</p>
+                          <button onClick={() => navigate(`/employer/project/${project._id}`)}>
+                            📂 Подробнее
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </section>
           )}
 

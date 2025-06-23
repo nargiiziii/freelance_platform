@@ -1,5 +1,3 @@
-// Стили для EmployeeDash.module.scss (обновлённый hover: оттенок фиолетового вместо белого)
-
 $primary: #f4f0ff;
 $accent: #c6a5f7;
 $darkAccent: #a375f0;
@@ -8,7 +6,7 @@ $muted: #8a6cae;
 $card-bg: #ffffff;
 $border: #e8def8;
 $hover-bg: #f0eaff;
-$hoverAccent: #d3baf8; // новый оттенок фиолетового для hover
+$hoverAccent: #d3baf8;
 
 .employeeContent {
   display: flex;
@@ -17,6 +15,7 @@ $hoverAccent: #d3baf8; // новый оттенок фиолетового дл�
   font-family: 'Segoe UI', sans-serif;
   background-color: $primary;
   min-height: 100vh;
+  font-size: 1.5rem; // 🔺 значительно увеличено
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -30,12 +29,14 @@ $hoverAccent: #d3baf8; // новый оттенок фиолетового дл�
   padding: 2rem;
   text-align: center;
   box-shadow: 0 4px 20px rgba($darkAccent, 0.1);
-  max-width: 320px;
+  max-width: 340px;
+  font-size: 1.6rem; // 🔺
+
 }
 
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 1rem;
@@ -43,48 +44,80 @@ $hoverAccent: #d3baf8; // новый оттенок фиолетового дл�
 }
 
 .avatarPlaceholder {
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   background-color: $accent;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 3rem; // 🔺
   margin-bottom: 1rem;
 }
 
 .info {
   .name {
-    font-size: 1.4rem;
+    font-size: 2.2rem; // 🔺
     font-weight: 700;
     color: $text;
   }
 
   .role {
     color: $muted;
-    margin-top: 0.5rem;
+    margin-top: 0.4rem;
+    font-size: 1.6rem; // 🔺
   }
 
   .balance {
     margin-top: 1rem;
     color: darken($muted, 20%);
     font-weight: 500;
+    font-size: 1.6rem; // 🔺
   }
 
   .editButton {
     margin-top: 1.5rem;
-    padding: 0.6rem 1.4rem;
+    padding: 1rem 2rem;
     border: none;
     background-color: $darkAccent;
     color: white;
     border-radius: 12px;
+    font-size: 1.4rem; // 🔺
     cursor: pointer;
     transition: background 0.3s;
 
     &:hover {
       background-color: darken($darkAccent, 10%);
+    }
+  }
+
+  .stats {
+    margin-top: 1.5rem;
+    text-align: left;
+    font-size: 1.4rem; // 🔺
+
+    p {
+      margin: 0.6rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      button {
+        margin-left: 10px;
+        padding: 0.6rem 1.3rem;
+        font-size: 1.3rem; // 🔺
+        border-radius: 10px;
+        border: none;
+        background-color: $darkAccent;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.3s;
+
+        &:hover {
+          background-color: darken($darkAccent, 8%);
+        }
+      }
     }
   }
 }
@@ -104,7 +137,7 @@ $hoverAccent: #d3baf8; // новый оттенок фиолетового дл�
   flex: 1;
   background: $card-bg;
   border-radius: 16px;
-  padding: 2rem;
+  padding: 2.2rem;
   margin-top: 2rem;
   box-shadow: 0 4px 24px rgba($darkAccent, 0.08);
 
@@ -113,18 +146,19 @@ $hoverAccent: #d3baf8; // новый оттенок фиолетового дл�
   }
 
   h3 {
-    font-size: 1.6rem;
+    font-size: 2.4rem; // 🔺
     color: $text;
     margin-bottom: 1.5rem;
   }
 
   button {
-    padding: 0.6rem 1.2rem;
+    padding: 1rem 2rem;
     background-color: $darkAccent;
     color: white;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    font-size: 1.4rem; // 🔺
     margin-bottom: 1.5rem;
     transition: background 0.3s;
 
@@ -146,28 +180,37 @@ $hoverAccent: #d3baf8; // новый оттенок фиолетового дл�
   .projectCard {
     border: 1px solid $border;
     border-radius: 14px;
-    padding: 1.2rem 1.5rem;
+    padding: 1.6rem 1.8rem;
     background-color: #fdfcff;
     box-shadow: 0 2px 12px rgba($accent, 0.08);
 
     h4 {
-      font-size: 1.2rem;
+      font-size: 1.9rem; // 🔺
       color: $darkAccent;
+      margin-bottom: 0.5rem;
     }
 
     p {
       margin: 0.4rem 0;
       color: $text;
+      font-size: 1.4rem; // 🔺
+    }
+
+    button {
+      margin-top: 0.8rem;
+      font-size: 1.3rem; // 🔺
+      padding: 0.6rem 1.3rem;
     }
   }
 
   ul {
     li {
       background-color: lighten($primary, 2%);
-      padding: 1rem;
+      padding: 1.4rem;
       border-radius: 12px;
       margin-bottom: 1rem;
       color: $text;
+      font-size: 1.4rem; // 🔺
       box-shadow: 0 1px 6px rgba($accent, 0.1);
     }
   }
@@ -184,10 +227,11 @@ $hoverAccent: #d3baf8; // новый оттенок фиолетового дл�
   .tabButton {
     background-color: $hover-bg;
     border: none;
-    padding: 0.7rem 1.5rem;
+    padding: 1rem 2rem;
     border-radius: 12px;
     color: $muted;
     font-weight: 500;
+    font-size: 1.3rem; // 🔺
     cursor: pointer;
     transition: 0.2s ease;
 

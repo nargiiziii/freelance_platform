@@ -1,112 +1,126 @@
-.myJobs {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  background-color: #f8f9fc;
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$muted: #8a6cae;
+$card-bg: rgba(255, 255, 255, 0.6);
+$border: rgba(198, 165, 247, 0.3);
+$hover-bg: #f0eaff;
+$hoverAccent: #d3baf8;
+$glass-blur: blur(16px);
+
+.myJobsWrapper {
+  padding: 4rem 2rem;
+  background-color: $primary;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-h2 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 2rem;
+.pageTitle {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: $text;
+  text-align: center;
+  margin-bottom: 3rem;
 }
 
-.filters {
+.filtersBar {
   display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 2rem;
-
-  select {
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    color: #333;
-    transition: border-color 0.2s ease;
-
-    &:focus {
-      border-color: #835df1;
-      outline: none;
-    }
-  }
 }
 
-.card {
-  background-color: #ffffff;
+.selectInput {
+  padding: 0.8rem 1.2rem;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  transition: transform 0.2s ease;
+  border: 1px solid $border;
+  background-color: white;
+  font-size: 1.1rem;
+  color: $text;
+  transition: background 0.2s ease;
 
   &:hover {
-    transform: translateY(-3px);
+    background-color: $hover-bg;
   }
+}
 
-  h3 {
-    margin-bottom: 0.8rem;
-    font-size: 1.25rem;
-    color: #222;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
+.projectsList {
+  display: grid;
+  gap: 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
 
-  p {
-    margin: 0.4rem 0;
-    color: #555;
-    font-size: 0.95rem;
-    line-height: 1.4;
-  }
+.projectCard {
+  padding: 2rem;
+  border-radius: 24px;
+  background: $card-bg;
+  backdrop-filter: $glass-blur;
+  border: 1px solid $border;
+  box-shadow: 0 16px 40px rgba($darkAccent, 0.1);
+  color: $text;
 }
 
 .completedCard {
-  background-color: #f2f2f2;
-  opacity: 0.95;
+  opacity: 0.7;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.projectTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: $text;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .completedLabel {
-  background-color: #4caf50;
-  color: white;
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: $muted;
+  background: $hover-bg;
+  padding: 0.3rem 0.8rem;
+  border-radius: 10px;
+}
+
+.projectText {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+  color: $text;
 }
 
 .buttonGroup {
-  margin-top: 1.2rem;
   display: flex;
+  gap: 1rem;
   flex-wrap: wrap;
-  gap: 0.7rem;
+  margin-top: 1.5rem;
+}
 
-  button {
-    padding: 0.6rem 1rem;
-    font-size: 0.95rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
+.actionButton,
+.deleteButton {
+  padding: 0.7rem 1.4rem;
+  font-size: 1.05rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  background: $accent;
+  color: white;
 
-    &:nth-child(1) {
-      background-color: #835df1;
-      color: white;
-    }
+  &:hover {
+    background: $hoverAccent;
+  }
+}
 
-    &:nth-child(2) {
-      background-color: #f5a623;
-      color: white;
-    }
+.deleteButton {
+  background: #e57373;
 
-    &:nth-child(3) {
-      background-color: #e74c3c;
-      color: white;
-    }
-
-    &:hover {
-      opacity: 0.9;
-    }
+  &:hover {
+    background: darken(#e57373, 5%);
   }
 }

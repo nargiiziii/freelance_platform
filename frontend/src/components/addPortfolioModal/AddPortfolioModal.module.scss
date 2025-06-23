@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $primary: #f4f0ff;
 $accent: #c6a5f7;
 $darkAccent: #a375f0;
@@ -12,7 +14,7 @@ $error: #e57373;
   position: fixed;
   inset: 0;
   background-color: rgba(46, 15, 79, 0.2);
-  backdrop-filter: blur(6px); // ✅ лёгкий фон
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,11 +102,11 @@ $error: #e57373;
       color: white;
 
       &:hover {
-        background-color: darken($darkAccent, 8%);
+        background-color: color.adjust($darkAccent, $lightness: -8%);
       }
 
       &:disabled {
-        background-color: lighten($darkAccent, 10%);
+        background-color: color.adjust($darkAccent, $lightness: 10%);
         cursor: not-allowed;
       }
     }

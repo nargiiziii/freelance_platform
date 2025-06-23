@@ -5,106 +5,126 @@ $accent: #c6a5f7;
 $darkAccent: #a375f0;
 $text: #2e0f4f;
 $muted: #8a6cae;
-$card-bg: #ffffff;
-$border: #e8def8;
+$card-bg: rgba(255, 255, 255, 0.2);
+$border: rgba(198, 165, 247, 0.3);
 $hover-bg: #f0eaff;
+$error: #e57373;
+
+.profileWrapper {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $primary;
+  padding: 4rem 1rem;
+  overflow: hidden;
+}
 
 .container {
-  max-width: 600px;
-  margin: 4rem auto;
+  width: 100%;
+  max-width: 700px;
+  padding: 3.5rem 4rem;
+  border-radius: 28px;
   background: $card-bg;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid $border;
-  border-radius: 20px;
-  padding: 3rem 3.5rem;
+  box-shadow: 0 20px 40px rgba($darkAccent, 0.15);
   font-family: "Segoe UI", sans-serif;
-  box-shadow: 0 8px 30px rgba(163, 117, 240, 0.1);
   animation: fadeIn 0.5s ease-in-out;
+  font-size: 1.4rem;
+  z-index: 1;
 }
 
 .title {
-  font-size: 2.4rem;
+  font-size: 2.6rem;
   font-weight: 700;
   color: $text;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2.8rem;
 }
 
 .form {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  font-size: 1.15rem;
+  align-items: center;
 }
 
 .field {
+  width: 100%;
   display: flex;
   flex-direction: column;
 
   label {
-    font-size: 1.25rem;
     font-weight: 600;
     color: $text;
     margin-bottom: 0.6rem;
+    font-size: 1.6rem;
   }
 
   input,
   textarea {
-    padding: 1rem 1.2rem;
+    padding: 1.1rem 1.4rem;
     border: 1px solid $border;
     border-radius: 14px;
-    font-size: 1.15rem;
-    background-color: $primary;
+    font-size: 1.4rem;
+    background-color: rgba(255, 255, 255, 0.4);
     color: $text;
-    transition: 0.2s ease;
+    transition: border 0.3s ease, background-color 0.3s ease;
 
     &:focus {
       outline: none;
-      border-color: $accent;
-      background-color: $hover-bg;
+      border-color: $darkAccent;
+      background-color: rgba(255, 255, 255, 0.6);
     }
   }
 
   textarea {
-    min-height: 140px;
     resize: vertical;
+    min-height: 130px;
   }
 }
 
 .avatarField {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 100%;
 
   label {
-    font-size: 1.25rem;
     font-weight: 600;
     color: $text;
-    margin-bottom: 0.8rem;
-    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
   }
 }
 
 .avatarWrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  align-items: center;
+  width: 100%;
 }
 
 .avatarUploadBox {
   position: relative;
   width: 120px;
   height: 120px;
-  border: 2px dashed $border;
   border-radius: 50%;
-  background-color: $primary;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.4);
+  border: 2px dashed $border;
+  cursor: pointer;
+  transition: border 0.3s ease;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  overflow: hidden;
-  transition: border-color 0.3s ease;
 
   &:hover {
-    border-color: $accent;
+    border-color: $darkAccent;
   }
 }
 
@@ -112,49 +132,105 @@ $hover-bg: #f0eaff;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+}
+
+.avatarPlaceholder {
+  font-size: 1rem;
+  color: $muted;
+  text-align: center;
+  padding: 0.5rem;
 }
 
 .avatarInput {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   opacity: 0;
   cursor: pointer;
-  top: 0;
-  left: 0;
 }
 
-.avatarPlaceholder {
-  font-size: 0.95rem;
-  color: $muted;
-  text-align: center;
-  padding: 0 1rem;
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+.submitBtn,
+.cancelBtn {
+  padding: 0.9rem 1.6rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border-radius: 14px;
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+  min-width: 150px;
+  max-width: 160px;
+  box-shadow: 0 4px 12px rgba($darkAccent, 0.1);
 }
 
 .submitBtn {
   background-color: $darkAccent;
   color: white;
-  padding: 1rem 1.6rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: color.adjust($darkAccent, $lightness: -10%);
+    background-color: color.adjust($darkAccent, $lightness: -6%);
+  }
+}
+
+.cancelBtn {
+  background-color: rgba(255, 255, 255, 0.4);
+  color: $text;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.6);
   }
 }
 
 @keyframes fadeIn {
   0% {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(10px);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+.glowDots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  span {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(177, 135, 251, 0.3), transparent);
+    box-shadow:
+      0 0 12px rgba(175, 136, 242, 0.4),
+      0 0 20px rgba(167, 111, 252, 0.25);
+    animation: glowMove 18s infinite ease-in-out;
+    opacity: 0.4;
+  }
+}
+
+@keyframes glowMove {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translateY(-120px) scale(1.15);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.25;
   }
 }

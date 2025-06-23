@@ -50,9 +50,7 @@ function EditProfile() {
     e.preventDefault();
 
     if (!user?.id) {
-      alert(
-        "Ошибка: пользователь не найден или не загружен (user.id отсутствует)"
-      );
+      alert("Ошибка: пользователь не найден или не загружен (user.id отсутствует)");
       return;
     }
 
@@ -83,72 +81,111 @@ function EditProfile() {
     }
   };
 
+  const renderGlowDots = () => {
+    const dots = [];
+    for (let i = 0; i < 35; i++) {
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      const size = 40 + Math.random() * 40;
+      const delay = Math.random() * 10;
+      const duration = 14 + Math.random() * 6;
+
+      dots.push(
+        <span
+          key={i}
+          style={{
+            top: `${top}%`,
+            left: `${left}%`,
+            width: `${size}px`,
+            height: `${size}px`,
+            animationDelay: `${delay}s`,
+            animationDuration: `${duration}s`,
+          }}
+        />
+      );
+    }
+    return dots;
+  };
+
   return (
-    <div className={style.container}>
-      <h2 className={style.title}>Редактировать профиль</h2>
-      <form onSubmit={handleSubmit} className={style.form}>
-        <div className={style.field}>
-          <label>Имя</label>
-          <input
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            placeholder="Имя"
-            required
-          />
-        </div>
-        <div className={style.field}>
-          <label>Email</label>
-          <input
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="Email"
-            required
-          />
-        </div>
-        <div className={style.field}>
-          <label>О себе</label>
-          <textarea
-            name="bio"
-            value={form.bio}
-            onChange={handleChange}
-            placeholder="Расскажите о себе..."
-          />
-        </div>
-        <div className={style.avatarField}>
-          <label>Аватар</label>
-          <div className={style.avatarWrapper}>
-            <div className={style.avatarUploadBox}>
-              {avatarFile || form.avatar ? (
-                <img
-                  src={
-                    avatarFile
-                      ? URL.createObjectURL(avatarFile)
-                      : `/${form.avatar}`
-                  }
-                  alt="Аватар"
-                  className={style.avatarPreview}
+    <div className={style.profileWrapper}>
+      <div className={style.glowDots}>{renderGlowDots()}</div>
+
+      <div className={style.container}>
+        <h2 className={style.title}>Редактировать профиль</h2>
+        <form onSubmit={handleSubmit} className={style.form}>
+          <div className={style.field}>
+            <label>Имя</label>
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Имя"
+              required
+            />
+          </div>
+          <div className={style.field}>
+            <label>Email</label>
+            <input
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div className={style.field}>
+            <label>О себе</label>
+            <textarea
+              name="bio"
+              value={form.bio}
+              onChange={handleChange}
+              placeholder="Расскажите о себе..."
+            />
+          </div>
+          <div className={style.avatarField}>
+            <label>Аватар</label>
+            <div className={style.avatarWrapper}>
+              <div className={style.avatarUploadBox}>
+                {avatarFile || form.avatar ? (
+                  <img
+                    src={
+                      avatarFile
+                        ? URL.createObjectURL(avatarFile)
+                        : `/${form.avatar}`
+                    }
+                    alt="Аватар"
+                    className={style.avatarPreview}
+                  />
+                ) : (
+                  <div className={style.avatarPlaceholder}>
+                    Выбрать изображение
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className={style.avatarInput}
                 />
-              ) : (
-                <div className={style.avatarPlaceholder}>
-                  Выбрать изображение
-                </div>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className={style.avatarInput}
-              />
+              </div>
             </div>
           </div>
-        </div>
 
-        <button type="submit" className={style.submitBtn}>
-          Сохранить
-        </button>
-      </form>
+          <div className={style.buttonGroup}>
+            <button type="submit" className={style.submitBtn}>
+              Сохранить
+            </button>
+            <button
+              type="button"
+              className={style.cancelBtn}
+              onClick={() => navigate(-1)}
+            >
+              Отмена
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

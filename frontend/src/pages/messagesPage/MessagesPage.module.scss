@@ -9,11 +9,9 @@ $white: #ffffff;
 @keyframes fadeIn {
   0% {
     opacity: 0;
-    transform: translateY(30px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -46,14 +44,13 @@ $white: #ffffff;
   margin-bottom: 30px;
   position: relative;
   color: $text;
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease;
   animation: fadeIn 0.5s ease;
   z-index: 1;
   backdrop-filter: blur(6px);
 
   &:hover {
-    box-shadow: 0 8px 24px rgba(163, 117, 240, 0.25);
-    transform: translateY(-4px);
+    box-shadow: 0 1px 24px rgba(162, 117, 240, 0.084);
   }
 }
 

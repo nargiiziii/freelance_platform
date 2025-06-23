@@ -36,41 +36,55 @@ const EditProject = () => {
   };
 
   return (
-    <div className={styles.editProject}>
-      <h2>Редактировать проект</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Название"
-          value={project.title}
-          onChange={handleChange}
-        />
-        <textarea
-          name="description"
-          placeholder="Описание"
-          value={project.description}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="budget"
-          placeholder="Бюджет"
-          value={project.budget}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="category"
-          placeholder="Категория"
-          value={project.category}
-          onChange={handleChange}
-        />
-        <div className={styles.buttons}>
-          <button type="submit">💾 Сохранить</button>
-          <button type="button" onClick={handleCancel}>❌ Отмена</button>
-        </div>
-      </form>
+    <div className={styles.editProjectWrapper}>
+      <div className={styles.formContainer}>
+        <h2 className={styles.title}>Редактировать проект</h2>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <input
+            type="text"
+            name="title"
+            placeholder="Название"
+            value={project.title}
+            onChange={handleChange}
+            className={styles.input}
+          />
+          <textarea
+            name="description"
+            placeholder="Описание"
+            value={project.description}
+            onChange={handleChange}
+            className={styles.textarea}
+          />
+          <input
+            type="number"
+            name="budget"
+            placeholder="Бюджет"
+            value={project.budget}
+            onChange={handleChange}
+            className={styles.input}
+          />
+          <input
+            type="text"
+            name="category"
+            placeholder="Категория"
+            value={project.category}
+            onChange={handleChange}
+            className={styles.input}
+          />
+          <div className={styles.buttons}>
+            <button type="submit" className={styles.saveBtn}>
+              💾 Сохранить
+            </button>
+            <button
+              type="button"
+              onClick={handleCancel}
+              className={styles.cancelBtn}
+            >
+              ❌ Отмена
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

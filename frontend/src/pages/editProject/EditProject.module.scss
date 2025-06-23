@@ -1,18 +1,116 @@
-.editProject {
-  max-width: 500px;
-  margin: auto;
-  padding: 2rem;
+// 🎨 Цветовая палитра прямо здесь
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$muted: #8a6cae;
+$card-bg: rgba(255, 255, 255, 0.6);
+$border: rgba(198, 165, 247, 0.4);
+$hoverAccent: #d3baf8;
+$hover-bg: #f0eaff;
+$glass-blur: blur(20px);
 
-  input,
-  textarea {
-    display: block;
-    width: 100%;
-    margin-bottom: 1rem;
-    padding: 0.6rem;
+.editProjectWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1rem;
+  background-color: $primary;
+  min-height: 100vh;
+}
+
+.formContainer {
+  width: 100%;
+  max-width: 700px;
+  background: $card-bg;
+  backdrop-filter: $glass-blur;
+  border: 1px solid $border;
+  box-shadow: 0 20px 40px rgba($darkAccent, 0.1);
+  border-radius: 28px;
+  padding: 3.5rem 4rem;
+  font-family: "Segoe UI", sans-serif;
+  animation: fadeIn 0.4s ease;
+}
+
+.title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: $text;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.input,
+.textarea {
+  font-size: 1.6rem;
+  padding: 1.2rem 1.4rem;
+  border-radius: 12px;
+  border: 1px solid $border;
+  background-color: #fff;
+  color: $text;
+  transition: border 0.2s ease;
+  resize: vertical;
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
   }
+}
 
-  button {
-    padding: 0.6rem 1rem;
-    cursor: pointer;
+.textarea {
+  min-height: 140px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.saveBtn,
+.cancelBtn {
+  flex: 1;
+  padding: 1.2rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.saveBtn {
+  background-color: $accent;
+  color: #fff;
+
+  &:hover {
+    background-color: $darkAccent;
+  }
+}
+
+.cancelBtn {
+  background-color: $hover-bg;
+  color: $text;
+
+  &:hover {
+    background-color: $hoverAccent;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

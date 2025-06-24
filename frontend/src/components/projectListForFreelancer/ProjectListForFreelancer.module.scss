@@ -1,0 +1,167 @@
+@use "sass:color";
+
+$bg: #fdfbff;
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$card: #ffffff;
+$border: rgba(155, 133, 184, 0.2);
+$hover: #f0eaff;
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  padding: 3rem 8%;
+  background-color: $primary;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 1.25rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.leftPanel {
+  flex: 0 0 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.heading {
+  font-size: 2.4rem;
+  color: $darkAccent;
+  margin-bottom: 0;
+}
+
+.selectBar select {
+  width: 100%;
+  padding: 1.2rem 1.5rem;
+  border-radius: 14px;
+  border: 1px solid $border;
+  background-color: $card;
+  color: $text;
+  font-size: 1.6rem;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, $darkAccent 50%),
+    linear-gradient(135deg, $darkAccent 50%, transparent 50%);
+  background-position: calc(100% - 1.5rem) center, calc(100% - 1rem) center;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover,
+  &:focus {
+    border-color: $darkAccent;
+    box-shadow: 0 0 0 3px rgba($darkAccent, 0.2);
+  }
+}
+
+.projectList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 860px;
+  width: 100%;
+}
+
+.card {
+  background: $card;
+  border: 1px solid $border;
+  border-radius: 16px;
+  padding: 2rem 5rem;
+  box-shadow: 0 4px 20px rgba(197, 150, 247, 0.08);
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: $hover;
+  }
+
+  h4.title {
+    font-size: 3.5rem;
+    color: $darkAccent;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0 1rem;
+    font-size: 1.7rem;
+    color: $text;
+  }
+
+  .employerInfo {
+    margin-top: 1rem;
+    font-size: 1.8rem;
+    color: $text;
+  }
+
+  .respondBtn,
+  .messageBtn {
+    width: 15rem;
+    margin-top: 1.2rem;
+    background-color: $darkAccent;
+    color: rgb(255, 255, 255);
+    padding: 0.8rem 1.4rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+
+    &:hover {
+      background-color: color.adjust($darkAccent, $lightness: -10%);
+    }
+  }
+}
+
+.responseForm {
+  margin-top: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: start;
+  width: 40rem;
+
+  textarea,
+  input {
+    width: 100%;
+    padding: 1.2rem;
+    border-radius: 10px;
+    border: 1px solid $border;
+    font-size: 1.6rem;
+    resize: none;
+  }
+
+  .submitBtn {
+        width: 15rem;
+    align-self: flex-start;
+    background-color: $darkAccent;
+    color: white;
+    padding: 0.8rem 1.6rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: color.adjust($darkAccent, $lightness: -10%);
+    }
+  }
+}
+
+.loading {
+  text-align: center;
+  color: $text;
+  font-size: 1.6rem;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}

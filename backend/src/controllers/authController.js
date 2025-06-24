@@ -32,7 +32,9 @@ export const registerUser = [
     try {
       const { role, name, email, password, bio, category } = req.body;
       const skills = req.body.skills ? JSON.parse(req.body.skills) : [];
-      const portfolio = req.body.portfolio ? JSON.parse(req.body.portfolio) : [];
+      const portfolio = req.body.portfolio
+        ? JSON.parse(req.body.portfolio)
+        : [];
 
       const avatar = req.file
         ? req.file.path.replace(/\\/g, "/").replace(/^\/+/, "")
@@ -121,6 +123,7 @@ export const loginUser = async (req, res) => {
     // Генерация токенов и сохранение refresh токена
     const { accessToken, refreshToken } = generateTokens(user._id);
     user.refreshToken = refreshToken;
+    user.lastSeen = new Date(); // 👈 Вот это добавляем
     await user.save();
 
     // Установка cookies и отправка данных пользователя

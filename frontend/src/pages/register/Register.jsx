@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "../../axiosInstance";
 import { useNavigate } from "react-router-dom";
 import style from "./Register.module.scss";
+import { HiPlusSm } from "react-icons/hi"; // новый красивый плюс
+import { AiOutlineClose } from "react-icons/ai"; // оставить крестик
 
 export default function Register() {
   const navigate = useNavigate();
@@ -13,13 +15,14 @@ export default function Register() {
     password: "",
     bio: "",
     category: "",
-    skills: [""],
+    skills: [],
     portfolio: [],
   });
 
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [error, setError] = useState("");
+  const [newSkill, setNewSkill] = useState("");
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -31,22 +34,6 @@ export default function Register() {
       setAvatarFile(file);
       setAvatarPreview(URL.createObjectURL(file));
     }
-  };
-
-  const handleSkillChange = (index, value) => {
-    const updatedSkills = [...form.skills];
-    updatedSkills[index] = value;
-    setForm((prev) => ({ ...prev, skills: updatedSkills }));
-  };
-
-  const addSkillField = () => {
-    setForm((prev) => ({ ...prev, skills: [...prev.skills, ""] }));
-  };
-
-  const removeSkillField = (index) => {
-    const updatedSkills = [...form.skills];
-    updatedSkills.splice(index, 1);
-    setForm((prev) => ({ ...prev, skills: updatedSkills }));
   };
 
   const handleSubmit = async (e) => {
@@ -78,25 +65,58 @@ export default function Register() {
         withCredentials: true,
       });
 
-      console.log("Успешно зарегистрированы");
       navigate("/login");
     } catch (err) {
-      console.error("Ошибка регистрации:", err.response?.data || err.message);
       setError(err.response?.data?.message || "Ошибка при регистрации");
     }
   };
 
+  const addSkill = () => {
+    const trimmed = newSkill.trim();
+    if (trimmed && !form.skills.includes(trimmed)) {
+      setForm((prev) => ({ ...prev, skills: [...prev.skills, trimmed] }));
+    }
+    setNewSkill("");
+  };
+
+  const removeSkill = (index) => {
+    const updatedSkills = [...form.skills];
+    updatedSkills.splice(index, 1);
+    setForm((prev) => ({ ...prev, skills: updatedSkills }));
+  };
+
+  const categories = ["Web Development", "Design", "Writing", "Marketing"];
+
   return (
     <form onSubmit={handleSubmit} className={style.form}>
-      <select
-        name="role"
-        value={form.role}
-        onChange={handleChange}
-        className={style.select}
-      >
-        <option value="freelancer">Freelancer</option>
-        <option value="employer">Employer</option>
-      </select>
+      <div className={style.buttonGroup}>
+        <button
+          type="button"
+          className={`${style.toggleButton} ${form.role === "freelancer" ? style.active : ""}`}
+          onClick={() =>
+            setForm((prev) => ({
+              ...prev,
+              role: "freelancer",
+              category: "",
+            }))
+          }
+        >
+          Freelancer
+        </button>
+        <button
+          type="button"
+          className={`${style.toggleButton} ${form.role === "employer" ? style.active : ""}`}
+          onClick={() =>
+            setForm((prev) => ({
+              ...prev,
+              role: "employer",
+              category: "",
+            }))
+          }
+        >
+          Employer
+        </button>
+      </div>
 
       <input
         name="name"
@@ -134,58 +154,61 @@ export default function Register() {
 
       {form.role === "freelancer" && (
         <>
-          <select
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            className={style.select}
-            required
-          >
-            <option value="">Выберите профессию</option>
-            <option value="Web Development">Web Development</option>
-            <option value="Design">Design</option>
-            <option value="Writing">Writing</option>
-            <option value="Marketing">Marketing</option>
-          </select>
+          <div className={style.buttonGroup}>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                className={`${style.toggleButton} ${form.category === cat ? style.active : ""}`}
+                onClick={() => setForm((prev) => ({ ...prev, category: cat }))}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
 
-          <label className={style.label}>Skills:</label>
-          {form.skills.map((skill, index) => (
-            <div key={index} className={style.skillRow}>
+          <div className={style.skillsSection}>
+            <div className={style.skillsHeader}>
+              <label className={style.label}>Skills:</label>
               <input
                 type="text"
-                value={skill}
-                onChange={(e) => handleSkillChange(index, e.target.value)}
-                className={style.input}
-                placeholder={`Skill ${index + 1}`}
+                value={newSkill}
+                onChange={(e) => setNewSkill(e.target.value)}
+                placeholder="Enter a skill"
+                className={style.skillInput}
               />
-              {form.skills.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeSkillField(index)}
-                  className={style.removeButton}
-                >
-                  ❌
-                </button>
-              )}
+              <button
+                type="button"
+                onClick={addSkill}
+                className={style.addSkillButton}
+                style={{ color: "#28a745" }}
+              >
+                <HiPlusSm size={24} />
+              </button>
             </div>
-          ))}
-          <button
-            type="button"
-            onClick={addSkillField}
-            className={style.addButton}
-          >
-            ➕ Add Skill
-          </button>
+
+            <div className={style.skillsList}>
+              {form.skills.map((skill, index) => (
+                <div key={index} className={style.skillItem}>
+                  <span>{skill}</span>
+                  <button
+                    type="button"
+                    onClick={() => removeSkill(index)}
+                    className={style.removeSkillButton}
+                    style={{ color: "#dc3545" }}
+                  >
+                    <AiOutlineClose size={16} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
         </>
       )}
 
       <label className={style.fileLabel}>
         {avatarPreview ? (
-          <img
-            src={avatarPreview}
-            alt="Avatar Preview"
-            className={style.avatarPreview}
-          />
+          <img src={avatarPreview} alt="Avatar Preview" className={style.avatarPreview} />
         ) : (
           "Загрузить фото профиля"
         )}

@@ -1,60 +1,86 @@
+$primary: #f9f7ff;
+$accent: #b999f4;
+$darkAccent: #9a7ce2;
+$text: #2c0e50;
+$muted: #9b85b8;
+$error: #ff4b5c;
+$white: #ffffff;
+$border: rgba(155, 133, 184, 0.4);
+
 .form {
+  max-width: 600px;
+  margin: 60px auto;
+  background: $white;
+  padding: 3.5rem;
+  border-radius: 28px;
+  box-shadow: 0 0 36px rgba(0, 0, 0, 0.06);
+  font-family: "Segoe UI", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  max-width: 500px;
-  margin: 5rem auto;
-  padding: 3rem;
-  background-color: #fdf7ff;
-  border-radius: 1.5rem;
-  box-shadow: 0 0 20px rgba(138, 43, 226, 0.2);
-  color: #333;
+  gap: 2.4rem;
+  font-size: 1.3rem;
 }
 
 .input,
 .select,
 .textarea {
   width: 100%;
-  padding: 1.2rem 1.5rem;
+  max-width: 440px;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid $border;
+  border-radius: 14px;
   font-size: 1.4rem;
-  border: 2px solid #d3a3ff;
-  border-radius: 1rem;
-  outline: none;
-  transition: border-color 0.3s;
+  background-color: #fbf8ff;
+  color: $text;
 
   &:focus {
-    border-color: #8b3fce;
+    outline: none;
+    border-color: $accent;
+    box-shadow: 0 0 0 3px rgba(185, 153, 244, 0.3);
   }
 }
 
-.select {
-  background-color: white;
-  font-weight: 500;
+.textarea {
+  resize: vertical;
+  min-height: 160px;
 }
 
-.textarea {
-  min-height: 100px;
-  resize: vertical;
+.label {
+  font-weight: 600;
+  color: $text;
+  font-size: 1.4rem;
+  margin-bottom: -1rem;
+  align-self: center;
+}
+
+.skillRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 440px;
+
+  input {
+    flex: 1;
+  }
 }
 
 .fileLabel {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  background-color: #f1e0ff;
-  color: #6d079c;
-  border: 2px dashed #d3a3ff;
-  padding: 2rem;
-  border-radius: 1rem;
-  cursor: pointer;
-  transition: border-color 0.3s;
-  font-size: 1.4rem;
+  align-items: center;
+  width: 160px;
+  height: 160px;
+  border: 2px dashed $border;
+  border-radius: 50%;
+  color: $muted;
   text-align: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 
   &:hover {
-    border-color: #aa00ff;
+    background-color: #f5f0ff;
   }
 }
 
@@ -63,51 +89,170 @@
 }
 
 .avatarPreview {
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 1rem;
-  border: 2px solid #aa00ff;
+  margin-bottom: 0.6rem;
 }
 
 .button {
-  width: 100%;
-  padding: 1.2rem;
-  background-color: #aa00ff;
-  color: white;
-  font-size: 1.6rem;
-  font-weight: bold;
+  background: $darkAccent;
+  color: $white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 1.4rem 2.4rem;
   border: none;
-  border-radius: 2rem;
+  border-radius: 16px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.2s ease-in-out;
 
   &:hover {
-    background-color: #8300b3;
+    background: $accent;
   }
 }
 
 .error {
-  color: #d30000;
+  color: $error;
   font-size: 1.3rem;
   text-align: center;
 }
 
+.buttonGroup {
+  display: flex;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+  justify-content: center;
+}
 
-.skillRow {
+.toggleButton {
+  padding: 1.2rem 2.4rem;
+  background-color: #f4edff;
+  border: 2px solid $border;
+  border-radius: 14px;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: $text;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: $accent;
+    color: $white;
+    border-color: $accent;
+  }
+
+  &.active {
+    background-color: $accent !important;
+    color: $white !important;
+    border-color: $accent !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(155, 133, 184, 0.3) !important;
+  }
+
+  &:not(.active) {
+    background-color: #f4edff !important;
+    color: $text !important;
+    font-weight: 500 !important;
+    border-color: $border !important;
+    box-shadow: none !important;
+  }
+}
+
+.skillsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+  width: 100%;
+  max-width: 440px;
+}
+
+.skillsHeader {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  .label {
+    margin-bottom: 0;
+  }
 }
 
-.addButton,
-.removeButton {
-  padding: 4px 8px;
-  border: none;
-  background-color: #ddd;
+.skillInput {
+  flex: 1;
+  padding: 1rem 1.4rem;
+  border: 1px solid $border;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  background-color: #fbf8ff;
+  color: $text;
+  max-width: 360px;
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+    box-shadow: 0 0 0 3px rgba(185, 153, 244, 0.3);
+  }
+}
+
+.addSkillButton {
+  background: none;
+  border: none !important;
+  padding: 4px;
+  margin-left: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  border-radius: 4px;
+  transition: background-color 0.2s;
+  background-color: #28a74646 !important;
+
+  svg {
+    width: 30px;
+    height: 26px;
+  }
 }
 
+.skillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: center;
+  max-width: 360px;
+}
+
+.skillItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: #f9f7ff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  font-size: 1.5rem;
+  color: $text;
+  border: 1px solid $border;
+  transition: background 0.2s;
+
+  .removeSkillButton {
+    background: none;
+    border: none;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $error;
+    cursor: pointer;
+    transition: transform 0.15s ease-in-out;
+
+    svg {
+      width: 22px;
+      height: 20px;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

@@ -1,6 +1,8 @@
+@use "sass:color";
+
 $primary: #f4f0ff;
 $accent: #c6a5f7;
-$darkAccent: #a375f0;
+$darkAccent: #b48bfb;
 $text: #2e0f4f;
 $muted: #8a6cae;
 $card-bg: #ffffff;
@@ -12,10 +14,10 @@ $hoverAccent: #d3baf8;
   display: flex;
   flex-direction: column;
   padding: 2rem 6%;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   background-color: $primary;
   min-height: 100vh;
-  font-size: 1.5rem; // 🔺 значительно увеличено
+  font-size: 1.5rem;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -30,92 +32,93 @@ $hoverAccent: #d3baf8;
   text-align: center;
   box-shadow: 0 4px 20px rgba($darkAccent, 0.1);
   max-width: 340px;
-  font-size: 1.6rem; // 🔺
+  font-size: 1.6rem;
 
-}
-
-.avatar {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 1rem;
-  border: 3px solid $accent;
-}
-
-.avatarPlaceholder {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  background-color: $accent;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem; // 🔺
-  margin-bottom: 1rem;
-}
-
-.info {
-  .name {
-    font-size: 2.2rem; // 🔺
-    font-weight: 700;
-    color: $text;
+  .avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid $accent;
   }
 
-  .role {
-    color: $muted;
-    margin-top: 0.4rem;
-    font-size: 1.6rem; // 🔺
+  .avatarPlaceholder {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background-color: $accent;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin-bottom: 1rem;
   }
 
-  .balance {
-    margin-top: 1rem;
-    color: darken($muted, 20%);
-    font-weight: 500;
-    font-size: 1.6rem; // 🔺
-  }
-
-  .editButton {
-    margin-top: 1.5rem;
-    padding: 1rem 2rem;
-    border: none;
-    background-color: $darkAccent;
-    color: white;
-    border-radius: 12px;
-    font-size: 1.4rem; // 🔺
-    cursor: pointer;
-    transition: background 0.3s;
-
-    &:hover {
-      background-color: darken($darkAccent, 10%);
+  .info {
+    .name {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: $text;
     }
-  }
 
-  .stats {
-    margin-top: 1.5rem;
-    text-align: left;
-    font-size: 1.4rem; // 🔺
+    .role {
+      color: $muted;
+      margin-top: 0.4rem;
+      font-size: 1.6rem;
+    }
 
-    p {
-      margin: 0.6rem 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .balance {
+      margin-top: 1rem;
+      color: color.adjust($muted, $lightness: -20%);
+      font-weight: 500;
+      font-size: 1.6rem;
+    }
 
-      button {
-        margin-left: 10px;
-        padding: 0.6rem 1.3rem;
-        font-size: 1.3rem; // 🔺
-        border-radius: 10px;
-        border: none;
-        background-color: $darkAccent;
-        color: #fff;
-        cursor: pointer;
-        transition: background 0.3s;
+    .editButton {
+      margin-top: 1.5rem;
+      padding: 1rem 2rem;
+      border: none;
+      background-color: $darkAccent;
+      color: white;
+      border-radius: 12px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      width: 22rem;
 
-        &:hover {
-          background-color: darken($darkAccent, 8%);
+      &:hover {
+        background-color: color.adjust($darkAccent, $lightness: -10%);
+      }
+    }
+
+    .stats {
+      margin-top: 1.5rem;
+      text-align: left;
+      font-size: 1.4rem;
+
+      p {
+        margin: 0.6rem 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        button {
+          margin: 0 10px;
+          padding: 0.6rem 1.3rem;
+          font-size: 1.6rem;
+          border-radius: 10px;
+          border: none;
+          background-color: $darkAccent;
+          color: #fff;
+          cursor: pointer;
+          transition: background 0.3s;
+          width: 15rem;
+
+          &:hover {
+            background-color: darken($darkAccent, 8%);
+          }
         }
       }
     }
@@ -146,7 +149,7 @@ $hoverAccent: #d3baf8;
   }
 
   h3 {
-    font-size: 2.4rem; // 🔺
+    font-size: 2.4rem;
     color: $text;
     margin-bottom: 1.5rem;
   }
@@ -158,13 +161,18 @@ $hoverAccent: #d3baf8;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 1.4rem; // 🔺
-    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    margin: 1rem 0.5rem;
     transition: background 0.3s;
+    width: 11rem;
 
     &:hover {
-      background-color: darken($darkAccent, 10%);
+      background-color: color.adjust($darkAccent, $lightness: -10%);
     }
+  }
+
+  .addBtn{
+    width: 18rem;
   }
 
   .projectList {
@@ -185,7 +193,7 @@ $hoverAccent: #d3baf8;
     box-shadow: 0 2px 12px rgba($accent, 0.08);
 
     h4 {
-      font-size: 1.9rem; // 🔺
+      font-size: 1.9rem;
       color: $darkAccent;
       margin-bottom: 0.5rem;
     }
@@ -193,24 +201,25 @@ $hoverAccent: #d3baf8;
     p {
       margin: 0.4rem 0;
       color: $text;
-      font-size: 1.4rem; // 🔺
+      font-size: 1.4rem;
     }
 
     button {
       margin-top: 0.8rem;
-      font-size: 1.3rem; // 🔺
+      font-size: 1.3rem;
       padding: 0.6rem 1.3rem;
+      width: 16rem;
     }
   }
 
   ul {
     li {
-      background-color: lighten($primary, 2%);
+      background-color: color.adjust($primary, $lightness: 2%);
       padding: 1.4rem;
       border-radius: 12px;
       margin-bottom: 1rem;
       color: $text;
-      font-size: 1.4rem; // 🔺
+      font-size: 1.4rem;
       box-shadow: 0 1px 6px rgba($accent, 0.1);
     }
   }
@@ -231,13 +240,14 @@ $hoverAccent: #d3baf8;
     border-radius: 12px;
     color: $muted;
     font-weight: 500;
-    font-size: 1.3rem; // 🔺
+    font-size: 1.3rem;
     cursor: pointer;
     transition: 0.2s ease;
+    width: 16rem;
 
     &:hover {
       background-color: $hoverAccent;
-      color: darken($muted, 10%);
+      color: color.adjust($muted, $lightness: -10%);
     }
   }
 
@@ -247,7 +257,7 @@ $hoverAccent: #d3baf8;
     font-weight: 600;
 
     &:hover {
-      background-color: darken($darkAccent, 5%);
+      background-color: color.adjust($darkAccent, $lightness: -5%);
       color: white;
     }
   }

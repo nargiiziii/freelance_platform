@@ -1,0 +1,87 @@
+.responsesWrapper {
+  margin-top: 2.5rem;
+
+  h4 {
+    font-size: 1.4rem;
+    color: #6f42c1;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.responsesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.6rem;
+}
+
+.card {
+  background: #f9f7ff;
+  border: 1px solid rgba(186, 153, 244, 0.3);
+  border-radius: 18px;
+  padding: 1.6rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease;
+  font-size: 1rem;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  h5 {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: #4c2a85;
+  }
+
+  p {
+    margin: 0.4rem 0;
+    color: #333;
+  }
+
+  .status {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-weight: bold;
+    font-size: 0.95rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 12px;
+    background: #ece3fc;
+    color: #663399;
+  }
+
+  .accepted {
+    background: #e0ffe0;
+    color: #2e7d32;
+  }
+
+  .rejected {
+    background: #ffe0e0;
+    color: #c62828;
+  }
+
+  .submitted {
+    background: #fff8e1;
+    color: #f9a825;
+  }
+
+  .pending {
+    background: #ede7f6;
+    color: #512da8;
+  }
+}
+
+.viewAllBtn {
+  margin-top: 2rem;
+  background-color: #b999f4;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.4rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background-color: #a47ded;
+  }
+}

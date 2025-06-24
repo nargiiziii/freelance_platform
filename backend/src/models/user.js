@@ -16,7 +16,7 @@ const reviewSchema = new mongoose.Schema(
     comment: { type: String, required: true },
     stars: { type: Number, min: 1, max: 5, required: true },
   },
-  { _id: false } 
+  { _id: false }
 );
 
 // Схема элемента портфолио фрилансера: информация о выполненной работе
@@ -29,7 +29,7 @@ const portfolioItemSchema = new mongoose.Schema(
     date: { type: String },
     image: { type: String },
   },
-  { _id: false } 
+  { _id: false }
 );
 
 // Основная схема пользователя: общие поля, а также специфичные для фрилансеров и нанимателей
@@ -42,6 +42,7 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },
+    lastSeen: { type: Date, default: Date.now },
 
     // Профиль и описание
     avatar: { type: String, default: "" },
@@ -53,7 +54,7 @@ const userSchema = new mongoose.Schema(
     rating: { type: Number, default: 0 },
     completedProjectsCount: { type: Number, default: 0 },
     isAvailable: { type: Boolean, default: true },
-    category: { type: String }, 
+    category: { type: String },
 
     // Общие поля, связанные с деньгами и отзывами
     balance: { type: Number, default: 0 },
@@ -63,7 +64,7 @@ const userSchema = new mongoose.Schema(
     // Поле, актуальное только для нанимателей
     postedProjectsCount: { type: Number, default: 0 },
   },
-  { timestamps: true } 
+  { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);

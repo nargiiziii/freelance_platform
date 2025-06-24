@@ -13,28 +13,29 @@ $shadow: 0 14px 40px rgba($darkAccent, 0.08);
   max-width: 1000px;
   margin: 3rem auto;
   padding: 3rem 3.5rem;
-  background: linear-gradient(145deg, $primary, $hover-bg);
-  border-radius: 24px;
-  box-shadow: $shadow;
+  border-radius: 5px;
   font-family: "Segoe UI", sans-serif;
   color: $text;
-  animation: fadeIn 0.5s ease;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  background-color: #ded2ec2c;
+}
 
-  h2 {
-    font-size: 2.8rem;
-    text-align: center;
-    margin-bottom: 3rem;
-    font-weight: 700;
-    color: $text;
-    text-shadow: 1px 1px $border;
-  }
+h2 {
+  font-size: 2.8rem;
+  text-align: center;
+  margin: 2rem 0;
+  font-weight: 500;
+  color: $text;
+  text-shadow: 1px 1px $border;
 }
 
 .error {
   text-align: center;
   color: $error;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 500;
   margin-bottom: 2rem;
 }
 
@@ -45,43 +46,62 @@ $shadow: 0 14px 40px rgba($darkAccent, 0.08);
 }
 
 .card {
+  width: 80rem;
   background: $card-bg;
-  border-radius: 22px;
-  padding: 2.2rem 2.5rem;
+  border-radius: 10px;
+  padding: 2rem 4rem;
   box-shadow: $shadow;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba($darkAccent, 0.1);
+  @media (max-width: 768px) {
+    padding: 2rem;
   }
 
   h3 {
-    font-size: 1.6rem;
+    font-size: 2.3rem;
     color: $text;
     margin-bottom: 1.5rem;
   }
+}
 
-  p {
-    margin: 0.6rem 0;
-    font-size: 1.1rem;
-    line-height: 1.6;
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
 
-    strong {
-      color: $darkAccent;
-    }
-
-    a {
-      color: $darkAccent;
-      font-weight: 600;
-      text-decoration: underline dotted;
-      transition: color 0.3s;
-
-      &:hover {
-        color: darken($darkAccent, 10%);
-      }
-    }
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 2rem;
   }
+}
+
+.left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.right {
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+}
+
+.completed {
+  background-color: #e0f7e9;
+}
+
+.rejected {
+  background-color: #fde8e8;
+}
+
+.inProgress {
+  background-color: #f4effc;
 }
 
 .completedLabel,
@@ -89,67 +109,143 @@ $shadow: 0 14px 40px rgba($darkAccent, 0.08);
   display: inline-block;
   padding: 0.4rem 1.2rem;
   border-radius: 16px;
-  font-size: 0.95rem;
+  font-size: 1.4rem;
   font-weight: 600;
   margin-bottom: 0.8rem;
-  background: $hover-bg;
+  background: rgb(230, 251, 230);
   color: $darkAccent;
-  border: 1px solid $accent;
+  border: 1px solid rgb(149, 28, 224);
 }
 
 .submitBlock {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  align-items: center;
+  gap: 1.6rem;
+  font-family: "Segoe UI", sans-serif;
 
   input[type="file"] {
-    background: $hover-bg;
+    display: none;
+  }
+
+  .fileLabel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 360px;
+    height: 160px;
+    padding: 2rem;
+    background-color: $card-bg;
     border: 2px dashed $border;
-    padding: 0.7rem 1rem;
-    border-radius: 14px;
-    font-size: 1rem;
-    color: $text;
+    border-radius: 20px;
+    color: $muted;
+    font-size: 1.4rem;
+    font-weight: 500;
+    text-align: center;
     cursor: pointer;
-    transition: border 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 8px rgba($accent, 0.05);
+    overflow: hidden;
 
     &:hover {
       border-color: $accent;
+      background-color: $hover-bg;
+      color: $darkAccent;
+      box-shadow: 0 0 10px rgba($accent, 0.15);
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background-color: #dfd5e8;
+      border-radius: 50%;
+      opacity: 0.08;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+    }
+
+    span,
+    svg,
+    p {
+      z-index: 1;
     }
   }
 
+  .fileName {
+    font-size: 1.3rem;
+    color: $text;
+    font-weight: 500;
+    text-align: center;
+    max-width: 300px;
+    word-wrap: break-word;
+    animation: fadeIn 0.4s ease;
+  }
+
   button {
-    background: linear-gradient(to right, $accent, $darkAccent);
+    margin-top: 0.5rem;
+    width: 100%;
+    max-width: 240px;
+    background-color: $darkAccent;
     color: white;
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 0.7rem 1.2rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 1rem 1.5rem;
     border-radius: 14px;
     border: none;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, transform 0.2s;
 
     &:hover {
-      background: linear-gradient(to right, darken($accent, 5%), darken($darkAccent, 5%));
+      background: linear-gradient(to right, $accent, $darkAccent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba($darkAccent, 0.1);
     }
 
     &:disabled {
-      background: $muted;
+      background-color: $muted;
       cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+}
+
+.submittedBlock {
+  margin-top: 2rem;
+  text-align: center;
+  background: rgb(239, 253, 239);
+  border-radius: 16px;
+  padding: 1.2rem;
+  box-shadow: inset 0 0 8px rgba($accent, 0.05);
+
+  .fileSent {
+    font-size: 1.3rem;
+    color: $text;
+    margin-bottom: 1rem;
+
+    a {
+      color: $darkAccent;
+      text-decoration: underline;
+
+      &:hover {
+        color: $accent;
+      }
     }
   }
 }
 
 .reviewBlock {
-  background: $hover-bg;
-  border: 2px dashed $border;
-  padding: 1.6rem;
-  border-radius: 20px;
   margin-top: 2rem;
-  box-shadow: inset 0 0 12px rgba($accent, 0.05);
 
   h4 {
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     font-weight: 600;
     color: $text;
     margin-bottom: 1rem;

@@ -6,6 +6,8 @@ import AddPortfolioModal from "../addPortfolioModal/AddPortfolioModal";
 import style from "./Freelancer_dash.module.scss";
 import SubmitWorkModal from "../submitWork/SubmitWorkModal";
 import { fetchUserReviews } from "../../redux/features/reviewSlice";
+import FreelancerProposals from "../freelancerProposals/FreelancerProposals";
+import { fetchFreelancerStats } from "../../redux/features/userSlice";
 
 function FreelancerDash() {
   const navigate = useNavigate();
@@ -31,6 +33,15 @@ function FreelancerDash() {
   useEffect(() => {
     if (user?.portfolio) setPortfolio(user.portfolio);
   }, [user]);
+
+  const stats = useSelector((state) => state.user.stats);
+  // console.log("stats из Redux:", stats);
+
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(fetchFreelancerStats(user.id));
+    }
+  }, [user?.id, dispatch]);
 
   useEffect(() => {
     if (filterStatus === "all") {
@@ -102,32 +113,53 @@ function FreelancerDash() {
           {activeSection === "Профиль" && (
             <section className={style.section}>
               <h3>Профиль</h3>
-              <p>
-                <strong>Биография:</strong> {user.bio || "Нет описания"}
-              </p>
-              <div className={style.skillsContainer}>
-                <strong>Навыки:</strong>
-                {user.skills?.length ? (
-                  <div className={style.skillsList}>
-                    {user.skills.map((skill, index) => (
-                      <span key={index} className={style.skillBadge}>
-                        {skill}
-                      </span>
-                    ))}
+
+              <div className={style.profileGrid}>
+                <div className={style.profileColumn}>
+                  <p>
+                    <strong>Биография:</strong> {user.bio || "Нет описания"}
+                  </p>
+                  <div className={style.skillsContainer}>
+                    <strong>Навыки:</strong>
+                    {user.skills?.length ? (
+                      <div className={style.skillsList}>
+                        {user.skills.map((skill, index) => (
+                          <span key={index} className={style.skillBadge}>
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <span> Нет навыков </span>
+                    )}
                   </div>
-                ) : (
-                  <span> Нет навыков </span>
-                )}
+                  <p>
+                    <strong>Статус:</strong>{" "}
+                    {user.isAvailable ? "Доступен" : "Не доступен"}
+                  </p>
+                  <p>
+                    <strong>Выполнено проектов:</strong>{" "}
+                    {user.completedProjectsCount || 0}
+                  </p>
+                </div>
+
+                <div className={style.activityCard}>
+                  <h4>Активность</h4>
+                  <p>
+                    🔄 Последний вход:{" "}
+                    {stats && stats.lastSeen
+                      ? new Date(stats.lastSeen).toLocaleDateString()
+                      : "Нет данных"}
+                  </p>
+                  <p>📤 Отправлено откликов: {stats?.proposalsCount ?? 0}</p>
+                  <p>⭐ Общий рейтинг: {stats?.averageRating ?? "0.0"}</p>
+                </div>
               </div>
 
-              <p>
-                <strong>Статус:</strong>{" "}
-                {user.isAvailable ? "Доступен" : "Не доступен"}
-              </p>
-              <p>
-                <strong>Выполнено проектов:</strong>{" "}
-                {user.completedProjectsCount || 0}
-              </p>
+              <div className={style.proposalsWrapper}>
+                <h4>📁 История откликов</h4>
+                <FreelancerProposals />
+              </div>
             </section>
           )}
 

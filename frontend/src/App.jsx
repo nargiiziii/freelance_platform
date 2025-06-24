@@ -16,7 +16,6 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import EditProfile from "./pages/editProf/EditProdile";
 import BalancePage from "./pages/balancePage/BalancePage";
 import MessagesPage from "./pages/messagesPage/MessagesPage";
-import ChatRoom from "./pages/сhatRoom/ChatRoom";
 import FreelancersList from "./pages/freelancersList/FreelancersList";
 
 // Страницы фрилансера
@@ -30,6 +29,7 @@ import CreateProjectPage from "./pages/createProjectPage/CreateProjectPage";
 import MyJobs from "./pages/myJobs/MyJobs";
 import ProjectDetails from "./pages/projectDetails/ProjectDetails";
 import EditProject from "./pages/editProject/EditProject";
+import CombinedChatPage from "./pages/messagesPage/MessagesPage";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +47,6 @@ const router = createBrowserRouter([
       { path: "/edit-profile", element: <EditProfile /> },
       { path: "/escrow", element: <BalancePage /> },
       { path: "/messages", element: <MessagesPage /> },
-      { path: "/chatRoom/:userId", element: <ChatRoom /> },
       { path: "/freelancers", element: <FreelancersList /> },
       { path: "/freelancer-dash", element: <FreelancerDash /> },
       { path: "/jobs", element: <ProjectListForFreelancer /> },

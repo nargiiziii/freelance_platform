@@ -1,119 +1,124 @@
+@use "sass:color";
+
 $primary: #f4f0ff;
 $accent: #c6a5f7;
 $darkAccent: #a375f0;
 $text: #2e0f4f;
 $muted: #8a6cae;
-$card-bg: rgba(255, 255, 255, 0.6);
-$border: rgba(198, 165, 247, 0.3);
+$card-bg: #ffffff;
+$border: #e8def8;
 $hover-bg: #f0eaff;
-$hoverAccent: #d3baf8;
-$glass-blur: blur(16px);
+$shadow: 0 10px 28px rgba($darkAccent, 0.08);
+$success: #4caf50;
 
-.myJobsWrapper {
-  padding: 4rem 2rem;
-  background-color: $primary;
+.myJobs {
+  padding: 3rem 6%;
+  background: $primary;
   min-height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-.pageTitle {
-  font-size: 2.6rem;
-  font-weight: 700;
+  font-family: "Segoe UI", sans-serif;
   color: $text;
-  text-align: center;
-  margin-bottom: 3rem;
-}
 
-.filtersBar {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
-}
-
-.selectInput {
-  padding: 0.8rem 1.2rem;
-  border-radius: 12px;
-  border: 1px solid $border;
-  background-color: white;
-  font-size: 1.1rem;
-  color: $text;
-  transition: background 0.2s ease;
-
-  &:hover {
-    background-color: $hover-bg;
+  h2 {
+    font-size: 2.8rem;
+    margin-bottom: 2.5rem;
+    text-align: start;
+    color: $darkAccent;
   }
 }
 
-.projectsList {
-  display: grid;
-  gap: 2rem;
-  max-width: 960px;
-  margin: 0 auto;
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-bottom: 3rem;
+  justify-content: start;
+
+  select {
+    padding: 0.6rem 1rem;
+    font-size: 1.6rem;
+    border: 1px solid $border;
+    border-radius: 8px;
+    background: $card-bg;
+    color: $text;
+    transition: 0.3s;
+    box-shadow: inset 0 0 6px rgba($accent, 0.1);
+
+    &:hover {
+      background-color: $hover-bg;
+      border-color: $accent;
+    }
+  }
 }
 
 .projectCard {
-  padding: 2rem;
-  border-radius: 24px;
+  position: relative; 
   background: $card-bg;
-  backdrop-filter: $glass-blur;
-  border: 1px solid $border;
-  box-shadow: 0 16px 40px rgba($darkAccent, 0.1);
-  color: $text;
-}
+  border-radius: 18px;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  box-shadow: $shadow;
+  transition: box-shadow 0.3s ease-in-out;
+  width: 100rem;
 
-.completedCard {
-  opacity: 0.7;
-  background: rgba(255, 255, 255, 0.4);
-}
-
-.projectTitle {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: $text;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  &:hover {
+    box-shadow: 0 12px 32px rgba($darkAccent, 0.12);
+  }
 }
 
 .completedLabel {
-  font-size: 1rem;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba($success, 0.1);
+  color: $success;
+  padding: 0.4rem 1rem;
+  font-size: 1.3rem;
+  border-radius: 8px;
   font-weight: 600;
-  color: $muted;
-  background: $hover-bg;
-  padding: 0.3rem 0.8rem;
-  border-radius: 10px;
+}
+
+.projectTitle {
+  font-size: 2rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  color: $text;
+
+  .completedLabel {
+    font-size: 1.4rem;
+    color: $success;
+    margin-left: 1rem;
+    font-weight: 500;
+  }
 }
 
 .projectText {
-  font-size: 1.1rem;
-  margin-bottom: 0.6rem;
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
   color: $text;
 }
 
 .buttonGroup {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
   margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .actionButton,
 .deleteButton {
-  padding: 0.7rem 1.4rem;
-  font-size: 1.05rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.2s ease;
+  width: 22rem; // ✅ фиксированная ширина
   background: $accent;
   color: white;
+  border: none;
+  padding: 1.4rem 1.2rem;
+  font-size: 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.3s ease;
 
   &:hover {
-    background: $hoverAccent;
+    background: $darkAccent;
   }
 }
 
@@ -121,6 +126,6 @@ $glass-blur: blur(16px);
   background: #e57373;
 
   &:hover {
-    background: darken(#e57373, 5%);
+    background: darken(#e57373, 10%);
   }
 }

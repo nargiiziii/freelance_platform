@@ -21,7 +21,7 @@ export const getUserChats = async (req, res) => {
   const userId = req.user.id;
 
   const chats = await Chat.find({ members: userId })
-    .populate("members", "name role")
+    .populate("members", "name role avatar")
     .populate({
       path: "lastMessage",
       select: "content sender createdAt",
@@ -42,7 +42,7 @@ export const getUserChats = async (req, res) => {
         members: chat.members,
         lastMessage: chat.lastMessage,
         unreadCount,
-        partner, 
+        partner,
       };
     })
   );

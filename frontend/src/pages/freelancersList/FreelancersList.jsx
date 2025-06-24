@@ -66,15 +66,18 @@ const FreelancersList = () => {
               )}
             </div>
             <div className={style.info}>
-              <h3 className={style.name}>{user.name}</h3> {/* ИМЯ НАД EMAIL */}
-              <p className={style.email}>{user.email}</p>
-              {user.category && (
-                <p className={style.category}>Категория: {user.category}</p>
-              )}
-              <p className={style.bio}>{user.bio}</p>
-              <Link to={`/chatRoom/${user._id}`}>
-                <button className={style.button}>Отправить сообщение</button>
-              </Link>
+              <div className={style.details}>
+                <h3 className={style.name}>{user.name}</h3>
+                {user.category && (
+                  <p className={style.category}>{user.category}</p>
+                )}
+                <p className={style.email}>{user.email}</p>
+              </div>
+              <div className={style.action}>
+                <Link to={`/messages?user=${user._id}`}>
+                  <button className={style.button}>Отправить сообщение</button>
+                </Link>
+              </div>
             </div>
           </div>
         ))}

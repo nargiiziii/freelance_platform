@@ -57,88 +57,111 @@ const MyProposalsFreel = () => {
   };
 
   return (
-    <div className={style.container}>
+    <>
       <h2>Мои отклики</h2>
-      {status === "loading" && <p>Загрузка...</p>}
-      {error && <p className={style.error}>{error}</p>}
-      {Array.isArray(myProposals) && myProposals.length === 0 ? (
-        <p>Вы пока не отправляли откликов.</p>
-      ) : (
-        <ul className={style.list}>
-          {myProposals.map((proposal) => {
-            const hasLeftReview = reviews.some(
-              (rev) => rev.project === proposal.project?._id
-            );
+      <div className={style.container}>
+        {status === "loading" && <p>Загрузка...</p>}
+        {error && <p className={style.error}>{error}</p>}
+        {Array.isArray(myProposals) && myProposals.length === 0 ? (
+          <p>Вы пока не отправляли откликов.</p>
+        ) : (
+          <ul className={style.list}>
+            {myProposals.map((proposal) => {
+              const hasLeftReview = reviews.some(
+                (rev) => rev.project === proposal.project?._id
+              );
 
-            return (
-              <li key={proposal._id} className={style.card}>
-                <h3>{proposal.project?.title || "Проект удалён"}</h3>
+              const isProjectPaid =
+                proposal.project?.status === "closed" &&
+                proposal.project?.escrow?.status === "released";
 
-                {proposal.project?.status === "closed" &&
-                  proposal.project?.escrow?.status === "released" && (
-                    <p className={style.completedLabel}>
-                      ✅ Работа завершена — оплата получена
-                    </p>
-                  )}
+              const cardStatusClass = isProjectPaid
+                ? style.completed
+                : proposal.status === "rejected"
+                ? style.rejected
+                : style.inProgress;
 
-                {proposal.project?.status === "closed" &&
-                  proposal.escrow?.status === "released" && (
-                    <p className={style.statusPaid}>💰 Проект оплачен</p>
-                  )}
+              return (
+                <li
+                  key={proposal._id}
+                  className={`${style.card} ${cardStatusClass}`}
+                >
+                  <div className={style.top}>
+                    <div className={style.left}>
+                      <h3>{proposal.project?.title || "Проект удалён"}</h3>
+                      {isProjectPaid && (
+                        <p className={style.statusPaid}>Проект оплачен</p>
+                      )}
+                      <p><strong>Ваше сообщение:</strong> {proposal.coverLetter}</p>
+                      <p><strong>Цена:</strong> {proposal.price}₽</p>
+                      <p>
+                        <strong>Статус:</strong>{" "}
+                        {proposal.status === "pending" && "На рассмотрении"}
+                        {proposal.status === "accepted" && "Принят"}
+                        {proposal.status === "rejected" && "Отклонён"}
+                        {proposal.status === "submitted" && "Работа отправлена"}
+                      </p>
+                    </div>
 
-                <p>
-                  <strong>Ваше сообщение:</strong> {proposal.coverLetter}
-                </p>
-                <p>
-                  <strong>Цена:</strong> {proposal.price}₽
-                </p>
-                <p>
-                  <strong>Статус:</strong>{" "}
-                  {proposal.status === "pending" && "⏳ На рассмотрении"}
-                  {proposal.status === "accepted" && "✅ Принят"}
-                  {proposal.status === "rejected" && "❌ Отклонён"}
-                  {proposal.status === "submitted" && "📤 Работа отправлена"}
-                </p>
+                    <div className={style.right}>
+                      {proposal.status === "accepted" && (
+                        <div className={style.submitBlock}>
+                          <label className={style.fileLabel}>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 30 24"
+                              fill="currentColor"
+                            >
+                              <path d="M12 16v-8m0 0l-3 3m3-3l3 3m9 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Нажмите для загрузки файла
+                            <input
+                              type="file"
+                              onChange={(e) =>
+                                handleFileChange(proposal._id, e.target.files[0])
+                              }
+                            />
+                          </label>
 
-                {proposal.status === "accepted" && (
-                  <div className={style.submitBlock}>
-                    <input
-                      type="file"
-                      onChange={(e) =>
-                        handleFileChange(proposal._id, e.target.files[0])
-                      }
-                    />
-                    <button
-                      onClick={() =>
-                        handleSubmit(proposal._id, proposal.project._id)
-                      }
-                      disabled={submitting[proposal._id]}
-                    >
-                      {submitting[proposal._id]
-                        ? "Отправка..."
-                        : "📤 Отправить работу"}
-                    </button>
+                          <button
+                            onClick={() =>
+                              handleSubmit(proposal._id, proposal.project._id)
+                            }
+                            disabled={submitting[proposal._id]}
+                          >
+                            {submitting[proposal._id]
+                              ? "Отправка..."
+                              : "Отправить работу"}
+                          </button>
+                        </div>
+                      )}
+
+                      {proposal.status === "submitted" && proposal.workFile && (
+                        <div className={style.submittedBlock}>
+                          <p className={style.fileSent}>
+                            Вы отправили файл:{" "}
+                            <a
+                              href={`http://localhost:3000/uploads/${proposal.workFile}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {proposal.workFile}
+                            </a>
+                          </p>
+
+                          {isProjectPaid && (
+                            <p className={style.completedLabel}>
+                              ✔ Работа завершена — оплата получена
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                )}
 
-                {proposal.status === "submitted" && proposal.workFile && (
-                  <p>
-                    📎 Вы отправили файл:{" "}
-                    <a
-                      href={`http://localhost:3000/uploads/${proposal.workFile}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {proposal.workFile}
-                    </a>
-                  </p>
-                )}
-
-                {proposal.project?.status === "closed" &&
-                  proposal.project?.escrow?.status === "released" &&
-                  !hasLeftReview && (
-                    <div className={style.reviewBlock} style={{ marginTop: "15px" }}>
-                      <h4>Оцените заказчика</h4>
+                  {isProjectPaid && !hasLeftReview && (
+                    <div className={style.reviewBlock}>
+                      <h4>Оцените заказчика:</h4>
                       <ReviewForm
                         toUserId={proposal.project?.employer?._id}
                         projectId={proposal.project?._id}
@@ -146,12 +169,13 @@ const MyProposalsFreel = () => {
                       />
                     </div>
                   )}
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+    </>
   );
 };
 

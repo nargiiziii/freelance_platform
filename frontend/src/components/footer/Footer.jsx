@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Footer.module.scss";
-import logo from "/images/logo_light.png";
+import logo from "/images/logo_dark.png";
+import { FaTwitter, FaFacebookF, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -26,9 +27,9 @@ const Footer = () => {
           </p>
           <p>Phone: +1 (XXX) XXX-XXX</p>
           <div className={styles.socials}>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer">Twitter</a>
-            <a href="https://facebook.com" target="_blank" rel="noreferrer">Facebook</a>
-            <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer"><FaTwitter /></a>
+            <a href="https://facebook.com" target="_blank" rel="noreferrer"><FaFacebookF /></a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer"><FaInstagram /></a>
           </div>
         </div>
       </div>

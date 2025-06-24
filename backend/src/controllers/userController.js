@@ -1,6 +1,7 @@
 // Импорт модели пользователя и mongoose для работы с базой данных
 import User from "../models/user.js";
 import mongoose from "mongoose";
+import Proposal from "../models/proposal.js";
 
 // Контроллер для обновления профиля пользователя (имя, email, аватар, био)
 export const updateUser = async (req, res) => {
@@ -49,15 +50,18 @@ export const addPortfolioItem = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     console.error("Ошибка при добавлении проекта в портфолио:", err);
-    res.status(500).json({ message: "Ошибка при добавлении проекта в портфолио" });
+    res
+      .status(500)
+      .json({ message: "Ошибка при добавлении проекта в портфолио" });
   }
 };
 
 // Контроллер для получения информации о пользователе по ID
 export const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: "Пользователь не найден" });
+    const user = await User.findById(req.params.id).select("-passwordHash");
+    if (!user)
+      return res.status(404).json({ message: "Пользователь не найден" });
     res.json(user); // Возвращаем весь объект пользователя, включая portfolio
   } catch (err) {
     res.status(500).json({ message: "Ошибка сервера" });
@@ -70,7 +74,8 @@ export const topUpBalance = async (req, res) => {
     const userId = req.user.id;
     const { amount } = req.body;
 
-    if (!amount || amount <= 0) return res.status(400).json({ message: "Некорректная сумма" });
+    if (!amount || amount <= 0)
+      return res.status(400).json({ message: "Некорректная сумма" });
 
     const user = await User.findById(userId);
     user.balance += amount;
@@ -95,5 +100,29 @@ export const getFreelancers = async (req, res) => {
     res.json(freelancers);
   } catch (err) {
     res.status(500).json({ message: "Ошибка при получении фрилансеров" });
+  }
+};
+
+//чтобы видеть последнее посещение и активность пользователя
+export const getFreelancerStats = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findById(userId).select("lastSeen reviews");
+    const proposalsCount = await Proposal.countDocuments({ freelancer: userId });
+
+    const reviews = user.reviews;
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce((acc, r) => acc + r.stars, 0) / reviews.length
+        : 0;
+
+    res.json({
+      lastSeen: user.lastSeen,
+      proposalsCount,
+      averageRating: averageRating.toFixed(1),
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Ошибка получения статистики" });
   }
 };

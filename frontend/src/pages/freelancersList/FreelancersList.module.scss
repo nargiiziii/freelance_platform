@@ -3,22 +3,19 @@ $accent: #c6a5f7;
 $darkAccent: #a375f0;
 $text: #2e0f4f;
 $muted: #8a6cae;
-$card-bg: #ffffff;
-$border: #e8def8;
 $hover-bg: #f0eaff;
 
 .freelancerList {
   padding: 4rem 6%;
   background-color: $primary;
   font-family: "Segoe UI", sans-serif;
-  min-height: 100vh;
+  min-height: 80vh;
 
   h2 {
     font-size: 2.8rem;
     font-weight: 700;
     color: $text;
     margin-bottom: 3rem;
-    text-align: center;
   }
 
   .topBar {
@@ -55,20 +52,14 @@ $hover-bg: #f0eaff;
     align-items: flex-start;
     gap: 2.2rem;
     padding: 2.2rem 2.8rem;
-    border-radius: 20px;
-    background-color: $card-bg;
-    border: 1px solid $border;
+    border-radius: 8px;
+    background-color: rgba(221, 207, 254, 0.304);
     box-shadow: 0 8px 20px rgba(163, 117, 240, 0.08);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-
-    &:hover {
-      box-shadow: 0 14px 36px rgba(163, 117, 240, 0.18);
-      transform: translateY(-6px);
-    }
+    width: 80rem;
 
     .avatar {
-      width: 100px;
-      height: 100px;
+      width: 14rem;
+      height: 14rem;
       min-width: 100px;
       border-radius: 50%;
       background-color: $accent;
@@ -90,54 +81,53 @@ $hover-bg: #f0eaff;
     .info {
       flex: 1;
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
 
-      .nameEmail {
-        margin-bottom: 1rem;
+      .details {
         display: flex;
         flex-direction: column;
 
-        .name {
-          font-size: 1.8rem;
-          font-weight: 700;
+        h3 {
+          font-size: 2.8rem;
+          font-weight: 500;
           color: $text;
           margin-bottom: 0.3rem;
+          text-align: start;
         }
 
         .email {
-          font-size: 1.4rem;
+          font-size: 1.7rem;
           color: $muted;
+          margin-bottom: 1rem;
+        }
+
+        .category {
+          font-size: 1.4rem;
+          font-weight: 400;
+          color: gray;
+          margin-bottom: 0.5rem;
         }
       }
 
-      .category {
-        font-size: 1.4rem;
-        font-weight: 500;
-        color: $darkAccent;
-        margin-bottom: 1rem;
-      }
+      .action {
+        display: flex;
+        align-items: center;
 
-      .bio {
-        font-size: 1.3rem;
-        color: $text;
-        margin-bottom: 1.4rem;
-        line-height: 1.8;
-      }
+        .button {
+          padding: 1rem 2rem;
+          background-color: $darkAccent;
+          color: white;
+          border: none;
+          border-radius: 12px;
+          font-size: 1.25rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
 
-      .button {
-        align-self: flex-start;
-        padding: 1rem 2rem;
-        background-color: $darkAccent;
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-size: 1.25rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-
-        &:hover {
-          background-color: #8c5be0;
+          &:hover {
+            background-color: #8c5be0;
+          }
         }
       }
     }

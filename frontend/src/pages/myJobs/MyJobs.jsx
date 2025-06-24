@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styles from "./MyJobs.module.scss";
@@ -78,12 +78,11 @@ const MyJobs = () => {
   const isCompleted = (status) => status === "closed";
 
   return (
-    <div className={styles.myJobsWrapper}>
-      <h2 className={styles.pageTitle}>📄 Мои проекты</h2>
+    <div className={styles.myJobs}>
+      <h2>📄 Мои проекты</h2>
 
-      <div className={styles.filtersBar}>
+      <div className={styles.filters}>
         <select
-          className={styles.selectInput}
           onChange={(e) => setStatusFilter(e.target.value)}
           defaultValue=""
         >
@@ -94,11 +93,7 @@ const MyJobs = () => {
           <option value="closed">Завершён</option>
         </select>
 
-        <select
-          className={styles.selectInput}
-          onChange={handleSortChange}
-          defaultValue=""
-        >
+        <select onChange={handleSortChange} defaultValue="">
           <option value="">Сортировать по</option>
           <option value="date_desc">Новые сначала</option>
           <option value="date_asc">Старые сначала</option>
@@ -107,65 +102,84 @@ const MyJobs = () => {
         </select>
       </div>
 
-      <div className={styles.projectsList}>
-        {projects.map((project) => {
-          const completed = isCompleted(project.status);
-          const noProposals = project.proposals?.length === 0;
+      {projects.map((project) => {
+        const completed = isCompleted(project.status);
+        const noProposals = project.proposals?.length === 0;
+        const firstFreelancerId = project.proposals?.[0]?.freelancer?._id;
 
-          return (
-            <div
-              key={project._id}
-              className={`${styles.projectCard} ${
-                completed ? styles.completedCard : ""
-              }`}
-            >
-              <h3 className={styles.projectTitle}>
-                📌 {project.title}{" "}
-                {completed && (
-                  <span className={styles.completedLabel}>✔ Завершено</span>
-                )}
-              </h3>
-              <p className={styles.projectText}>🧾 {project.description.slice(0, 100)}...</p>
-              <p className={styles.projectText}>📂 Категория: {project.category}</p>
-              <p className={styles.projectText}>💰 Бюджет: {project.budget}₽</p>
-              <p className={styles.projectText}>🗓 Дата: {new Date(project.createdAt).toLocaleDateString()}</p>
-              <p className={styles.projectText}>
-                👥 Откликов: {project.proposals?.filter((p) => p.status !== "rejected").length || 0}
-              </p>
-              <p className={styles.projectText}>⏳ Статус: {project.status}</p>
+        return (
+          <div
+            key={project._id}
+            className={`${styles.projectCard} ${
+              completed ? styles.completedCard : ""
+            }`}
+          >
+            {completed && (
+              <span className={styles.completedLabel}>✔ Завершено</span>
+            )}
+            <h3 className={styles.projectTitle}>
+              📌 {project.title}
+            </h3>
+            <p className={styles.projectText}>
+              {project.description.slice(0, 100)}...
+            </p>
+            <p className={styles.projectText}>
+              Категория: {project.category}
+            </p>
+            <p className={styles.projectText}>
+              Бюджет: {project.budget}₽
+            </p>
+            <p className={styles.projectText}>
+              Дата: {new Date(project.createdAt).toLocaleDateString()}
+            </p>
+            <p className={styles.projectText}>
+              Откликов:{" "}
+              {project.proposals?.filter((p) => p.status !== "rejected").length || 0}
+            </p>
+            <p className={styles.projectText}>
+              Статус: {project.status}
+            </p>
 
-              <div className={styles.buttonGroup}>
+            <div className={styles.buttonGroup}>
+              <button
+                className={styles.actionButton}
+                onClick={() => navigate(`/employer/project/${project._id}`)}
+              >
+                🔍 Подробнее
+              </button>
+
+              {!completed && project.status === "open" && (
+                <>
+                  <button
+                    className={styles.actionButton}
+                    onClick={() => navigate(`/edit-project/${project._id}`)}
+                  >
+                    ✏️ Редактировать
+                  </button>
+
+                  {noProposals && (
+                    <button
+                      className={styles.deleteButton}
+                      onClick={() => confirmDelete(project._id)}
+                    >
+                      🗑 Удалить
+                    </button>
+                  )}
+                </>
+              )}
+
+              {firstFreelancerId && (
                 <button
                   className={styles.actionButton}
-                  onClick={() => navigate(`/employer/project/${project._id}`)}
+                  onClick={() => navigate(`/messages?user=${firstFreelancerId}`)}
                 >
-                  🔍 Подробнее
+                  💬 Написать сообщение
                 </button>
-
-                {!completed && project.status === "open" && (
-                  <>
-                    <button
-                      className={styles.actionButton}
-                      onClick={() => navigate(`/edit-project/${project._id}`)}
-                    >
-                      ✏️ Редактировать
-                    </button>
-
-                    {noProposals && (
-                      <button
-                        className={styles.deleteButton}
-                        onClick={() => confirmDelete(project._id)}
-                      >
-                        🗑 Удалить
-                      </button>
-                    )}
-                  </>
-                )}
-              </div>
+              )}
             </div>
-          );
-        })}
-      </div>
+          </div>
+        );
+      })}
 
       {showModal && (
         <ConfirmModal

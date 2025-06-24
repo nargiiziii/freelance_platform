@@ -1,4 +1,3 @@
-// src/pages/CreateProjectPage.jsx
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +53,8 @@ const CreateProjectPage = () => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        const message = err?.response?.data?.message || "Your balance is empty!";
+        const message =
+          err?.response?.data?.message || "Your balance is empty!";
         toast.error(message);
       });
   };
@@ -62,47 +62,58 @@ const CreateProjectPage = () => {
   return (
     <div className={style.modal}>
       <form onSubmit={handleSubmit}>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          required
-        >
-          <option value="">Выберите категорию</option>
-          <option value="Web Development">Web Development</option>
-          <option value="Design">Design</option>
-          <option value="Writing">Writing</option>
-          <option value="Marketing">Marketing</option>
-        </select>
-
         <h3>Новое задание</h3>
+
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Название"
+          placeholder="Название проекта"
           required
         />
+
+        <h4 className={style.subTitle}>Выберите категорию</h4>
+        <div className={style.categoryButtons}>
+          {["Web Development", "Design", "Writing", "Marketing"].map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              className={`${style.categoryBtn} ${
+                category === cat ? style.active : ""
+              }`}
+              onClick={() => setCategory(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Описание"
+          placeholder="Описание проекта"
           required
         />
+
         <input
           value={skillsRequired}
           onChange={(e) => setSkillsRequired(e.target.value)}
-          placeholder="Навыки (через запятую)"
+          placeholder="Необходимые навыки (через запятую)"
         />
+
         <input
           type="number"
           value={budget}
           onChange={(e) => setBudget(e.target.value)}
-          placeholder="Бюджет"
+          placeholder="Бюджет в USD"
           required
         />
-        <button type="submit">Создать</button>
-        <button type="button" onClick={() => navigate("/my-jobs")}>
-          Отмена
-        </button>
+
+        <div className={style.buttonGroup}>
+          <button type="submit">Создать</button>
+          <button type="button" onClick={() => navigate("/my-jobs")}>
+            Отмена
+          </button>
+        </div>
       </form>
     </div>
   );

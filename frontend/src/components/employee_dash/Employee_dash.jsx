@@ -113,7 +113,7 @@ function EmployeeDash() {
           {activeSection === "Размещение задания" && (
             <section className={style.section}>
               <h3>Размещение задания</h3>
-              <button onClick={() => navigate("/create-project")}>
+              <button className={style.addBtn} onClick={() => navigate("/create-project")}>
                 + Новое задание
               </button>
 
@@ -147,7 +147,7 @@ function EmployeeDash() {
                           <p><strong>Статус:</strong> {renderStatus(project.status)}</p>
                           <p><strong>Создан:</strong> {new Date(project.createdAt).toLocaleDateString()}</p>
                           <button onClick={() => navigate(`/employer/project/${project._id}`)}>
-                            📂 Подробнее
+                             Подробнее
                           </button>
                         </div>
                       );

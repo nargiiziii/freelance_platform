@@ -126,6 +126,6 @@ $success: #4caf50;
   background: #e57373;
 
   &:hover {
-    background: darken(#e57373, 10%);
+background: color.adjust(#e57373, $lightness: -10%);
   }
 }

@@ -22,10 +22,26 @@ export const fetchUserReviews = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await axios.get(`/reviews/my`);
-      return res.data; 
+      return res.data;
     } catch (err) {
       return rejectWithValue(
         err.response?.data?.message || "Ошибка при загрузке отзывов"
+      );
+    }
+  }
+);
+
+// Получение отзывов ДЛЯ пользователя (по userId)
+export const fetchReviewsForUser = createAsyncThunk(
+  "reviews/fetchReviewsForUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`/reviews/${userId}`);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message ||
+          "Ошибка при загрузке отзывов пользователя"
       );
     }
   }
@@ -62,6 +78,18 @@ const reviewSlice = createSlice({
         state.reviews = action.payload;
       })
       .addCase(fetchUserReviews.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchReviewsForUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchReviewsForUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.reviews = action.payload;
+      })
+      .addCase(fetchReviewsForUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

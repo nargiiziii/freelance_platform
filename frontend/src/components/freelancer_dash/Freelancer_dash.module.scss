@@ -2,7 +2,7 @@
 
 $primary: #f4f0ff;
 $accent: #c6a5f7;
-$darkAccent: #a375f0;
+$darkAccent: #9964f6;
 $text: #2e0f4f;
 $muted: #8a6cae;
 $card-bg: #ffffff;
@@ -33,29 +33,28 @@ $hoverAccent: #d3baf8;
   max-width: 360px;
   margin-bottom: 2rem;
 
-  .avatar {
-    width: 120px;
-    height: 120px;
+  .avatar,
+  .avatarPlaceholder {
+    width: 170px;
+    height: 170px;
     border-radius: 50%;
-    object-fit: cover;
     margin-bottom: 1.2rem;
-    border: 4px solid $accent;
     box-shadow: 0 0 10px rgba($accent, 0.3);
   }
 
+  .avatar {
+    object-fit: cover;
+    border: 2px solid $accent;
+  }
+
   .avatarPlaceholder {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
     background-color: $accent;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2.4rem;
-    margin-bottom: 1.2rem;
     font-weight: 500;
-    box-shadow: 0 0 10px rgba($accent, 0.3);
   }
 
   .info {
@@ -66,15 +65,18 @@ $hoverAccent: #d3baf8;
       margin-bottom: 0.5rem;
     }
 
-    .role {
+    .role,
+    .balance {
       font-size: 1.6rem;
-      color: $muted;
       margin-bottom: 1rem;
     }
 
+    .role {
+      color: $muted;
+    }
+
     .balance {
-      font-size: 1.6rem;
-      color: darken($muted, 20%);
+      color: color.adjust($muted, $lightness: -20%);
       font-weight: 600;
       margin-bottom: 1.5rem;
     }
@@ -133,7 +135,7 @@ $hoverAccent: #d3baf8;
   }
 
   p {
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     color: $text;
     margin-bottom: 1.2rem;
     line-height: 1.8;
@@ -141,7 +143,7 @@ $hoverAccent: #d3baf8;
 
   strong {
     color: $darkAccent;
-    font-size: 1.35rem;
+    font-size: 1.7rem;
   }
 
   .skillsContainer {
@@ -170,7 +172,7 @@ $hoverAccent: #d3baf8;
     padding-left: 0;
 
     li {
-      background-color: lighten($primary, 2%);
+      background-color: color.adjust($primary, $lightness: 2%);
       padding: 1.3rem;
       border-radius: 14px;
       margin-bottom: 1.2rem;
@@ -182,7 +184,7 @@ $hoverAccent: #d3baf8;
       strong {
         display: inline-block;
         margin-bottom: 0.3rem;
-        font-size: 1.3rem;
+        font-size: 1.7rem;
         color: $darkAccent;
       }
 
@@ -194,13 +196,14 @@ $hoverAccent: #d3baf8;
   }
 
   .addProjectButton {
+    width: 20rem;
     padding: 0.8rem 1.6rem;
     background-color: $darkAccent;
     color: white;
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1.6rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
     transition: background 0.3s ease;
@@ -237,15 +240,18 @@ $hoverAccent: #d3baf8;
     padding: 2rem;
     border-radius: 16px;
     box-shadow: 0 2px 12px rgba($darkAccent, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 
     h4 {
-      font-size: 1.4rem;
+      font-size: 1.7rem;
       color: $darkAccent;
       margin-bottom: 1rem;
     }
 
     p {
-      font-size: 1.1rem;
+      font-size: 1.6rem;
       color: $text;
       margin-bottom: 0.7rem;
     }
@@ -271,7 +277,8 @@ $hoverAccent: #d3baf8;
   padding-bottom: 1rem;
 
   .tabButton {
-    background-color: $hover-bg;
+    width: 15rem;
+    background-color: $border;
     border: none;
     padding: 0.7rem 1.5rem;
     border-radius: 12px;
@@ -293,7 +300,201 @@ $hoverAccent: #d3baf8;
 
     &:hover {
       background-color: color.adjust($darkAccent, $lightness: -5%);
-      color: white;
     }
   }
+}
+
+.profileTwoColumn {
+  display: flex;
+  flex-direction: row;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.leftColumn {
+  width: 50rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.bioBox,
+.skillsBox,
+.statusBox {
+  background-color: $hover-bg;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba($darkAccent, 0.06);
+}
+
+.bioBox strong,
+.skillsBox strong {
+  display: block;
+  font-size: 1.7rem;
+  color: $darkAccent;
+  margin-bottom: 0.8rem;
+}
+
+.bioBox p,
+.skillsBox span,
+.statusBox p {
+  font-size: 1.6rem;
+  color: $text;
+  line-height: 1.6;
+}
+
+.statusBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.skillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 0.7rem;
+}
+
+.skillBadge {
+  background-color: $card-bg;
+  padding: 0.7rem 1.4rem;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: $text;
+  box-shadow: 0 2px 6px rgba($darkAccent, 0.06);
+}
+
+.portfolioGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.portfolioItem {
+  position: relative;
+  height: 200px;
+  border-radius: 18px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(46, 15, 79, 0.466); 
+    z-index: 1;
+  }
+}
+
+.portfolioContent {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.portfolioContent strong {
+  font-size: 3rem;
+  color: #e8def8;
+  margin-bottom: 0.4rem;
+}
+
+.portfolioContent p {
+  font-size: 1.7rem;
+  color: #f0eaff;
+  line-height: 1.4;
+  opacity: 0.95;
+  margin-bottom: 0.8rem;
+}
+
+.viewButton {
+  align-self: flex-start;
+  padding: 0.45rem 1rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1.6rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.35);
+  }
+}
+
+
+
+
+.reviewsSection {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 6px 24px rgba(163, 117, 240, 0.1);
+  font-size: 1.6rem;
+  color: #2e0f4f;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.reviewsSection h3 {
+  font-size: 2.4rem;
+  margin-bottom: 1.5rem;
+  color: #471e8f;
+}
+
+.reviewItem {
+  width: 70rem;
+  position: relative;
+  background: #f4f0ff;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 1.8rem;
+  box-shadow: 0 6px 20px rgba(163, 117, 240, 0.15);
+}
+
+.reviewDate {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.6rem;
+  font-size: 1.4rem;
+  color: #8a6cae;
+}
+
+.reviewUser {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2e0f4f;
+  margin-bottom: 0.5rem;
+}
+
+.reviewStars {
+  margin-bottom: 1.2rem;
+  font-size: 1.4rem;
+  color: #a375f0;
+}
+
+.reviewComment {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: #2e0f4f;
 }

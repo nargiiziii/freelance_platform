@@ -36,7 +36,6 @@ const ProjectDetails = () => {
   return (
     <div className={style.projectPage}>
       <div className={style.layout}>
-        {/* Левая колонка — Инфо о проекте и фрилансер */}
         <div className={style.leftColumn}>
           <div className={style.projectHeader}>
             <h1 className={style.title}>{project.title}</h1>
@@ -91,7 +90,6 @@ const ProjectDetails = () => {
         {/* Правая колонка — отклики */}
         <div className={style.rightColumn}>
           <section className={style.section}>
-            <h2 className={style.sectionTitle}>Отклики</h2>
             <ProposalListEmp projectId={project._id} onProjectUpdated={setProject} />
           </section>
         </div>

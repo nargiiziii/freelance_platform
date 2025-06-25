@@ -1,110 +1,130 @@
+@use "sass:color";
+
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$muted: #8a6cae;
+$card-bg: #ffffff;
+$hover-bg: #f0eaff;
+$error: #e57373;
+$border: #e0d2f5;
+
 .proposalList {
-  padding: 20px 0;
-  color: #2e0f4f;
-  font-family: 'Segoe UI', sans-serif;
+  padding: 2.5rem 6%;
+  font-family: "Segoe UI", sans-serif;
+  background-color: $primary;
 }
 
 .heading {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #6a41c2;
-  margin-bottom: 12px;
+  font-size: 1.9rem;
+  color: $text;
+  margin-bottom: 2rem;
+  font-weight: 700;
 }
 
 .noProposals {
-  font-style: italic;
-  color: #a38ccf;
+  font-size: 1.6rem;
+  color: $muted;
   text-align: center;
-  padding: 20px 0;
+  margin-top: 2.5rem;
 }
 
 .proposalGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
 }
 
 .proposalCard {
-  background: white;
-  border: 1px solid #ded2f4;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(144, 118, 240, 0.08);
-  transition: transform 0.2s ease;
+  background: $card-bg;
+  border: 1px solid $border;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 28px rgba($darkAccent, 0.1);
+  transition: box-shadow 0.3s ease;
+  position: relative;
 
   &:hover {
-    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba($darkAccent, 0.15);
   }
 }
 
 .infoBlock {
   p {
-    margin: 6px 0;
-    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: $text;
+    font-size: 1.6rem;
+
     strong {
-      color: #5e3ea1;
+      color: $darkAccent;
+      font-weight: 600;
+      margin-right: 0.35rem;
     }
   }
 }
 
-.buttons {
-  margin-top: 16px;
-  display: flex;
-  gap: 10px;
-}
-
-.acceptButton {
-  padding: 8px 14px;
-  background-color: #7a5cd4;
-  border: none;
-  color: white;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s;
-
-  &:hover {
-    background-color: #654bb9;
-  }
-}
-
-.rejectButton {
-  padding: 8px 14px;
-  background-color: #f8e0e6;
-  border: none;
-  color: #a32539;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s;
-
-  &:hover {
-    background-color: #f5c6cf;
-  }
-}
-
 .workBlock {
-  margin-top: 16px;
-  padding-top: 10px;
-  border-top: 1px dashed #ccc;
+  margin-top: 1.2rem;
+  background-color: $hover-bg;
+  padding: 1.3rem;
+  border-radius: 14px;
+  border: 1px solid $border;
 
   p {
-    margin: 6px 0;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: $text;
+    font-size: 1.6rem;
   }
 }
 
 .downloadLink {
   display: inline-block;
-  margin-top: 6px;
-  padding: 6px 12px;
-  background: #e8def8;
-  color: #5b3ab3;
-  border-radius: 6px;
+  color: $darkAccent;
   text-decoration: none;
-  font-weight: 500;
-  transition: background 0.2s;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  font-size: 1.6rem;
 
   &:hover {
-    background: #d6c8f0;
+    text-decoration: underline;
+  }
+}
+
+.buttons {
+  margin-top: 1.2rem;
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.acceptButton,
+.rejectButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 1.5rem;
+  width: 17rem;
+}
+
+.acceptButton {
+  background: $accent;
+  color: rgb(255, 255, 255);
+
+  &:hover {
+    background: color.scale($darkAccent, $lightness: -10%);
+  }
+}
+
+.rejectButton {
+  background: $error;
+  color: white;
+
+  &:hover {
+    background: color.scale($error, $lightness: -10%);
   }
 }

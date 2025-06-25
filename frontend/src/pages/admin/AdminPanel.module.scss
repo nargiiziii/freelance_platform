@@ -1,0 +1,38 @@
+.adminPanel {
+  padding: 2rem;
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+    p {
+      background: #f4f0ff;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    th,
+    td {
+      padding: 0.75rem;
+      border: 1px solid #e0d4f7;
+    }
+    button {
+      margin-right: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      background: #a375f0;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  }
+}

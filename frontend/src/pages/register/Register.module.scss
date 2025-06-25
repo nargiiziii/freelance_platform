@@ -127,6 +127,7 @@ $border: rgba(155, 133, 184, 0.4);
 }
 
 .toggleButton {
+  width: 20rem;
   padding: 1.2rem 2.4rem;
   background-color: #f4edff;
   border: 2px solid $border;
@@ -196,8 +197,13 @@ $border: rgba(155, 133, 184, 0.4);
     box-shadow: 0 0 0 3px rgba(185, 153, 244, 0.3);
   }
 }
+p {
+  font-size: 1.6rem;
+  color: #9b85b8;
+}
 
 .addSkillButton {
+  width: 5rem;
   background: none;
   border: none !important;
   padding: 4px;

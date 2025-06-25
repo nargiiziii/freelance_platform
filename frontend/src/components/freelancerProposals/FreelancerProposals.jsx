@@ -20,7 +20,6 @@ export default function FreelancerProposals() {
 
   return (
     <div className={style.responsesWrapper}>
-      <h4>🗂 История откликов</h4>
       <div className={style.responsesGrid}>
         {recentProposals.map((item) => (
           <div className={style.card} key={item._id}>

@@ -32,3 +32,24 @@ export const verifyToken = async (req, res, next) => {
     return res.status(401).json({ message: "Токен не валиден" });
   }
 };
+
+
+export const isAdmin = (req, res, next) => {
+  if (req.user && req.user.id) {
+    // Получаем пользователя из базы
+    import("../models/user.js").then(({ default: User }) => {
+      User.findById(req.user.id).then((user) => {
+        if (user && user.role === "admin") {
+          next();
+        } else {
+          res.status(403).json({ message: "Только для администратора" });
+        }
+      }).catch((err) => {
+        console.error("Ошибка поиска админа:", err.message);
+        res.status(500).json({ message: "Ошибка проверки роли" });
+      });
+    });
+  } else {
+    res.status(401).json({ message: "Неавторизован" });
+  }
+};

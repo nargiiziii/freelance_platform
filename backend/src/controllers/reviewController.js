@@ -61,8 +61,8 @@ export const getUserReviews = async (req, res) => {
 export const getMyReviews = async (req, res) => {
   try {
     const fromUser = req.user.id;
-    const reviews = await Review.find({ toUser: fromUser })
-      .populate("fromUser", "name _id")
+    const reviews = await Review.find({ fromUser }) // 💥 здесь исправление
+      .populate("toUser", "name _id") // можно заменить fromUser → toUser
       .sort({ createdAt: -1 });
     res.json(reviews);
   } catch (err) {

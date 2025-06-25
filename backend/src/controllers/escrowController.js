@@ -31,7 +31,6 @@ export const createEscrow = async (req, res) => {
   }
 };
 
-
 // Функция для выпуска средств фрилансеру после принятия работы
 export const releaseFunds = async (req, res) => {
   try {
@@ -105,7 +104,7 @@ export const refundFunds = async (req, res) => {
     });
 
     if (proposal) {
-      proposal.status = "rejected";
+      proposal.status = "refunded";
       await proposal.save();
     }
 
@@ -134,8 +133,10 @@ export const getTransactionHistory = async (req, res) => {
         const isUserEmployer = String(e.employer._id) === userId;
 
         // Только завершённые или отменённые показываем
-        return (e.status === "released" || e.status === "rejected") &&
-               (isUserFreelancer || isUserEmployer);
+        return (
+          (e.status === "released" || e.status === "rejected") &&
+          (isUserFreelancer || isUserEmployer)
+        );
       })
       .map((e) => {
         const isUserFreelancer = String(e.freelancer._id) === userId;
@@ -149,7 +150,8 @@ export const getTransactionHistory = async (req, res) => {
         if (e.status === "released" && isUserFreelancer) direction = "income";
         if (e.status === "rejected" && isUserEmployer) direction = "income";
 
-        const signAmount = direction === "income" ? `+${e.amount}` : `-${e.amount}`;
+        const signAmount =
+          direction === "income" ? `+${e.amount}` : `-${e.amount}`;
 
         return {
           date: e.createdAt.toLocaleDateString(),
@@ -172,4 +174,3 @@ export const getTransactionHistory = async (req, res) => {
     res.status(500).json({ message: "Ошибка при получении истории" });
   }
 };
-

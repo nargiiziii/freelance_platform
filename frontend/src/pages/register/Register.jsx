@@ -154,6 +154,7 @@ export default function Register() {
 
       {form.role === "freelancer" && (
         <>
+            <p>Choose category:</p>
           <div className={style.buttonGroup}>
             {categories.map((cat) => (
               <button

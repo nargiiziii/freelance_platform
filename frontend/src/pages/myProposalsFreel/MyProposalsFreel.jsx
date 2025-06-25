@@ -77,6 +77,8 @@ const MyProposalsFreel = () => {
 
               const cardStatusClass = isProjectPaid
                 ? style.completed
+                : proposal.status === "refunded"
+                ? style.refunded
                 : proposal.status === "rejected"
                 ? style.rejected
                 : style.inProgress;
@@ -92,14 +94,23 @@ const MyProposalsFreel = () => {
                       {isProjectPaid && (
                         <p className={style.statusPaid}>Проект оплачен</p>
                       )}
-                      <p><strong>Ваше сообщение:</strong> {proposal.coverLetter}</p>
-                      <p><strong>Цена:</strong> {proposal.price}₽</p>
+                      <p>
+                        <strong>Ваше сообщение:</strong> {proposal.coverLetter}
+                      </p>
+                      <p>
+                        <strong>Цена:</strong> {proposal.price}₽
+                      </p>
                       <p>
                         <strong>Статус:</strong>{" "}
                         {proposal.status === "pending" && "На рассмотрении"}
                         {proposal.status === "accepted" && "Принят"}
                         {proposal.status === "rejected" && "Отклонён"}
                         {proposal.status === "submitted" && "Работа отправлена"}
+                        {proposal.status === "refunded" && (
+                          <span className={style.refundedLabel}>
+                            Работа отклонена — средства возвращены
+                          </span>
+                        )}
                       </p>
                     </div>
 
@@ -118,7 +129,10 @@ const MyProposalsFreel = () => {
                             <input
                               type="file"
                               onChange={(e) =>
-                                handleFileChange(proposal._id, e.target.files[0])
+                                handleFileChange(
+                                  proposal._id,
+                                  e.target.files[0]
+                                )
                               }
                             />
                           </label>

@@ -15,7 +15,14 @@ const proposalSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   status: {
     type: String,
-    enum: ["pending", "accepted", "rejected", "submitted"],
+    enum: [
+      "pending",
+      "accepted",
+      "rejected",
+      "submitted",
+      "refunded",
+      "closed",
+    ],
     default: "pending",
   },
   workFile: { type: String, default: null },

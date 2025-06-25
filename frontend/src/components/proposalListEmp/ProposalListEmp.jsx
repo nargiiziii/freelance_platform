@@ -91,7 +91,6 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
       dispatch(getMyProposals());
       toast.success("✅ Отклик принят");
 
-      // 🆕 Добавляем запрос на обновление проекта и передаём в ProjectDetails
       if (onProjectUpdated) {
         try {
           const res = await axios.get(`/projects/${projectId}`);

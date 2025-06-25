@@ -97,11 +97,14 @@ h2 {
 }
 
 .rejected {
-  background-color: #fde8e8;
+  background-color: #f9d6d6;
 }
 
 .inProgress {
   background-color: #f4effc;
+}
+.refunded {
+  background-color: #f3e0d0; 
 }
 
 .completedLabel,
@@ -115,6 +118,17 @@ h2 {
   background: rgb(230, 251, 230);
   color: $darkAccent;
   border: 1px solid rgb(149, 28, 224);
+}
+.refundedLabel {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  border-radius: 16px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-top: 0.6rem;
+  background: #fff2f2;
+  color: #d13438;
+  border: 1px solid #d13438;
 }
 
 .submitBlock {

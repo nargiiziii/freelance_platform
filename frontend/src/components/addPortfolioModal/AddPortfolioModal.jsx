@@ -64,15 +64,32 @@ const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
           ×
         </button>
 
-        <h2>Добавить проект в портфолио</h2>
         <form onSubmit={handleSubmit}>
-          <div className={style.field}>
+          <div className={style.uploadField}>
             <label>Изображение проекта</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImageFile(e.target.files[0])}
-            />
+            <div className={style.uploadRow}>
+              <div className={style.fileInputWrapper}>
+                <label className={style.customButton}>
+                  Загрузить файл
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImageFile(e.target.files[0])}
+                  />
+                </label>
+              </div>
+
+              {imageFile && (
+                <div className={style.previewBlock}>
+                  <div className={style.fileName}>{imageFile.name}</div>
+                  <img
+                    src={URL.createObjectURL(imageFile)}
+                    alt="Preview"
+                    className={style.imagePreview}
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           <div className={style.field}>

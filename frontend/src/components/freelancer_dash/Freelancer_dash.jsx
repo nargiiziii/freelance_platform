@@ -5,7 +5,7 @@ import { getFreelancerProjects } from "../../redux/features/projectSlice";
 import AddPortfolioModal from "../addPortfolioModal/AddPortfolioModal";
 import style from "./Freelancer_dash.module.scss";
 import SubmitWorkModal from "../submitWork/SubmitWorkModal";
-import { fetchUserReviews } from "../../redux/features/reviewSlice";
+import { fetchReviewsForUser, fetchUserReviews } from "../../redux/features/reviewSlice";
 import FreelancerProposals from "../freelancerProposals/FreelancerProposals";
 import { fetchFreelancerStats } from "../../redux/features/userSlice";
 
@@ -55,7 +55,7 @@ function FreelancerDash() {
 
   useEffect(() => {
     if (!user?.id) return;
-    dispatch(fetchUserReviews(user.id));
+    dispatch(fetchReviewsForUser(user.id)); 
   }, [user?.id, dispatch]);
 
   const handleProjectAdded = (updatedUser) => {
@@ -113,13 +113,14 @@ function FreelancerDash() {
           {activeSection === "Профиль" && (
             <section className={style.section}>
               <h3>Профиль</h3>
+              <div className={style.profileTwoColumn}>
+                <div className={style.leftColumn}>
+                  <div className={style.bioBox}>
+                    <strong>Биография:</strong>
+                    <p>{user.bio || "Нет описания"}</p>
+                  </div>
 
-              <div className={style.profileGrid}>
-                <div className={style.profileColumn}>
-                  <p>
-                    <strong>Биография:</strong> {user.bio || "Нет описания"}
-                  </p>
-                  <div className={style.skillsContainer}>
+                  <div className={style.skillsBox}>
                     <strong>Навыки:</strong>
                     {user.skills?.length ? (
                       <div className={style.skillsList}>
@@ -130,24 +131,27 @@ function FreelancerDash() {
                         ))}
                       </div>
                     ) : (
-                      <span> Нет навыков </span>
+                      <span>Нет навыков</span>
                     )}
                   </div>
-                  <p>
-                    <strong>Статус:</strong>{" "}
-                    {user.isAvailable ? "Доступен" : "Не доступен"}
-                  </p>
-                  <p>
-                    <strong>Выполнено проектов:</strong>{" "}
-                    {user.completedProjectsCount || 0}
-                  </p>
+
+                  <div className={style.statusBox}>
+                    <p>
+                      <strong>Статус:</strong>{" "}
+                      {user.isAvailable ? "Доступен" : "Не доступен"}
+                    </p>
+                    <p>
+                      <strong>Выполнено проектов:</strong>{" "}
+                      {user.completedProjectsCount || 0}
+                    </p>
+                  </div>
                 </div>
 
                 <div className={style.activityCard}>
                   <h4>Активность</h4>
                   <p>
                     🔄 Последний вход:{" "}
-                    {stats && stats.lastSeen
+                    {stats?.lastSeen
                       ? new Date(stats.lastSeen).toLocaleDateString()
                       : "Нет данных"}
                   </p>
@@ -175,31 +179,28 @@ function FreelancerDash() {
               {portfolio?.length ? (
                 <div className={style.portfolioGrid}>
                   {portfolio.map((item, i) => (
-                    <div key={item._id || i} className={style.portfolioItem}>
-                      <img
-                        src={
+                    <div
+                      key={item._id || i}
+                      className={style.portfolioItem}
+                      style={{
+                        backgroundImage: `url(${
                           item.image
                             ? `http://localhost:3000/uploads/${item.image}`
                             : "https://via.placeholder.com/400x300"
-                        }
-                        alt={item.title || "Project image"}
-                        className={style.portfolioImage}
-                      />
-                      <div className={style.overlay}>
-                        <div className={style.portfolioContent}>
-                          <div className={style.portfolioText}>
-                            <strong>{item.title}</strong>
-                            <p>{item.description}</p>
-                          </div>
-                          <a
-                            href={item.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={style.viewButton}
-                          >
-                            Смотреть
-                          </a>
-                        </div>
+                        })`,
+                      }}
+                    >
+                      <div className={style.portfolioContent}>
+                        <strong>{item.title}</strong>
+                        <p>{item.description}</p>
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={style.viewButton}
+                        >
+                          Смотреть проект
+                        </a>
                       </div>
                     </div>
                   ))}
@@ -217,24 +218,31 @@ function FreelancerDash() {
           )}
 
           {activeSection === "Отзывы" && (
-            <section className={style.section}>
+            <section className={`${style.section} ${style.reviewsSection}`}>
               <h3>Отзывы</h3>
               {loading ? (
-                <p>Загрузка отзывов...</p>
+                <p className={style.reviewsLoading}>Загрузка отзывов...</p>
               ) : reviews.length ? (
                 <ul>
                   {reviews.map((review, i) => (
-                    <li key={review._id || i}>
-                      <strong>{review.fromUser?.name || "Аноним"}:</strong>{" "}
-                      {review.comment} — Оценка: ⭐ {review.rating} <br />
-                      <small>
+                    <li key={review._id || i} className={style.reviewItem}>
+                      <div className={style.reviewDate}>
                         {new Date(review.createdAt).toLocaleDateString()}
-                      </small>
+                      </div>
+                      <div className={style.reviewUser}>
+                        {review.fromUser?.name || "Аноним"}
+                      </div>
+                      <div className={style.reviewStars}>
+                        {"⭐".repeat(review.rating)}
+                      </div>
+                      <div className={style.reviewComment}>
+                        {review.comment}
+                      </div>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p>Отзывы отсутствуют</p>
+                <p className={style.reviewsEmpty}>Отзывы отсутствуют</p>
               )}
             </section>
           )}

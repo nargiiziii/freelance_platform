@@ -36,13 +36,14 @@ const portfolioItemSchema = new mongoose.Schema(
 const userSchema = new mongoose.Schema(
   {
     // Роль пользователя (фрилансер или наниматель)
-    role: { type: String, enum: ["freelancer", "employer"], required: true },
+    role: { type: String, enum: ["freelancer", "employer", "admin"], required: true },
 
     // Основные личные данные
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },
     lastSeen: { type: Date, default: Date.now },
+    isBlocked: { type: Boolean, default: false },
 
     // Профиль и описание
     avatar: { type: String, default: "" },

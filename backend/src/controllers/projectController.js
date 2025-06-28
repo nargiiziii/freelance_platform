@@ -38,10 +38,13 @@ export const createProject = async (req, res) => {
     const employerId = req.user.id;
 
     const employer = await User.findById(employerId);
-    if (!employer) return res.status(404).json({ message: "Пользователь не найден" });
+    if (!employer)
+      return res.status(404).json({ message: "Пользователь не найден" });
 
     if (employer.balance < budget) {
-      return res.status(400).json({ message: "Недостаточно средств для публикации проекта." });
+      return res
+        .status(400)
+        .json({ message: "Недостаточно средств для публикации проекта." });
     }
 
     const project = new Project({
@@ -61,7 +64,6 @@ export const createProject = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
 
 // Функция для получения проектов текущего нанимателя (личный кабинет)
 export const getEmployerProjects = async (req, res) => {
@@ -169,15 +171,19 @@ export const getProjectById = async (req, res) => {
   }
 };
 
-// Функция для обновления проекта (редактирование нанимателем)
+// Функция для обновления проекта (редактирование нанимателем и админом)
 export const updateProjectById = async (req, res) => {
   try {
-    const project = await Project.findOneAndUpdate(
-      { _id: req.params.id, employer: req.user.id },
-      req.body,
-      { new: true }
-    );
+    const filter =
+      req.user.role === "admin"
+        ? { _id: req.params.id }
+        : { _id: req.params.id, employer: req.user.id };
+
+    const project = await Project.findOneAndUpdate(filter, req.body, {
+      new: true,
+    });
     if (!project) return res.status(404).json({ message: "Проект не найден" });
+
     res.json(project);
   } catch (err) {
     res.status(500).json({ message: err.message });

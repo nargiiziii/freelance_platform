@@ -1,0 +1,65 @@
+@use "sass:color";
+
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$border: #e8def8;
+$hover-bg: #f0eaff;
+$card-bg: #ffffff;
+
+.formContainer {
+  background-color: $card-bg;
+  padding: 2.5rem 3rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 12px 32px rgba($darkAccent, 0.1);
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  max-width: 480px;
+  margin: 2rem 0;
+
+  h3 {
+    font-size: 2.2rem;
+    color: $darkAccent;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  input,
+  select {
+    padding: 0.8rem 1.2rem;
+    border: 1px solid $border;
+    border-radius: 0.8rem;
+    font-size: 1.6rem;
+    color: $text;
+    background-color: $primary;
+    transition: border-color 0.2s;
+
+    &:focus {
+      border-color: $darkAccent;
+      outline: none;
+      background-color: $hover-bg;
+    }
+  }
+
+  select {
+    cursor: pointer;
+  }
+
+  button {
+    background-color: $accent;
+    color: white;
+    font-size: 1.7rem;
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: $darkAccent;
+    }
+  }
+}

@@ -16,11 +16,12 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Функция генерации access и refresh токенов для авторизации
-const generateTokens = (userId) => {
-  const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+// ✅ Обновлённая функция генерации токенов: теперь включает и role
+const generateTokens = (userId, role) => {
+  const accessToken = jwt.sign({ id: userId, role }, process.env.JWT_SECRET, {
     expiresIn: "15m",
   });
+
   const refreshToken = crypto.randomBytes(64).toString("hex");
   return { accessToken, refreshToken };
 };
@@ -64,8 +65,8 @@ export const registerUser = [
         reviews: [],
       });
 
-      // Генерация токенов и сохранение refresh токена
-      const { accessToken, refreshToken } = generateTokens(newUser._id);
+      // ✅ Генерация токенов и сохранение refresh токена
+      const { accessToken, refreshToken } = generateTokens(newUser._id, newUser.role);
       newUser.refreshToken = refreshToken;
       await newUser.save();
 
@@ -115,15 +116,21 @@ export const loginUser = async (req, res) => {
     if (!user)
       return res.status(400).json({ message: "Неверный email или пароль" });
 
+    if (user.isBlocked) {
+      return res
+        .status(403)
+        .json({ message: "Ваш аккаунт заблокирован администратором." });
+    }
+
     // Проверка пароля
     const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch)
       return res.status(400).json({ message: "Неверный email или пароль" });
 
-    // Генерация токенов и сохранение refresh токена
-    const { accessToken, refreshToken } = generateTokens(user._id);
+    // ✅ Генерация токенов с role и сохранение refresh токена
+    const { accessToken, refreshToken } = generateTokens(user._id, user.role);
     user.refreshToken = refreshToken;
-    user.lastSeen = new Date(); // 👈 Вот это добавляем
+    user.lastSeen = new Date();
     await user.save();
 
     // Установка cookies и отправка данных пользователя
@@ -169,14 +176,11 @@ export const getProfile = async (req, res) => {
     }
 
     const userId = req.user.id;
-
-    // Поиск пользователя по ID
     const user = await User.findById(userId).select("-passwordHash");
 
     if (!user)
       return res.status(404).json({ message: "Пользователь не найден" });
 
-    // Приведение данных к нужному формату
     const userObj = user.toObject();
     userObj.id = userObj._id;
     delete userObj._id;
@@ -192,7 +196,6 @@ export const getProfile = async (req, res) => {
 export const logoutUser = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
 
-  // Очистка refresh токена у пользователя
   if (refreshToken) {
     const user = await User.findOne({ refreshToken });
     if (user) {
@@ -201,7 +204,6 @@ export const logoutUser = async (req, res) => {
     }
   }
 
-  // Очистка cookies
   res.clearCookie("accessToken");
   res.clearCookie("refreshToken");
 

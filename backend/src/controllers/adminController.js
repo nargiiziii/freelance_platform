@@ -53,3 +53,135 @@ export const deleteUser = async (req, res) => {
   await User.findByIdAndDelete(id);
   res.json({ message: "Пользователь удалён" });
 };
+
+// 📂 Получение всех проектов
+export const getAllProjects = async (req, res) => {
+  try {
+    const projects = await Project.find()
+      .populate("employer", "name email")
+      .populate("escrow")
+      .populate("proposals");
+    res.json(projects);
+  } catch (error) {
+    res.status(500).json({ message: "Ошибка загрузки проектов", error });
+  }
+};
+
+// Удалить проект
+export const deleteProject = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Project.findByIdAndDelete(id);
+    res.json({ message: "Проект удалён" });
+  } catch (error) {
+    res.status(500).json({ message: "Ошибка при удалении проекта", error });
+  }
+};
+
+// 📄 Получение всех откликов
+export const getAllProposals = async (req, res) => {
+  try {
+    const proposals = await Proposal.find()
+      .populate("freelancer", "name email")
+      .populate("project", "title");
+    res.json(proposals);
+  } catch (error) {
+    res.status(500).json({ message: "Ошибка загрузки откликов", error });
+  }
+};
+
+
+// Удалить отклик
+export const deleteProposal = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Proposal.findByIdAndDelete(id);
+    res.json({ message: "Отклик удалён" });
+  } catch (error) {
+    res.status(500).json({ message: "Ошибка при удалении отклика", error });
+  }
+};
+
+
+// 📝 Получение всех escrow
+export const getAllEscrows = async (req, res) => {
+  try {
+    const escrows = await Escrow.find()
+      .populate("project", "title")
+      .populate("employer", "name email")
+      .populate("freelancer", "name email");
+    res.json(escrows);
+  } catch (error) {
+    res.status(500).json({ message: "Ошибка загрузки escrow", error });
+  }
+};
+
+//Принудительная выплата escrow
+export const forceReleaseEscrow = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const escrow = await Escrow.findById(id);
+    if (!escrow || escrow.status !== "funded") {
+      return res.status(400).json({ message: "Escrow не может быть выплачен" });
+    }
+
+    const freelancer = await User.findById(escrow.freelancer);
+    freelancer.balance += escrow.amount;
+    escrow.status = "released";
+
+    await freelancer.save();
+    await escrow.save();
+
+    res.json({ message: "Escrow выплачен фрилансеру" });
+  } catch (error) {
+    res.status(500).json({ message: "Ошибка при выплате", error });
+  }
+};
+
+// Принудительное возвращение escrow
+export const forceRefundEscrow = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const escrow = await Escrow.findById(id);
+    if (!escrow || escrow.status !== "funded") {
+      return res.status(400).json({ message: "Escrow не может быть возвращён" });
+    }
+
+    const employer = await User.findById(escrow.employer);
+    employer.balance += escrow.amount;
+    escrow.status = "rejected";
+
+    await employer.save();
+    await escrow.save();
+
+    res.json({ message: "Escrow возвращён работодателю" });
+  } catch (error) {
+    res.status(500).json({ message: "Ошибка при возврате", error });
+  }
+};
+
+// 📝 Получение всех отзывов
+export const getAllReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find()
+      .populate("fromUser", "name email")
+      .populate("toUser", "name email")
+      .populate("project", "title");
+    res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: "Ошибка загрузки отзывов", error });
+  }
+};
+
+
+// Удалить отзыв
+export const deleteReview = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Review.findByIdAndDelete(id);
+    res.json({ message: "Отзыв удалён" });
+  } catch (error) {
+    res.status(500).json({ message: "Ошибка при удалении отзыва", error });
+  }
+};
+

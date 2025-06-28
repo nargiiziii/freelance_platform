@@ -45,11 +45,11 @@ export const getUserReviews = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    console.log("📥 Получение отзывов для пользователя:", userId);
+    // console.log("📥 Получение отзывов для пользователя:", userId);
     const reviews = await Review.find({ toUser: userId })
       .populate("fromUser", "name _id")
       .sort({ createdAt: -1 });
-    console.log("📤 Найдено отзывов:", reviews.length);
+    // console.log("📤 Найдено отзывов:", reviews.length);
 
     res.json(reviews);
   } catch (err) {

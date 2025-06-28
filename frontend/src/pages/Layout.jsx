@@ -14,10 +14,12 @@ const Layout = () => {
 
   // 👇 Загрузка профиля при старте, если не загружен
   useEffect(() => {
-    if (!user) {
+    const isAuthPage =
+      location.pathname === "/login" || location.pathname === "/register";
+    if (!user && !isAuthPage) {
       dispatch(getProfile());
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, location.pathname]);
 
   // Загрузка чатов после получения профиля
   useEffect(() => {
@@ -34,6 +36,7 @@ const Layout = () => {
     "/messages",
     "/login",
     "/register",
+    "/admin",
   ];
 
   const hideFooter = hiddenRoutes.some((path) =>

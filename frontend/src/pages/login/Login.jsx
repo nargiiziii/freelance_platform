@@ -17,9 +17,16 @@ function Login() {
     const result = await dispatch(loginUser({ email, password }));
 
     if (result.meta.requestStatus === "fulfilled") {
-      navigate("/dashboard"); // токены уже в cookie, просто перенаправляем
+      const user = result.payload.user;
+
+      if (user.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     }
   };
+
   return (
     <div className={style.loginContainer}>
       <div className={style.loginBox}>
@@ -42,13 +49,11 @@ function Login() {
           {error && <p className={style.error}>{error}</p>}
         </form>
 
-<div className={style.welcomeWrapper}>
-  <div className={style.welcomeText}>Welcome</div>
-  <span className={style.wave}>👋</span>
-</div>
-<div className={style.subtext}>Glad to see you again!</div>
-
-
+        <div className={style.welcomeWrapper}>
+          <div className={style.welcomeText}>Welcome</div>
+          <span className={style.wave}>👋</span>
+        </div>
+        <div className={style.subtext}>Glad to see you again!</div>
       </div>
     </div>
   );

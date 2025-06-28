@@ -38,11 +38,11 @@ const MyJobs = () => {
       sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
     } else if (sortBy === "responses_desc") {
       sorted.sort(
-        (a, b) => (b.proposals?.length || 0) - (a.proposals?.length || 0)
+        (a, b) => (a.proposals?.length || 0) - (b.proposals?.length || 0)
       );
     } else if (sortBy === "responses_asc") {
       sorted.sort(
-        (a, b) => (a.proposals?.length || 0) - (b.proposals?.length || 0)
+        (a, b) => (b.proposals?.length || 0) - (a.proposals?.length || 0)
       );
     }
 
@@ -105,7 +105,6 @@ const MyJobs = () => {
       {projects.map((project) => {
         const completed = isCompleted(project.status);
         const noProposals = project.proposals?.length === 0;
-        const firstFreelancerId = project.proposals?.[0]?.freelancer?._id;
 
         return (
           <div
@@ -117,28 +116,21 @@ const MyJobs = () => {
             {completed && (
               <span className={styles.completedLabel}>✔ Завершено</span>
             )}
-            <h3 className={styles.projectTitle}>
-              📌 {project.title}
-            </h3>
+            <h3 className={styles.projectTitle}>📌 {project.title}</h3>
             <p className={styles.projectText}>
               {project.description.slice(0, 100)}...
             </p>
-            <p className={styles.projectText}>
-              Категория: {project.category}
-            </p>
-            <p className={styles.projectText}>
-              Бюджет: {project.budget}₽
-            </p>
+            <p className={styles.projectText}>Категория: {project.category}</p>
+            <p className={styles.projectText}>Бюджет: {project.budget}₽</p>
             <p className={styles.projectText}>
               Дата: {new Date(project.createdAt).toLocaleDateString()}
             </p>
             <p className={styles.projectText}>
               Откликов:{" "}
-              {project.proposals?.filter((p) => p.status !== "rejected").length || 0}
+              {project.proposals?.filter((p) => p.status !== "rejected").length ||
+                0}
             </p>
-            <p className={styles.projectText}>
-              Статус: {project.status}
-            </p>
+            <p className={styles.projectText}>Статус: {project.status}</p>
 
             <div className={styles.buttonGroup}>
               <button
@@ -166,15 +158,6 @@ const MyJobs = () => {
                     </button>
                   )}
                 </>
-              )}
-
-              {firstFreelancerId && (
-                <button
-                  className={styles.actionButton}
-                  onClick={() => navigate(`/messages?user=${firstFreelancerId}`)}
-                >
-                  💬 Написать сообщение
-                </button>
               )}
             </div>
           </div>

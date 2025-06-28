@@ -1,53 +1,56 @@
 // Импорт библиотеки jsonwebtoken для работы с JWT
 import jwt from "jsonwebtoken";
+import User from "../models/user.js"; // ⬅️ Добавлен импорт модели
 
 // Middleware для проверки access токена, полученного из cookie
 export const verifyToken = async (req, res, next) => {
-  // Получение access токена из cookie запроса
   const token = req.cookies.accessToken;
   console.log("Полученный токен из cookie:", token);
 
-  // Если токен отсутствует, возвращаем ошибку авторизации
   if (!token) return res.status(401).json({ message: "Нет авторизации" });
 
   try {
-    // Проверка и расшифровка токена с использованием секретного ключа
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Сохранение идентификатора пользователя в объект запроса для дальнейшего использования
-    req.user = { id: decoded.id }; // Доступ к пользователю в дальнейших маршрутах через req.user.id
+    // Находим пользователя по ID
+    const user = await User.findById(decoded.id);
+    if (!user) return res.status(401).json({ message: "Пользователь не найден" });
 
-    // Переход к следующему middleware или обработчику маршрута
+    // Проверка на блокировку
+    if (user.isBlocked) {
+      return res.status(403).json({ message: "Ваш аккаунт заблокирован администратором." });
+    }
+
+    // Сохраняем ID и роль пользователя
+    req.user = { id: user._id, role: user.role };
     next();
   } catch (error) {
-    // Логирование ошибки, если токен недействителен или истек
     console.error("Ошибка при проверке токена:", error.message);
 
-    // Обработка случая, если токен истёк
     if (error.name === "TokenExpiredError") {
       return res.status(401).json({ message: "Токен истек, обновите access token" });
     }
 
-    // Обработка других ошибок токена (например, неправильный токен)
     return res.status(401).json({ message: "Токен не валиден" });
   }
 };
 
-
+// Middleware для проверки роли администратора
 export const isAdmin = (req, res, next) => {
   if (req.user && req.user.id) {
-    // Получаем пользователя из базы
     import("../models/user.js").then(({ default: User }) => {
-      User.findById(req.user.id).then((user) => {
-        if (user && user.role === "admin") {
-          next();
-        } else {
-          res.status(403).json({ message: "Только для администратора" });
-        }
-      }).catch((err) => {
-        console.error("Ошибка поиска админа:", err.message);
-        res.status(500).json({ message: "Ошибка проверки роли" });
-      });
+      User.findById(req.user.id)
+        .then((user) => {
+          if (user && user.role === "admin") {
+            next();
+          } else {
+            res.status(403).json({ message: "Только для администратора" });
+          }
+        })
+        .catch((err) => {
+          console.error("Ошибка поиска админа:", err.message);
+          res.status(500).json({ message: "Ошибка проверки роли" });
+        });
     });
   } else {
     res.status(401).json({ message: "Неавторизован" });

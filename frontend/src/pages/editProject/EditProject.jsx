@@ -3,19 +3,24 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../axiosInstance";
 import styles from "./EditProject.module.scss";
 
-const EditProject = () => {
+const EditProject = ({ project: initialProject, fromAdmin = false, onClose }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [project, setProject] = useState({
-    title: "",
-    description: "",
-    budget: "",
-    category: "",
-  });
+
+  const [project, setProject] = useState(
+    initialProject || {
+      title: "",
+      description: "",
+      budget: "",
+      category: "",
+    }
+  );
 
   useEffect(() => {
-    axios.get(`/projects/${id}`).then((res) => setProject(res.data));
-  }, [id]);
+    if (!initialProject && id) {
+      axios.get(`/projects/${id}`).then((res) => setProject(res.data));
+    }
+  }, [id, initialProject]);
 
   const handleChange = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });
@@ -24,15 +29,25 @@ const EditProject = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`/projects/${id}`, project);
-      navigate("/my-jobs");
+      const projectId = initialProject?._id || id;
+      await axios.patch(`/projects/${projectId}`, project);
+
+      if (fromAdmin && onClose) {
+        onClose(); // Закрытие модального окна в админке
+      } else {
+        navigate("/my-jobs"); // Перенаправление для нанимателя
+      }
     } catch (err) {
       console.error(err);
     }
   };
 
   const handleCancel = () => {
-    navigate("/my-jobs");
+    if (fromAdmin && onClose) {
+      onClose();
+    } else {
+      navigate("/my-jobs");
+    }
   };
 
   return (

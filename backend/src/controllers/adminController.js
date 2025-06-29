@@ -12,7 +12,9 @@ export const getDashboardStats = async (req, res) => {
     const employers = await User.countDocuments({ role: "employer" });
     const projects = await Project.countDocuments();
     const escrows = await Escrow.countDocuments();
-    const completedProjects = await Project.countDocuments({ status: "completed" });
+    const completedProjects = await Project.countDocuments({
+      status: "completed",
+    });
 
     res.json({
       users,
@@ -36,14 +38,22 @@ export const getAllUsers = async (req, res) => {
 // 🚫 Блокировка пользователя
 export const blockUser = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findByIdAndUpdate(id, { isBlocked: true }, { new: true });
+  const user = await User.findByIdAndUpdate(
+    id,
+    { isBlocked: true },
+    { new: true }
+  );
   res.json(user);
 };
 
 // ✅ Разблокировка пользователя
 export const unblockUser = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findByIdAndUpdate(id, { isBlocked: false }, { new: true });
+  const user = await User.findByIdAndUpdate(
+    id,
+    { isBlocked: false },
+    { new: true }
+  );
   res.json(user);
 };
 
@@ -90,7 +100,6 @@ export const getAllProposals = async (req, res) => {
   }
 };
 
-
 // Удалить отклик
 export const deleteProposal = async (req, res) => {
   const { id } = req.params;
@@ -102,11 +111,10 @@ export const deleteProposal = async (req, res) => {
   }
 };
 
-
 // 📝 Получение всех escrow
 export const getAllEscrows = async (req, res) => {
   try {
-    const escrows = await Escrow.find()
+    const escrows = await Escrow.find({ type: { $ne: "topup" } })
       .populate("project", "title")
       .populate("employer", "name email")
       .populate("freelancer", "name email");
@@ -144,7 +152,9 @@ export const forceRefundEscrow = async (req, res) => {
   try {
     const escrow = await Escrow.findById(id);
     if (!escrow || escrow.status !== "funded") {
-      return res.status(400).json({ message: "Escrow не может быть возвращён" });
+      return res
+        .status(400)
+        .json({ message: "Escrow не может быть возвращён" });
     }
 
     const employer = await User.findById(escrow.employer);
@@ -173,7 +183,6 @@ export const getAllReviews = async (req, res) => {
   }
 };
 
-
 // Удалить отзыв
 export const deleteReview = async (req, res) => {
   const { id } = req.params;
@@ -184,4 +193,3 @@ export const deleteReview = async (req, res) => {
     res.status(500).json({ message: "Ошибка при удалении отзыва", error });
   }
 };
-

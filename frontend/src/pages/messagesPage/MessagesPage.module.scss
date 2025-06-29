@@ -10,6 +10,16 @@ $border: rgba(211, 184, 244, 0.4);
 $hover-bg: #f1eaff;
 $glass-blur: blur(24px);
 
+// 🌙 Тёмная тема
+$dark-primary: #1e0f31;
+$dark-accent: #e1c3ff;
+$dark-darkAccent: #cfb3ff;
+$dark-text: #fdfbff;
+$dark-muted: #b8a3d8;
+$dark-card-bg: rgba(38, 25, 57, 0.8);
+$dark-border: rgba(255, 255, 255, 0.1);
+$dark-hover-bg: #372655;
+
 .wrapper {
   display: flex;
   height: 100vh;
@@ -22,6 +32,10 @@ $glass-blur: blur(24px);
   border-radius: 32px;
 }
 
+:global(body.dark) .wrapper {
+  background: $dark-primary;
+}
+
 .chatList {
   width: 440px;
   min-width: 360px;
@@ -32,12 +46,21 @@ $glass-blur: blur(24px);
   height: 100vh;
   overflow-y: auto;
 
+  :global(body.dark) & {
+    background: $dark-card-bg;
+    border-color: $dark-border;
+  }
+
   .title {
     font-size: 3rem;
     font-weight: 800;
     color: $text;
     margin-bottom: 3rem;
     text-align: center;
+
+    :global(body.dark) & {
+      color: $dark-text;
+    }
   }
 
   .chatCard {
@@ -51,10 +74,18 @@ $glass-blur: blur(24px);
 
     &:hover {
       background: $hover-bg;
+
+      :global(body.dark) & {
+        background: $dark-hover-bg;
+      }
     }
 
     &.activeChat {
       background: $accent;
+
+      :global(body.dark) & {
+        background: $dark-accent;
+      }
     }
 
     .avatarWrapper {
@@ -69,10 +100,15 @@ $glass-blur: blur(24px);
         border-radius: 50%;
         object-fit: cover;
         background: $muted;
+        color: white;
+
+        :global(body.dark) & {
+          background: $dark-muted;
+        }
+
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
         font-weight: 700;
         font-size: 1.8rem;
       }
@@ -85,6 +121,10 @@ $glass-blur: blur(24px);
         font-size: 1.8rem;
         font-weight: 700;
         color: $text;
+
+        :global(body.dark) & {
+          color: $dark-text;
+        }
       }
 
       .preview {
@@ -94,6 +134,10 @@ $glass-blur: blur(24px);
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+
+        :global(body.dark) & {
+          color: $dark-muted;
+        }
       }
     }
 
@@ -118,6 +162,10 @@ $glass-blur: blur(24px);
   height: 100vh;
   overflow: hidden;
 
+  :global(body.dark) & {
+    background: $dark-primary;
+  }
+
   .header {
     display: flex;
     align-items: center;
@@ -135,6 +183,10 @@ $glass-blur: blur(24px);
       font-size: 2.2rem;
       font-weight: 700;
       color: $text;
+
+      :global(body.dark) & {
+        color: $dark-text;
+      }
     }
   }
 
@@ -143,6 +195,10 @@ $glass-blur: blur(24px);
     color: $muted;
     margin: auto;
     text-align: center;
+
+    :global(body.dark) & {
+      color: $dark-muted;
+    }
   }
 
   .chatBox {
@@ -176,6 +232,11 @@ $glass-blur: blur(24px);
       font-size: 1.6rem;
       position: relative;
 
+      :global(body.dark) & {
+        background: $dark-darkAccent;
+        color: #140a20;
+      }
+
       .statusIcon {
         position: absolute;
         bottom: -22px;
@@ -183,6 +244,10 @@ $glass-blur: blur(24px);
         font-size: 1.3rem;
         color: white;
         opacity: 0.8;
+
+        :global(body.dark) & {
+          color: #140a20;
+        }
       }
     }
   }
@@ -192,6 +257,10 @@ $glass-blur: blur(24px);
     color: $muted;
     padding: 0.6rem 1.2rem;
     font-style: italic;
+
+    :global(body.dark) & {
+      color: $dark-muted;
+    }
   }
 
   .inputArea {
@@ -201,17 +270,24 @@ $glass-blur: blur(24px);
 
     input {
       width: 100%;
-      max-width: 90rem; // или меньше      padding: 1.6rem 2rem;
+      max-width: 90rem;
+      padding: 1.6rem 2rem;
       border: 1px solid $border;
       border-radius: 20px;
       font-size: 1.6rem;
       background: white;
       color: $text;
-      flex: none; // отключает растяжение
+      flex: none;
+
+      :global(body.dark) & {
+        background: $dark-card-bg;
+        color: $dark-text;
+        border-color: $dark-border;
+      }
     }
 
     button {
-      width: 12rem; // Задай нужную ширину
+      width: 12rem;
       background: $darkAccent;
       color: white;
       border: none;
@@ -224,6 +300,15 @@ $glass-blur: blur(24px);
 
       &:hover {
         background: color.adjust($darkAccent, $lightness: -10%);
+
+        :global(body.dark) & {
+          background: color.adjust($dark-darkAccent, $lightness: -10%);
+        }
+      }
+
+      :global(body.dark) & {
+        background: $dark-darkAccent;
+        color: #140a20;
       }
     }
   }
@@ -247,4 +332,8 @@ $glass-blur: blur(24px);
 
 .unreadIcon {
   color: $muted;
+
+  :global(body.dark) & {
+    color: $dark-muted;
+  }
 }

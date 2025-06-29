@@ -1,5 +1,6 @@
 @use "sass:color";
 
+// 🌞 Светлая тема
 $bg: #fdfbff;
 $primary: #f4f0ff;
 $accent: #c6a5f7;
@@ -9,6 +10,16 @@ $card: #ffffff;
 $border: rgba(155, 133, 184, 0.2);
 $hover: #f0eaff;
 
+// 🌙 Тёмная тема (инверсия)
+$dark-bg: #140a20;
+$dark-primary: #1f1432;
+$dark-accent: #d9b8ff;
+$dark-darkAccent: #e3cfff;
+$dark-text: #fdfbff;
+$dark-card: #261a3c;
+$dark-border: rgba(255, 255, 255, 0.1);
+$dark-hover: #382654;
+
 .wrapper {
   display: flex;
   flex-direction: row;
@@ -17,10 +28,16 @@ $hover: #f0eaff;
   background-color: $primary;
   font-family: "Segoe UI", sans-serif;
   font-size: 1.25rem;
+  color: $text;
 
   @media (max-width: 768px) {
     flex-direction: column;
   }
+}
+
+:global(body.dark) .wrapper {
+  background-color: $dark-primary;
+  color: $dark-text;
 }
 
 .leftPanel {
@@ -34,6 +51,10 @@ $hover: #f0eaff;
   font-size: 2.4rem;
   color: $darkAccent;
   margin-bottom: 0;
+}
+
+:global(body.dark) .heading {
+  color: $dark-darkAccent;
 }
 
 .selectBar select {
@@ -60,6 +81,14 @@ $hover: #f0eaff;
   }
 }
 
+:global(body.dark) .selectBar select {
+  background-color: $dark-card;
+  color: $dark-text;
+  border: 1px solid $dark-border;
+  background-image: linear-gradient(45deg, transparent 50%, $dark-darkAccent 50%),
+    linear-gradient(135deg, $dark-darkAccent 50%, transparent 50%);
+}
+
 .projectList {
   flex: 1;
   display: flex;
@@ -76,6 +105,7 @@ $hover: #f0eaff;
   padding: 2rem 5rem;
   box-shadow: 0 4px 20px rgba(197, 150, 247, 0.08);
   transition: background 0.3s ease;
+  color: $text;
 
   &:hover {
     background: $hover;
@@ -104,7 +134,7 @@ $hover: #f0eaff;
     width: 15rem;
     margin-top: 1.2rem;
     background-color: $darkAccent;
-    color: rgb(255, 255, 255);
+    color: white;
     padding: 0.8rem 1.4rem;
     border: none;
     border-radius: 10px;
@@ -114,6 +144,35 @@ $hover: #f0eaff;
 
     &:hover {
       background-color: color.adjust($darkAccent, $lightness: -10%);
+    }
+  }
+}
+
+:global(body.dark) .card {
+  background: $dark-card;
+  border: 1px solid $dark-border;
+  color: $dark-text;
+
+  h4.title {
+    color: $dark-darkAccent;
+  }
+
+  p,
+  .employerInfo {
+    color: $dark-text;
+  }
+
+  &:hover {
+    background: $dark-hover;
+  }
+
+  .respondBtn,
+  .messageBtn {
+    background-color: $dark-darkAccent;
+    color: #140a20;
+
+    &:hover {
+      background-color: color.adjust($dark-darkAccent, $lightness: -10%);
     }
   }
 }
@@ -134,10 +193,12 @@ $hover: #f0eaff;
     border: 1px solid $border;
     font-size: 1.6rem;
     resize: none;
+    background-color: $card;
+    color: $text;
   }
 
   .submitBtn {
-        width: 15rem;
+    width: 15rem;
     align-self: flex-start;
     background-color: $darkAccent;
     color: white;
@@ -153,10 +214,32 @@ $hover: #f0eaff;
   }
 }
 
+:global(body.dark) .responseForm {
+  textarea,
+  input {
+    background-color: $dark-card;
+    color: $dark-text;
+    border: 1px solid $dark-border;
+  }
+
+  .submitBtn {
+    background-color: $dark-darkAccent;
+    color: #140a20;
+
+    &:hover {
+      background-color: color.adjust($dark-darkAccent, $lightness: -10%);
+    }
+  }
+}
+
 .loading {
   text-align: center;
   color: $text;
   font-size: 1.6rem;
+}
+
+:global(body.dark) .loading {
+  color: $dark-text;
 }
 
 .headerRow {

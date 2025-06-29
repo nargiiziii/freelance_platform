@@ -1,4 +1,4 @@
-// 🎨 Цветовая палитра прямо здесь
+// 🎨 Цветовая палитра
 $primary: #f4f0ff;
 $accent: #c6a5f7;
 $darkAccent: #a375f0;
@@ -10,6 +10,16 @@ $hoverAccent: #d3baf8;
 $hover-bg: #f0eaff;
 $glass-blur: blur(20px);
 
+// 🌙 Тёмная тема
+$dark-primary: #1a102b;
+$dark-card-bg: rgba(43, 26, 64, 0.8);
+$dark-text: #fdfbff;
+$dark-border: rgba(255, 255, 255, 0.15);
+$dark-hover-bg: #2e2042;
+$dark-hoverAccent: #a782e4;
+$dark-accent: #cfb3ff;
+$dark-darkAccent: #d8baff;
+
 .editProjectWrapper {
   display: flex;
   justify-content: center;
@@ -17,6 +27,7 @@ $glass-blur: blur(20px);
   padding: 4rem 1rem;
   background-color: $primary;
   min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .formContainer {
@@ -28,7 +39,6 @@ $glass-blur: blur(20px);
   box-shadow: 0 20px 40px rgba($darkAccent, 0.1);
   border-radius: 28px;
   padding: 3.5rem 4rem;
-  font-family: "Segoe UI", sans-serif;
   animation: fadeIn 0.4s ease;
 }
 
@@ -101,6 +111,52 @@ $glass-blur: blur(20px);
 
   &:hover {
     background-color: $hoverAccent;
+  }
+}
+
+// 🌙 ТЁМНАЯ ТЕМА
+:global(body.dark) {
+  .editProjectWrapper {
+    background-color: $dark-primary;
+  }
+
+  .formContainer {
+    background: $dark-card-bg;
+    border: 1px solid $dark-border;
+    box-shadow: 0 20px 40px rgba($dark-darkAccent, 0.2);
+  }
+
+  .title {
+    color: $dark-text;
+  }
+
+  .input,
+  .textarea {
+    background-color: #2a1e40;
+    color: $dark-text;
+    border: 1px solid $dark-border;
+
+    &:focus {
+      border-color: $dark-darkAccent;
+    }
+  }
+
+  .saveBtn {
+    background-color: $dark-accent;
+    color: #1a102b;
+
+    &:hover {
+      background-color: $dark-darkAccent;
+    }
+  }
+
+  .cancelBtn {
+    background-color: $dark-hover-bg;
+    color: $dark-text;
+
+    &:hover {
+      background-color: $dark-hoverAccent;
+    }
   }
 }
 

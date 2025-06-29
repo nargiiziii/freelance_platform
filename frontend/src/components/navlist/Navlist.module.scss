@@ -1,6 +1,5 @@
 .ul {
   display: flex;
-  gap: 15px;
   align-items: center;
   padding: 0;
   margin: 0;
@@ -9,6 +8,27 @@
 .li {
   list-style: none;
   font-size: 18px;
+  background: none; // ✅ убираем фон на всякий случай
+}
+
+.li a {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.2s ease, color 0.2s ease;
+  color: inherit;
+}
+
+.li a:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+:global(body.dark) .li {
+  background: none;
+}
+
+:global(body.dark) .li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .button {
@@ -20,7 +40,7 @@
   font-size: 16px;
   font-weight: 600;
   color: white;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
   box-shadow: 0 4px 10px rgba(106, 78, 246, 0.3);
   display: flex;
   align-items: center;
@@ -38,6 +58,19 @@
   background-color: #fff;
   box-shadow: 0 4px 12px rgba(126, 98, 249, 0.4);
   color: #7e62f9;
+}
+
+// 🌙 ТЁМНАЯ ТЕМА
+:global(body.dark) .button {
+  background-color: #d9b8ff;
+  color: #1b0935;
+  box-shadow: 0 4px 10px rgba(217, 184, 255, 0.2);
+}
+
+:global(body.dark) .button:hover {
+  background-color: #b88aff;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(217, 184, 255, 0.4);
 }
 
 .avatar {
@@ -63,6 +96,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+:global(body.dark) .avatarPlaceholder {
+  background-color: #a088c2;
+  color: #1b0935;
+  border: 2px solid #d9b8ff;
 }
 
 .profileLink {

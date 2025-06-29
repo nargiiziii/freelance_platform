@@ -73,10 +73,14 @@ export default function AdminPanel() {
       console.error(`Ошибка удаления ${type}:`, err.message);
     }
   };
-
   const handleEscrowAction = async (id, action) => {
     try {
-      await axios.put(`/admin/escrows/${id}/${action}`);
+      const endpoint =
+        action === "release"
+          ? `/admin/escrows/${id}/force-release`
+          : `/admin/escrows/${id}/force-refund`;
+
+      await axios.post(endpoint); // ✅ Используем POST
       fetchAllData();
     } catch (err) {
       console.error("Ошибка Escrow:", err.message);
@@ -308,14 +312,16 @@ export default function AdminPanel() {
               <p>
                 <strong>Статус:</strong> {e.status}
               </p>
-              <div className={style.actions}>
-                <button onClick={() => handleEscrowAction(e._id, "release")}>
-                  💸 Выплатить
-                </button>
-                <button onClick={() => handleEscrowAction(e._id, "refund")}>
-                  ↩️ Вернуть
-                </button>
-              </div>
+              {e.status === "funded" && (
+                <div className={style.actions}>
+                  <button onClick={() => handleEscrowAction(e._id, "release")}>
+                    💸 Выплатить
+                  </button>
+                  <button onClick={() => handleEscrowAction(e._id, "refund")}>
+                    ↩️ Вернуть
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>

@@ -1,3 +1,4 @@
+// Светлая тема
 .container {
   position: relative;
   display: flex;
@@ -54,6 +55,7 @@
   font-weight: bold;
   border-bottom: 1px solid #eee;
   background-color: #fafafa;
+  color: #333;
 }
 
 .item {
@@ -83,5 +85,49 @@
 
   &:hover {
     background-color: #f0f0f0;
+  }
+}
+
+// 🌙 ТЁМНАЯ ТЕМА
+:global(body.dark) {
+  .icon {
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    svg {
+      color: #f4ebff;
+    }
+  }
+
+  .dropdown {
+    background-color: #2b1a40;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  .title {
+    background-color: #3d2a57;
+    color: #f4ebff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .item {
+    color: #f4ebff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    &:hover {
+      background-color: #3d2a57;
+    }
+  }
+
+  .viewAll {
+    background-color: #3d2a57;
+    color: #d8baff;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      background-color: #4d3670;
+    }
   }
 }

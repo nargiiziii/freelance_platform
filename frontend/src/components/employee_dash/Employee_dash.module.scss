@@ -316,3 +316,155 @@ $hoverAccent: #d3baf8;
   line-height: 1.6;
   color: #2e0f4f;
 }
+
+
+:global(body.dark) {
+  .employeeContent {
+    background-color: #1a102b;
+    color: #fdfbff;
+  }
+
+  .profile {
+    background: #2b1a40;
+    box-shadow: 0 4px 20px rgba(216, 186, 255, 0.1);
+
+    .avatar {
+      border-color: #d8baff;
+    }
+
+    .avatarPlaceholder {
+      background-color: #d8baff;
+      color: #1a102b;
+    }
+
+    .info {
+      .name {
+        color: #fdfbff;
+      }
+
+      .role,
+      .balance {
+        color: #bba6d8;
+      }
+
+      .editButton {
+        background-color: #d8baff;
+
+        &:hover {
+          background-color: #c4a2f5;
+        }
+      }
+
+      .stats p {
+        color: #fdfbff;
+
+        button {
+          background-color: #d8baff;
+
+          &:hover {
+            background-color: #c4a2f5;
+          }
+        }
+      }
+    }
+  }
+
+  .sectionContent {
+    background: #2b1a40;
+    box-shadow: 0 4px 24px rgba(216, 186, 255, 0.08);
+
+    h3 {
+      color: #fdfbff;
+    }
+
+    button {
+      background-color: #d8baff;
+      color: #1a102b;
+
+      &:hover {
+        background-color: #c4a2f5;
+      }
+    }
+
+    .projectCard {
+      background-color: #322348;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 2px 12px rgba(207, 179, 255, 0.1);
+
+      h4 {
+        color: #cfb3ff;
+      }
+
+      p {
+        color: #fdfbff;
+      }
+
+      button {
+        background-color: #d8baff;
+
+        &:hover {
+          background-color: #c4a2f5;
+        }
+      }
+    }
+
+    ul li {
+      background-color: #2e2042;
+      color: #fdfbff;
+      box-shadow: 0 1px 6px rgba(216, 186, 255, 0.1);
+    }
+  }
+
+  .tabMenu {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+
+    .tabButton {
+      background-color: #2e2042;
+      color: #bfa5dd;
+
+      &:hover {
+        background-color: #3b2e50;
+        color: #cfb3ff;
+      }
+    }
+
+    .activeTab {
+      background-color: #d8baff;
+      color: #1a102b;
+
+      &:hover {
+        background-color: #c4a2f5;
+      }
+    }
+  }
+
+  .reviewsSection {
+    background-color: #2b1a40;
+    color: #fdfbff;
+
+    h3 {
+      color: #cfb3ff;
+    }
+  }
+
+  .reviewItem {
+    background: #322348;
+    box-shadow: 0 6px 20px rgba(207, 179, 255, 0.12);
+  }
+
+  .reviewDate {
+    color: #bfa5dd;
+  }
+
+  .reviewUser {
+    color: #fdfbff;
+  }
+
+  .reviewStars {
+    color: #d8baff;
+  }
+
+  .reviewComment {
+    color: #fdfbff;
+  }
+}

@@ -12,6 +12,10 @@
   margin-bottom: -1rem;
 }
 
+:global(body.dark) .faq_area {
+  background-color: #17082b;
+}
+
 .title {
   margin-top: 4rem;
   text-align: center;
@@ -19,6 +23,10 @@
   color: #3c127e;
   margin-bottom: 4rem;
   font-family: var(--font-main);
+}
+
+:global(body.dark) .title {
+  color: #dccaff;
 }
 
 .list {
@@ -40,6 +48,11 @@
   box-sizing: border-box;
 }
 
+:global(body.dark) .item {
+  background: #261a3c;
+  box-shadow: 0 5px 20px rgba(255, 255, 255, 0.03);
+}
+
 .question {
   font-size: 2.3rem;
   font-weight: bold;
@@ -50,10 +63,18 @@
   align-items: center;
 }
 
+:global(body.dark) .question {
+  color: #e3cfff;
+}
+
 .icon {
   font-size: 2.5rem;
   color: #7e4ff4;
   margin-left: 1rem;
+}
+
+:global(body.dark) .icon {
+  color: #dccaff;
 }
 
 .answer {
@@ -61,6 +82,10 @@
   font-size: 1.7rem;
   color: #333;
   line-height: 1.6;
+}
+
+:global(body.dark) .answer {
+  color: #f3e8ff;
 }
 
 .answerWrapper {
@@ -71,7 +96,7 @@
 }
 
 .answerWrapper.active {
-  max-height: 500px; /* Можно подкорректировать под контент */
+  max-height: 500px;
   opacity: 1;
 }
 
@@ -144,8 +169,4 @@
   .item {
     padding: 1.5rem 1.5rem;
   }
-}
-
-@media (min-width: 1024px) {
-  /* Твои базовые стили уже подходят для десктопа */
 }

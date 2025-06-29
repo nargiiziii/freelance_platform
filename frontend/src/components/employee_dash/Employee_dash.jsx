@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEmployerProjects } from "../../redux/features/projectSlice";
 import {
   fetchReviewsForUser,
-  fetchUserReviews,
 } from "../../redux/features/reviewSlice";
 import style from "./Employee_dash.module.scss";
 

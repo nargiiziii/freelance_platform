@@ -1,9 +1,21 @@
+@use "sass:color";
+
+// 🌞 Светлая тема
 $primary: #f4f0ff;
 $accent: #c6a5f7;
 $darkAccent: #a375f0;
 $text: #2e0f4f;
 $muted: #8a6cae;
 $hover-bg: #f0eaff;
+
+// 🌙 Тёмная тема
+$dark-primary: #1a0e2b;
+$dark-accent: #d8baff;
+$dark-darkAccent: #e0c9ff;
+$dark-text: #f4ebff;
+$dark-muted: #bba6d8;
+$dark-hover-bg: #3d2a57;
+$dark-card-bg: rgba(43, 26, 64, 0.8);
 
 .freelancerList {
   padding: 4rem 6%;
@@ -32,7 +44,7 @@ $hover-bg: #f0eaff;
       color: $text;
       cursor: pointer;
       transition: background-color 0.3s ease, border-color 0.3s ease;
-      box-shadow: 0 4px 10px rgba(163, 117, 240, 0.08);
+      box-shadow: 0 4px 10px rgba($darkAccent, 0.08);
 
       &:hover {
         background-color: $hover-bg;
@@ -54,7 +66,7 @@ $hover-bg: #f0eaff;
     padding: 2.2rem 2.8rem;
     border-radius: 8px;
     background-color: rgba(221, 207, 254, 0.304);
-    box-shadow: 0 8px 20px rgba(163, 117, 240, 0.08);
+    box-shadow: 0 8px 20px rgba($darkAccent, 0.08);
     width: 80rem;
 
     .avatar {
@@ -138,5 +150,64 @@ $hover-bg: #f0eaff;
     font-size: 1.5rem;
     color: $text;
     margin-top: 5rem;
+  }
+}
+
+// 🌙 ТЁМНАЯ ТЕМА
+:global(body.dark) {
+  .freelancerList {
+    background-color: $dark-primary;
+
+    h2 {
+      color: $dark-darkAccent;
+    }
+
+    .topBar .select {
+      background-color: $dark-card-bg;
+      color: $dark-text;
+      border: 1px solid $dark-accent;
+
+      &:hover {
+        background-color: $dark-hover-bg;
+        border-color: $dark-darkAccent;
+      }
+    }
+
+    .card {
+      background-color: $dark-card-bg;
+      box-shadow: 0 8px 20px rgba($dark-darkAccent, 0.12);
+
+      .avatar {
+        background-color: $dark-accent;
+      }
+
+      .info {
+        .details {
+          h3 {
+            color: $dark-text;
+          }
+
+          .email {
+            color: $dark-muted;
+          }
+
+          .category {
+            color: lighten($dark-muted, 15%);
+          }
+        }
+
+        .action .button {
+          background-color: $dark-accent;
+
+          &:hover {
+            background-color: $dark-darkAccent;
+          }
+        }
+      }
+    }
+
+    .loading {
+      color: $dark-text;
+    }
   }
 }

@@ -95,10 +95,18 @@ $orange: #ffcc80;
   }
 }
 
-.pink { background-color: $pink; }
-.blue { background-color: $blue; }
-.green { background-color: $green; }
-.orange { background-color: $orange; }
+.pink {
+  background-color: $pink;
+}
+.blue {
+  background-color: $blue;
+}
+.green {
+  background-color: $green;
+}
+.orange {
+  background-color: $orange;
+}
 
 .chartPlaceholder {
   grid-column: 1 / -1;
@@ -117,7 +125,13 @@ $orange: #ffcc80;
 .fakeChart {
   height: 200px;
   width: 100%;
-  background: repeating-linear-gradient(to right, $hover-bg, $hover-bg 4px, transparent 4px, transparent 8px);
+  background: repeating-linear-gradient(
+    to right,
+    $hover-bg,
+    $hover-bg 4px,
+    transparent 4px,
+    transparent 8px
+  );
   border-radius: 10px;
   position: relative;
 
@@ -339,11 +353,15 @@ h3 {
   position: absolute;
   top: 1rem;
   right: 1rem;
+  width: 1rem;
   background: transparent;
   border: none;
-  font-size: 1.8rem;
+  font-size: 1.4rem; 
   cursor: pointer;
   color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     color: #333;

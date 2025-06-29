@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $primary: #f4f0ff;
 $accent: #c6a5f7;
 $darkAccent: #a375f0;
@@ -8,6 +10,14 @@ $border: #e8def8;
 $hover-bg: #f0eaff;
 $error: #e57373;
 $shadow: 0 14px 40px rgba($darkAccent, 0.08);
+
+// 🌙 Тёмная тема
+$dark-bg: #140a20;
+$dark-card: #261a3c;
+$dark-text: #fdfbff;
+$dark-border: rgba(255, 255, 255, 0.1);
+$dark-muted: #bca8da;
+$dark-hover-bg: #2e1e4d;
 
 .container {
   max-width: 1000px;
@@ -22,6 +32,11 @@ $shadow: 0 14px 40px rgba($darkAccent, 0.08);
   background-color: #ded2ec2c;
 }
 
+:global(body.dark) .container {
+  background-color: $dark-card;
+  color: $dark-text;
+}
+
 h2 {
   font-size: 2.8rem;
   text-align: center;
@@ -29,6 +44,11 @@ h2 {
   font-weight: 500;
   color: $text;
   text-shadow: 1px 1px $border;
+}
+
+:global(body.dark) h2 {
+  color: $dark-text;
+  text-shadow: 1px 1px $dark-border;
 }
 
 .error {
@@ -66,6 +86,15 @@ h2 {
   }
 }
 
+:global(body.dark) .card {
+  background: $dark-card;
+  color: $dark-text;
+
+  h3 {
+    color: $dark-text;
+  }
+}
+
 .top {
   display: flex;
   justify-content: space-between;
@@ -95,16 +124,14 @@ h2 {
 .completed {
   background-color: #e0f7e9;
 }
-
 .rejected {
   background-color: #f9d6d6;
 }
-
 .inProgress {
   background-color: #f4effc;
 }
 .refunded {
-  background-color: #f3e0d0; 
+  background-color: #f3e0d0;
 }
 
 .completedLabel,
@@ -119,6 +146,7 @@ h2 {
   color: $darkAccent;
   border: 1px solid rgb(149, 28, 224);
 }
+
 .refundedLabel {
   display: inline-block;
   padding: 0.4rem 1.2rem;
@@ -193,6 +221,18 @@ h2 {
     }
   }
 
+  :global(body.dark) .fileLabel {
+    background-color: $dark-card;
+    border-color: $dark-border;
+    color: $dark-muted;
+
+    &:hover {
+      background-color: $dark-hover-bg;
+      border-color: $darkAccent;
+      color: $darkAccent;
+    }
+  }
+
   .fileName {
     font-size: 1.3rem;
     color: $text;
@@ -201,6 +241,10 @@ h2 {
     max-width: 300px;
     word-wrap: break-word;
     animation: fadeIn 0.4s ease;
+  }
+
+  :global(body.dark) .fileName {
+    color: $dark-text;
   }
 
   button {
@@ -229,6 +273,10 @@ h2 {
       box-shadow: none;
     }
   }
+
+  :global(body.dark) button:disabled {
+    background-color: $dark-muted;
+  }
 }
 
 .submittedBlock {
@@ -253,6 +301,18 @@ h2 {
       }
     }
   }
+
+  :global(body.dark) .fileSent {
+    color: $dark-text;
+
+    a {
+      color: $darkAccent;
+
+      &:hover {
+        color: $accent;
+      }
+    }
+  }
 }
 
 .reviewBlock {
@@ -263,6 +323,10 @@ h2 {
     font-weight: 600;
     color: $text;
     margin-bottom: 1rem;
+  }
+
+  :global(body.dark) h4 {
+    color: $dark-text;
   }
 }
 

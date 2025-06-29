@@ -29,8 +29,8 @@ import CreateProjectPage from "./pages/createProjectPage/CreateProjectPage";
 import MyJobs from "./pages/myJobs/MyJobs";
 import ProjectDetails from "./pages/projectDetails/ProjectDetails";
 import EditProject from "./pages/editProject/EditProject";
-import CombinedChatPage from "./pages/messagesPage/MessagesPage";
 import AdminPanel from "./pages/admin/AdminPanel";
+import FreelancerDetail from "./pages/freelancerDetail/FreelancerDetail";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +58,7 @@ const router = createBrowserRouter([
       { path: "/employer/project/:id", element: <ProjectDetails /> },
       { path: "/edit-project/:id", element: <EditProject /> },
       { path: "/admin", element: <AdminPanel /> },
+      { path: "/freelancers/:id", element: <FreelancerDetail /> },
     ],
   },
 ]);

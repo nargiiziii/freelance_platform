@@ -121,7 +121,6 @@ const Navlist = () => {
 
       {user && (
         <>
-          {/* 🔔 Уведомления добавлены сюда */}
           <li className={style.li}>
             <NotificationDropdown role={user.role} />
           </li>

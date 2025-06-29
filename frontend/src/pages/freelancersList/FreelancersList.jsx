@@ -77,6 +77,9 @@ const FreelancersList = () => {
                 <Link to={`/messages?user=${user._id}`}>
                   <button className={style.button}>Отправить сообщение</button>
                 </Link>
+                <Link to={`/freelancers/${user._id}`}>
+                  <button className={style.button}>Посмотреть профиль</button>
+                </Link>
               </div>
             </div>
           </div>

@@ -8,6 +8,8 @@ import {
   addNotification,
 } from "../../redux/features/notificationSlice";
 import { getMyProposals } from "../../redux/features/proposalSlice";
+import { fetchChats } from "../../redux/features/messageSlice";
+import { getEmployerProjects } from "../../redux/features/projectSlice";
 
 const NotificationDropdown = ({ role }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +25,6 @@ const NotificationDropdown = ({ role }) => {
   );
   const globalNotifications = useSelector((state) => state.notifications.list);
 
-  const addedIdsRef = useRef(new Set());
   const dismissedRef = useRef(
     new Set(
       (() => {
@@ -76,7 +77,11 @@ const NotificationDropdown = ({ role }) => {
 
     if (role === "employer") {
       projects.forEach((proj) => {
-        if (proj.proposals?.length > 0) {
+        const hasProposals =
+          (proj.proposals && proj.proposals.length > 0) ||
+          proj.proposalsLength > 0;
+
+        if (hasProposals) {
           list.push({
             id: `new-${proj._id}`,
             text: "📝 Новый отклик",
@@ -84,7 +89,7 @@ const NotificationDropdown = ({ role }) => {
           });
         }
 
-        if (proj.status === "submitted") {
+        if (proj.status?.toLowerCase() === "submitted") {
           list.push({
             id: `sub-${proj._id}`,
             text: "📦 Работа сдана",
@@ -99,23 +104,21 @@ const NotificationDropdown = ({ role }) => {
 
   useEffect(() => {
     const seen = new Set(globalNotifications.map((n) => n.id));
+
     generatedNotifications.forEach((n) => {
-      if (
-        !seen.has(n.id) &&
-        !addedIdsRef.current.has(n.id) &&
-        !dismissedRef.current.has(n.id)
-      ) {
+      const alreadyDismissed = dismissedRef.current.has(n.id);
+      const alreadyAdded = seen.has(n.id);
+
+      if (!alreadyDismissed && !alreadyAdded) {
         dispatch(addNotification(n));
-        addedIdsRef.current.add(n.id);
       }
     });
-  }, [generatedNotifications, dispatch, globalNotifications]);
+  }, [generatedNotifications, globalNotifications, dispatch]);
 
   useEffect(() => {
     globalNotifications.forEach((n) => {
       if (location.pathname === n.link) {
         dispatch(removeNotification(n.id));
-        addedIdsRef.current.delete(n.id);
         dismissedRef.current.add(n.id);
         persistDismissed();
       }
@@ -135,7 +138,6 @@ const NotificationDropdown = ({ role }) => {
 
   const handleClick = (id, link) => {
     dispatch(removeNotification(id));
-    addedIdsRef.current.delete(id);
     dismissedRef.current.add(id);
     persistDismissed();
     setIsOpen(false);
@@ -145,19 +147,27 @@ const NotificationDropdown = ({ role }) => {
   const unreadCount = notifications.length;
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  useEffect(() => {
+    dispatch(fetchChats());
     if (role === "freelancer") {
       dispatch(getMyProposals());
     }
+    if (role === "employer") {
+      dispatch(getEmployerProjects());
+    }
+  }, [dispatch, role]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(fetchChats());
+      if (role === "freelancer") {
+        dispatch(getMyProposals());
+      }
+      if (role === "employer") {
+        dispatch(getEmployerProjects());
+      }
+    }, 30000); // каждые 30 секунд
+
+    return () => clearInterval(interval); // очистка таймера при размонтировании
   }, [dispatch, role]);
 
   return (

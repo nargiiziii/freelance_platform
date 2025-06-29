@@ -56,14 +56,34 @@ const MessagesPage = () => {
         const chatRes = await axios.post("/messages/create", {
           receiverId: selectedUserId,
         });
-        const cId = chatRes.data._id;
+
+        const chatData = chatRes.data;
+        const cId = chatData._id;
         setChatId(cId);
 
         const msgs = await axios.get(`/messages/chats/${cId}/messages`);
         setMessages(msgs.data);
 
-        const userRes = await axios.get(`/users/${selectedUserId}`);
-        setReceiverInfo(userRes.data);
+        // 🛠 Найди ID собеседника
+        const receiverIdFromChat = chatData.members.find(
+          (m) => m !== currentUser.id && m !== currentUser._id
+        );
+
+        // 🧠 Получи данные пользователя
+        const userRes = await axios.get(`/users/${receiverIdFromChat}`);
+        const receiver = userRes.data;
+
+        // ✅ Сохрани инфо о собеседнике
+        setReceiverInfo(receiver);
+        setSelectedUserId(receiver._id);
+
+        // 👇 Временно вручную добавим partner в chatData, чтобы при повторном fetchChats он был корректным
+        chatData.partner = {
+          _id: receiver._id,
+          name: receiver.name,
+          avatar: receiver.avatar,
+          role: receiver.role,
+        };
 
         socket.emit("join", currentUser.id);
         socket.emit("markAsRead", {
@@ -186,15 +206,14 @@ const MessagesPage = () => {
             const partner =
               chat?.partner ||
               chat?.members?.find(
-                (m) => m && String(m._id) !== String(currentUser?.id)
+                (m) => m && String(m._id) !== String(currentUser.id)
               );
 
             const lastMsg = chat?.lastMessage?.content || "Нет сообщений";
             const unreadCount = chat?.unreadCount || 0;
 
             if (!partner) return null;
-            console.log("chat partner:", partner);
-
+            // console.log("chat partner:", partner);
             return (
               <div
                 key={chat._id}

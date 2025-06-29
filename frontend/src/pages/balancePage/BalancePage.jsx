@@ -30,6 +30,10 @@ function BalancePage() {
       await dispatch(topUpBalance(Number(amount))).unwrap();
       toast.success("Balance successfully replenished!");
       setAmount(0);
+
+      // 👉 Сразу обновляем историю
+      const res = await axios.get("/escrow/history");
+      setTransactions(res.data);
     } catch (err) {
       const msg = err?.response?.data?.message || "Error while replenishing";
       toast.error(msg);

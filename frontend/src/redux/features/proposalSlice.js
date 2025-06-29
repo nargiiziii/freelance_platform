@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getEmployerProjects } from "./projectSlice";
 
 
 // Отправка отклика фрилансера на проект
@@ -20,12 +21,18 @@ export const createProposal = createAsyncThunk(
         );
       }
 
-      return await response.json(); // возвращает созданный отклик
+      const proposal = await response.json();
+
+      // ✅ Обнови отклики фрилансера
+      thunkAPI.dispatch(getMyProposals());
+
+      return proposal;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }
   }
 );
+
 
 // Принятие отклика работодателем
 export const acceptProposal = createAsyncThunk(
@@ -40,18 +47,25 @@ export const acceptProposal = createAsyncThunk(
       });
 
       if (!res.ok) {
-        const error = await res.json(); // получаем текст ошибки с сервера
+        const error = await res.json();
         return thunkAPI.rejectWithValue(
           error?.message || "Ошибка при принятии отклика"
         );
       }
 
-      return await res.json(); // возвращает обновлённый отклик
+      const data = await res.json();
+
+      // ✅ Обнови проекты и отклики
+      thunkAPI.dispatch(getEmployerProjects());
+      thunkAPI.dispatch(getMyProposals());
+
+      return data;
     } catch (err) {
       return thunkAPI.rejectWithValue("Ошибка подключения к серверу");
     }
   }
 );
+
 
 
 // Получение всех откликов, связанных с конкретным проектом
@@ -118,12 +132,20 @@ export const submitWork = createAsyncThunk(
       );
 
       if (!res.ok) throw new Error("Ошибка при отправке работы");
-      return await res.json(); // возвращает обновлённый отклик
+
+      const result = await res.json();
+
+      // ✅ Обнови отклики и проекты (для обеих ролей)
+      thunkAPI.dispatch(getMyProposals());
+      thunkAPI.dispatch(getEmployerProjects());
+
+      return result;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }
   }
 );
+
 
 // Получение всех откликов текущего пользователя (фрилансера)
 export const getMyProposals = createAsyncThunk(

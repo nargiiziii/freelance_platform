@@ -39,6 +39,7 @@ router.post("/top-up", verifyToken, topUpBalance);
 
 // Получение списка всех фрилансеров
 router.get('/freelancers/all', getFreelancers);
+
 //последняя активность
 router.get("/freelancer-stats/:id", getFreelancerStats);
 

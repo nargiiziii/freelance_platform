@@ -79,11 +79,12 @@ export const topUpBalance = createAsyncThunk(
   "auth/topUpBalance",
   async (amount, thunkAPI) => {
     try {
-      const res = await axios.post("/users/top-up", { amount });
+      const res = await axios.post("/escrow/topup", { amount }); // 👈 путь изменён
       const state = thunkAPI.getState();
+
       return {
         ...state.auth.user,
-        balance: res.data.balance,
+        balance: res.data.newBalance, // 👈 новое поле
       };
     } catch (e) {
       return thunkAPI.rejectWithValue(
@@ -96,9 +97,9 @@ export const topUpBalance = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,       // Объект текущего пользователя
-    loading: false,   // Флаг загрузки для async операций
-    error: null,      // Сообщение об ошибке
+    user: null, // Объект текущего пользователя
+    loading: false, // Флаг загрузки для async операций
+    error: null, // Сообщение об ошибке
   },
   reducers: {
     // Редьюсер для ручной установки пользователя

@@ -20,35 +20,43 @@ export const createChat = async (req, res) => {
 export const getUserChats = async (req, res) => {
   const userId = req.user.id;
 
-  const chats = await Chat.find({ members: userId })
-    .populate("members", "name role avatar")
-    .populate({
-      path: "lastMessage",
-      select: "content sender createdAt",
-    });
+  try {
+    const chats = await Chat.find({ members: userId })
+      .populate("members", "name role avatar")
+      .populate({
+        path: "lastMessage",
+        select: "content sender createdAt",
+      })
+      .lean(); // обязательно, чтобы можно было модифицировать объекты
 
-  // Подсчёт количества непрочитанных сообщений в каждом чате
-  const enrichedChats = await Promise.all(
-    chats.map(async (chat) => {
-      const partner = chat.members.find((m) => m._id.toString() !== userId);
-      const unreadCount = await Message.countDocuments({
-        chatId: chat._id,
-        sender: { $ne: userId },
-        read: false,
-      });
+    const enrichedChats = chats.map((chat) => {
+      const partner = chat.members.find(
+        (m) => String(m._id) !== String(userId)
+      );
+
+      const unreadCount =
+        chat.lastMessage && chat.unreadBy?.includes(userId) ? 1 : 0;
 
       return {
-        _id: chat._id,
-        members: chat.members,
-        lastMessage: chat.lastMessage,
+        ...chat,
+        partner: {
+          _id: partner._id,
+          name: partner.name,
+          avatar: partner.avatar,
+          role: partner.role,
+        },
         unreadCount,
-        partner,
       };
-    })
-  );
+    });
 
-  res.json(enrichedChats);
+    res.json(enrichedChats);
+  } catch (error) {
+    console.error("Ошибка получения чатов:", error);
+    res.status(500).json({ message: "Не удалось загрузить чаты" });
+  }
 };
+
+
 
 // Функция для получения всех сообщений из конкретного чата
 export const getChatMessages = async (req, res) => {

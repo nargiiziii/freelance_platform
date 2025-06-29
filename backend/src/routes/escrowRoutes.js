@@ -3,7 +3,8 @@ import {
   createEscrow,
   releaseFunds,
   refundFunds,
-  getTransactionHistory
+  getTransactionHistory,
+  topUpBalance
 } from "../controllers/escrowController.js";
 import { verifyToken } from "../middleware/jwtMiddleware.js"; 
 
@@ -20,5 +21,9 @@ router.post("/:escrowId/refund", verifyToken, refundFunds);
 
 // Маршрут для получения истории всех транзакций текущего пользователя
 router.get("/history", verifyToken, getTransactionHistory);
+
+// Маршрут для пополнения баланса пользователя
+router.post("/topup", verifyToken, topUpBalance);
+
 
 export default router;

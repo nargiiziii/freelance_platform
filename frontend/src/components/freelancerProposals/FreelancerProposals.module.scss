@@ -9,6 +9,13 @@ $card-bg: #ffffff;
 $hover-bg: #f0eaff;
 $shadow: 0 6px 26px rgba($darkAccent, 0.08);
 
+// 🌙 Dark mode colors
+$dark-primary: #1f1432;
+$dark-card: #2a1c44;
+$dark-text: #fdfbff;
+$dark-shadow: 0 6px 26px rgba($darkAccent, 0.2);
+$dark-hover: #382654;
+
 .responsesWrapper {
   padding: 2rem;
   background: $primary;
@@ -18,6 +25,12 @@ $shadow: 0 6px 26px rgba($darkAccent, 0.08);
   flex-direction: column;
   align-items: start;
   gap: 2rem;
+}
+
+:global(body.dark) .responsesWrapper {
+  background: $dark-primary;
+  color: $dark-text;
+  box-shadow: $dark-shadow;
 }
 
 .responsesGrid {
@@ -41,6 +54,7 @@ $shadow: 0 6px 26px rgba($darkAccent, 0.08);
   padding: 1.5rem;
   box-shadow: $shadow;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: $text;
 
   h5 {
     font-size: 1.6rem;
@@ -57,6 +71,21 @@ $shadow: 0 6px 26px rgba($darkAccent, 0.08);
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 30px rgba($darkAccent, 0.12);
+  }
+}
+
+:global(body.dark) .card {
+  background-color: $dark-card;
+  color: $dark-text;
+  box-shadow: $dark-shadow;
+
+  h5,
+  p {
+    color: $dark-text;
+  }
+
+  &:hover {
+    background-color: $dark-hover;
   }
 }
 
@@ -99,5 +128,14 @@ $shadow: 0 6px 26px rgba($darkAccent, 0.08);
 
   &:hover {
     background-color: $darkAccent;
+  }
+}
+
+:global(body.dark) .viewAllBtn {
+  background-color: $darkAccent;
+  color: #1b0935;
+
+  &:hover {
+    background-color: lighten($darkAccent, 10%);
   }
 }

@@ -6,6 +6,7 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
   font-family: 'Segoe UI', sans-serif;
   color: #2c2c2c;
+  background: #fff;
 }
 
 .header {
@@ -38,6 +39,7 @@
 
 .info {
   flex: 1;
+
   h2 {
     font-size: 32px;
     margin: 0 0 10px;
@@ -54,6 +56,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
+
     p {
       background: #f5f5fa;
       padding: 6px 12px;
@@ -160,4 +163,72 @@
   margin-top: 60px;
   font-size: 18px;
   color: #6b6b6b;
+}
+
+// 🌙 Тёмная тема
+:global(body.dark) {
+  .detailContainer {
+    background: #1a102b;
+    color: #fdfbff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .avatar {
+    background-color: #2e2042;
+    border: 4px solid #d8baff;
+  }
+
+  .avatarFallback {
+    background-color: #d8baff;
+    color: #1a102b;
+  }
+
+  .info {
+    .bio {
+      color: #bba6d8;
+    }
+
+    .stats p {
+      background: #3c2c50;
+      color: #d8baff;
+    }
+  }
+
+  .section h3 {
+    color: #cfb3ff;
+  }
+
+  .skillBadge {
+    background-color: #3b2e50;
+    color: #d8baff;
+  }
+
+  .portfolioCard {
+    background: #2b1a40;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+
+    .portfolioInfo {
+      p {
+        color: #cfc3e8;
+      }
+
+      a {
+        color: #d8baff;
+      }
+    }
+  }
+
+  .messageButton {
+    background: linear-gradient(to right, #cfb3ff, #b392ff);
+    color: #1a102b;
+
+    &:hover {
+      background: linear-gradient(to right, #e0c9ff, #a67ee5);
+    }
+  }
+
+  .loading,
+  .error {
+    color: #d8baff;
+  }
 }

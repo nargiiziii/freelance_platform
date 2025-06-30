@@ -8,6 +8,7 @@ export default function CreateUserForAdmin({ onUserAdded }) {
     email: "",
     password: "",
     role: "freelancer",
+    category: "",
   });
 
   const handleAddUser = async () => {
@@ -51,6 +52,18 @@ export default function CreateUserForAdmin({ onUserAdded }) {
         <option value="freelancer">Фрилансер</option>
         <option value="employer">Наниматель</option>
       </select>
+      {newUser.role === "freelancer" && (
+        <select
+          value={newUser.category}
+          onChange={(e) => setNewUser({ ...newUser, category: e.target.value })}
+        >
+          <option value="">Выберите категорию</option>
+          <option value="web">Web-разработка</option>
+          <option value="design">Дизайн</option>
+          <option value="writing">Копирайтинг</option>
+          <option value="marketing">Маркетинг</option>
+        </select>
+      )}
       <button onClick={handleAddUser}>Создать</button>
     </div>
   );

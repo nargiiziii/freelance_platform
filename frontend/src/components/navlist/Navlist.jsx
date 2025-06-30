@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/features/authSlice";
 import style from "./Navlist.module.scss";
 import NotificationDropdown from "../notificationDropdown/NotificationDropdown";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const Navlist = () => {
   const user = useSelector((state) => state.auth.user);
   const chats = useSelector((state) => state.messages.chats);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { darkMode, setDarkMode } = useContext(ThemeContext);
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
@@ -22,7 +24,6 @@ const Navlist = () => {
     return "/";
   };
 
-  // Подсчёт общего количества непрочитанных сообщений
   const totalUnread = chats?.reduce((acc, chat) => {
     return acc + (chat.unreadCount || 0);
   }, 0);
@@ -49,14 +50,14 @@ const Navlist = () => {
       {user && user.role === "freelancer" && (
         <>
           <li className={style.li}>
-            <Link to="/jobs">Jobs</Link>
+            <Link to="/jobs">JOBS</Link>
           </li>
           <li className={style.li}>
-            <Link to="/my-proposals">My Proposals</Link>
+            <Link to="/my-proposals">MY PROPOSALS</Link>
           </li>
           <li className={style.li} style={{ position: "relative" }}>
             <Link to="/messages">
-              Messages
+              MESSAGES
               {totalUnread > 0 && (
                 <span
                   style={{
@@ -76,7 +77,7 @@ const Navlist = () => {
             </Link>
           </li>
           <li className={style.li}>
-            <Link to="/escrow">Escrow</Link>
+            <Link to="/escrow">ESCROW</Link>
           </li>
         </>
       )}
@@ -84,14 +85,14 @@ const Navlist = () => {
       {user && user.role === "employer" && (
         <>
           <li className={style.li}>
-            <Link to="/create-project">Post a Job</Link>
+            <Link to="/create-project">POST A JOB</Link>
           </li>
           <li className={style.li}>
-            <Link to="/my-jobs">My Jobs</Link>
+            <Link to="/my-jobs">MY JOBS</Link>
           </li>
           <li className={style.li} style={{ position: "relative" }}>
             <Link to="/messages">
-              Messages
+              MESSAGES
               {totalUnread > 0 && (
                 <span
                   style={{
@@ -111,10 +112,10 @@ const Navlist = () => {
             </Link>
           </li>
           <li className={style.li}>
-            <Link to="/freelancers">Find Freelancers</Link>
+            <Link to="/freelancers">FIND FREELANCERS</Link>
           </li>
           <li className={style.li}>
-            <Link to="/escrow">Escrow</Link>
+            <Link to="/escrow">ESCROW</Link>
           </li>
         </>
       )}
@@ -143,11 +144,21 @@ const Navlist = () => {
 
           <li className={style.li}>
             <button className={style.button} onClick={handleLogout}>
-              Logout
+              LOGOUT
             </button>
           </li>
         </>
       )}
+
+      <li className={style.li}>
+        <button
+          onClick={() => setDarkMode((prev) => !prev)}
+          className={style.themeButton}
+          title="Toggle Theme"
+        >
+          {darkMode ? "☀️" : "🌙"}
+        </button>
+      </li>
     </ul>
   );
 };

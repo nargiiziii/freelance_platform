@@ -1,5 +1,6 @@
 @use "sass:color";
 
+// 🌞 Светлая тема
 $primary: #f4f0ff;
 $accent: #c6a5f7;
 $darkAccent: #a375f0;
@@ -9,6 +10,16 @@ $card-bg: #ffffff;
 $hover-bg: #f0eaff;
 $error: #e57373;
 $border: #e0d2f5;
+
+// 🌙 Тёмная тема
+$dark-primary: #1a102b;
+$dark-accent: #cfb3ff;
+$dark-darkAccent: #e0c9ff;
+$dark-text: #fdfbff;
+$dark-muted: #bfa5dd;
+$dark-card-bg: #2a1e40;
+$dark-hover-bg: #3b2e50;
+$dark-border: rgba(255, 255, 255, 0.15);
 
 .proposalList {
   padding: 2.5rem 6%;
@@ -113,7 +124,7 @@ $border: #e0d2f5;
 
 .acceptButton {
   background: $accent;
-  color: rgb(255, 255, 255);
+  color: white;
 
   &:hover {
     background: color.scale($darkAccent, $lightness: -10%);
@@ -126,5 +137,68 @@ $border: #e0d2f5;
 
   &:hover {
     background: color.scale($error, $lightness: -10%);
+  }
+}
+
+// 🌙 ТЁМНАЯ ТЕМА
+:global(body.dark) {
+  .proposalList {
+    background-color: $dark-primary;
+  }
+
+  .heading {
+    color: $dark-darkAccent;
+  }
+
+  .noProposals {
+    color: $dark-muted;
+  }
+
+  .proposalCard {
+    background: $dark-card-bg;
+    border: 1px solid $dark-border;
+    box-shadow: 0 8px 28px rgba($dark-darkAccent, 0.1);
+
+    &:hover {
+      box-shadow: 0 12px 36px rgba($dark-darkAccent, 0.2);
+    }
+  }
+
+  .infoBlock p {
+    color: $dark-text;
+
+    strong {
+      color: $dark-accent;
+    }
+  }
+
+  .workBlock {
+    background-color: $dark-hover-bg;
+    border: 1px solid $dark-border;
+
+    p {
+      color: $dark-text;
+    }
+  }
+
+  .downloadLink {
+    color: $dark-darkAccent;
+  }
+
+  .acceptButton {
+    background: $dark-accent;
+    color: #1a102b;
+
+    &:hover {
+      background: color.scale($dark-accent, $lightness: -10%);
+    }
+  }
+
+  .rejectButton {
+    background: $error;
+
+    &:hover {
+      background: color.scale($error, $lightness: -10%);
+    }
   }
 }

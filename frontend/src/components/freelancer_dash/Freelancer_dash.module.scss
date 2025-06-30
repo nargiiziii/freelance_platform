@@ -498,3 +498,118 @@ $hoverAccent: #d3baf8;
   line-height: 1.6;
   color: #2e0f4f;
 }
+
+
+// 🌙 Темная тема
+:global(body.dark) .freelancerContent {
+  background-color: #140a20;
+  color: #fdfbff;
+}
+
+:global(body.dark) .profile,
+:global(body.dark) .sectionContent,
+:global(body.dark) .bioBox,
+:global(body.dark) .skillsBox,
+:global(body.dark) .statusBox,
+:global(body.dark) .reviewsSection {
+  background-color: #261a3c;
+  color: #fdfbff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global(body.dark) .tabButton {
+  background-color: #1f1432;
+  color: #d9b8ff;
+
+  &:hover {
+    background-color: #382654;
+    color: #e3cfff;
+  }
+}
+
+:global(body.dark) .activeTab {
+  background-color: #e3cfff;
+  color: #140a20;
+
+  &:hover {
+    background-color: #c7b4e3;
+  }
+}
+
+:global(body.dark) .skillBadge,
+:global(body.dark) .skillsList .skillBadge,
+:global(body.dark) .reviewItem {
+  background-color: #382654;
+  color: #fdfbff;
+}
+
+:global(body.dark) .reviewUser,
+:global(body.dark) .reviewComment,
+:global(body.dark) .reviewStars {
+  color: #fdfbff;
+}
+
+:global(body.dark) .reviewDate {
+  color: #c6a5f7;
+}
+
+:global(body.dark) .addProjectButton,
+:global(body.dark) .editButton {
+  background-color: #e3cfff;
+  color: #140a20;
+
+  &:hover {
+    background-color: #cbb6e3;
+  }
+}
+
+// 🌙 Тёмная тема (дополнения)
+:global(body.dark) .activityCard {
+  background: #382654;
+  color: #fdfbff;
+  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.06);
+
+  h4 {
+    color: #e3cfff;
+  }
+
+  p {
+    color: #fdfbff;
+  }
+}
+
+:global(body.dark) .sectionContent h3 {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #e3cfff;
+}
+
+:global(body.dark) .sectionContent strong {
+  color: #e3cfff;
+}
+
+:global(body.dark) .portfolioContent strong {
+  color: #e3cfff;
+}
+
+:global(body.dark) .portfolioContent p {
+  color: #f0eaff;
+}
+
+:global(body.dark) .selectBar select {
+  background-color: #261a3c;
+  color: #fdfbff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global(body.dark) ul li {
+  background-color: #1f1432;
+  color: #fdfbff;
+
+  strong {
+    color: #e3cfff;
+  }
+
+  small {
+    color: #d9b8ff;
+  }
+}

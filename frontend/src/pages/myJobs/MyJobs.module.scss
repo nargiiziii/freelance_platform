@@ -1,5 +1,6 @@
 @use "sass:color";
 
+// 🌞 Светлая тема
 $primary: #f4f0ff;
 $accent: #c6a5f7;
 $darkAccent: #a375f0;
@@ -11,11 +12,22 @@ $hover-bg: #f0eaff;
 $shadow: 0 10px 28px rgba($darkAccent, 0.08);
 $success: #4caf50;
 
+// 🌙 Тёмная тема
+$dark-primary: #1a0e2b;
+$dark-accent: #d8baff;
+$dark-darkAccent: #e0c9ff;
+$dark-text: #f4ebff;
+$dark-muted: #bba6d8;
+$dark-card-bg: #2b1a40;
+$dark-border: rgba(255, 255, 255, 0.12);
+$dark-hover-bg: #3d2a57;
+$dark-shadow: 0 10px 28px rgba($darkAccent, 0.15);
+
 .myJobs {
   padding: 3rem 6%;
-  background: $primary;
   min-height: 100vh;
   font-family: "Segoe UI", sans-serif;
+  background: $primary;
   color: $text;
 
   h2 {
@@ -24,108 +36,166 @@ $success: #4caf50;
     text-align: start;
     color: $darkAccent;
   }
-}
 
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.2rem;
-  margin-bottom: 3rem;
-  justify-content: start;
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-bottom: 3rem;
+    justify-content: start;
 
-  select {
-    padding: 0.6rem 1rem;
-    font-size: 1.6rem;
-    border: 1px solid $border;
-    border-radius: 8px;
+    select {
+      padding: 0.6rem 1rem;
+      font-size: 1.6rem;
+      border: 1px solid $border;
+      border-radius: 8px;
+      background: $card-bg;
+      color: $text;
+      transition: 0.3s;
+      box-shadow: inset 0 0 6px rgba($accent, 0.1);
+
+      &:hover {
+        background-color: $hover-bg;
+        border-color: $accent;
+      }
+    }
+  }
+
+  .projectCard {
+    position: relative;
     background: $card-bg;
-    color: $text;
-    transition: 0.3s;
-    box-shadow: inset 0 0 6px rgba($accent, 0.1);
+    border-radius: 18px;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    box-shadow: $shadow;
+    transition: box-shadow 0.3s ease-in-out;
+    width: 100rem;
 
     &:hover {
-      background-color: $hover-bg;
-      border-color: $accent;
+      box-shadow: 0 12px 32px rgba($darkAccent, 0.12);
+    }
+
+    .completedLabel {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: rgba($success, 0.1);
+      color: $success;
+      padding: 0.4rem 1rem;
+      font-size: 1.3rem;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .projectTitle {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+      color: $text;
+
+      .completedLabel {
+        font-size: 1.4rem;
+        color: $success;
+        margin-left: 1rem;
+        font-weight: 500;
+      }
+    }
+
+    .projectText {
+      font-size: 1.6rem;
+      margin-bottom: 0.8rem;
+      color: $text;
+    }
+
+    .buttonGroup {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      .actionButton,
+      .deleteButton {
+        width: 22rem;
+        background: $accent;
+        color: white;
+        border: none;
+        padding: 1.4rem 1.2rem;
+        font-size: 1.5rem;
+        border-radius: 6px;
+        cursor: pointer;
+        text-align: center;
+        transition: background 0.3s ease;
+
+        &:hover {
+          background: $darkAccent;
+        }
+      }
+
+      .deleteButton {
+        background: #e57373;
+
+        &:hover {
+          background: color.adjust(#e57373, $lightness: -10%);
+        }
+      }
     }
   }
 }
 
-.projectCard {
-  position: relative; 
-  background: $card-bg;
-  border-radius: 18px;
-  padding: 2rem;
-  margin-bottom: 2.5rem;
-  box-shadow: $shadow;
-  transition: box-shadow 0.3s ease-in-out;
-  width: 100rem;
+// ✅ Обёртка темной темы через :global (важно для SCSS модулей!)
+:global(body.dark) {
+  .myJobs {
+    background: $dark-primary;
+    color: $dark-text;
 
-  &:hover {
-    box-shadow: 0 12px 32px rgba($darkAccent, 0.12);
-  }
-}
+    h2 {
+      color: $dark-darkAccent;
+    }
 
-.completedLabel {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: rgba($success, 0.1);
-  color: $success;
-  padding: 0.4rem 1rem;
-  font-size: 1.3rem;
-  border-radius: 8px;
-  font-weight: 600;
-}
+    .filters select {
+      background: $dark-card-bg;
+      color: $dark-text;
+      border: 1px solid $dark-border;
 
-.projectTitle {
-  font-size: 2rem;
-  margin-bottom: 1.2rem;
-  font-weight: 600;
-  color: $text;
+      &:hover {
+        background-color: $dark-hover-bg;
+        border-color: $dark-accent;
+      }
+    }
 
-  .completedLabel {
-    font-size: 1.4rem;
-    color: $success;
-    margin-left: 1rem;
-    font-weight: 500;
-  }
-}
+    .projectCard {
+      background: $dark-card-bg;
+      box-shadow: $dark-shadow;
 
-.projectText {
-  font-size: 1.6rem;
-  margin-bottom: 0.8rem;
-  color: $text;
-}
+      .projectTitle {
+        color: $dark-text;
 
-.buttonGroup {
-  margin-top: 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
+        .completedLabel {
+          color: $success;
+        }
+      }
 
-.actionButton,
-.deleteButton {
-  width: 22rem; // ✅ фиксированная ширина
-  background: $accent;
-  color: white;
-  border: none;
-  padding: 1.4rem 1.2rem;
-  font-size: 1.5rem;
-  border-radius: 6px;
-  cursor: pointer;
-  text-align: center;
-  transition: background 0.3s ease;
+      .projectText {
+        color: $dark-text;
+      }
 
-  &:hover {
-    background: $darkAccent;
-  }
-}
+      .buttonGroup {
+        .actionButton {
+          background: $dark-accent;
 
-.deleteButton {
-  background: #e57373;
+          &:hover {
+            background: $dark-darkAccent;
+          }
+        }
 
-  &:hover {
-background: color.adjust(#e57373, $lightness: -10%);
+        .deleteButton {
+          background: #e57373;
+
+          &:hover {
+            background: color.adjust(#e57373, $lightness: -10%);
+          }
+        }
+      }
+    }
   }
 }

@@ -29,6 +29,19 @@
   }
 }
 
+// 🌙 Тёмная тема
+:global(body.dark) .whyEscrow {
+  background-color: #17082b;
+
+  h3 {
+    color: #e2d2ff;
+  }
+
+  p {
+    color: #b9a5e4;
+  }
+}
+
 .esc_cards {
   display: flex;
   justify-content: center;

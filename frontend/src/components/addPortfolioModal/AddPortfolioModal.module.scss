@@ -9,6 +9,16 @@ $card-bg: #ffffff;
 $hover-bg: #f0eaff;
 $error: #e57373;
 
+// 🌙 Тёмная тема
+$dark-bg: #140a20;
+$dark-primary: #1f1432;
+$dark-accent: #d9b8ff;
+$dark-darkAccent: #e3cfff;
+$dark-text: #fdfbff;
+$dark-card-bg: #261a3c;
+$dark-muted: #cbbedd;
+$dark-hover-bg: #382654;
+
 // === Overlay ===
 .overlay {
   position: fixed;
@@ -21,6 +31,10 @@ $error: #e57373;
   z-index: 1000;
   overflow-y: auto;
   padding: 1rem;
+}
+
+:global(body.dark) .overlay {
+  background-color: rgba($dark-text, 0.1);
 }
 
 // === Modal ===
@@ -36,12 +50,21 @@ $error: #e57373;
   font-family: "Segoe UI", sans-serif;
 }
 
+:global(body.dark) .modal {
+  background: $dark-card-bg;
+  box-shadow: 0 24px 64px rgba($dark-accent, 0.1);
+}
+
 // === Heading ===
 h2 {
   text-align: center;
   color: $text;
   margin-bottom: 0.2rem;
   font-size: 1.6rem;
+}
+
+:global(body.dark) h2 {
+  color: $dark-text;
 }
 
 // === Close Icon ===
@@ -57,6 +80,14 @@ h2 {
 
   &:hover {
     color: $darkAccent;
+  }
+}
+
+:global(body.dark) .closeIcon {
+  color: $dark-text;
+
+  &:hover {
+    color: $dark-darkAccent;
   }
 }
 
@@ -81,6 +112,7 @@ h2 {
     background-color: #fdfbff;
     outline: none;
     width: 40rem;
+    color: $text;
 
     &:focus {
       border-color: $accent;
@@ -92,6 +124,24 @@ h2 {
     resize: vertical;
     min-height: 80px;
     max-height: 200px;
+  }
+}
+
+:global(body.dark) .field {
+  label {
+    color: $dark-text;
+  }
+
+  input,
+  textarea {
+    background-color: $dark-card-bg;
+    border: 1px solid $dark-hover-bg;
+    color: $dark-text;
+
+    &:focus {
+      border-color: $dark-accent;
+      box-shadow: 0 0 0 2px $dark-hover-bg;
+    }
   }
 }
 
@@ -161,6 +211,29 @@ h2 {
   }
 }
 
+:global(body.dark) .uploadField {
+  label {
+    color: $dark-text;
+  }
+
+  .fileName {
+    color: $dark-muted;
+  }
+
+  .customButton {
+    background-color: $dark-accent;
+    color: $dark-text;
+
+    &:hover {
+      background-color: $dark-darkAccent;
+    }
+  }
+
+  .imagePreview {
+    box-shadow: 0 0 6px rgba($dark-accent, 0.1);
+  }
+}
+
 // === Buttons ===
 .buttons {
   display: flex;
@@ -199,6 +272,26 @@ h2 {
 
     &:hover {
       background-color: $hover-bg;
+    }
+  }
+}
+
+:global(body.dark) .buttons {
+  button[type="submit"] {
+    background-color: $dark-accent;
+    color: #140a20;
+
+    &:hover {
+      background-color: $dark-darkAccent;
+    }
+  }
+
+  button[type="button"] {
+    background-color: $dark-hover-bg;
+    color: $dark-text;
+
+    &:hover {
+      background-color: color.adjust($dark-hover-bg, $lightness: 5%);
     }
   }
 }

@@ -175,7 +175,6 @@ export const getTransactionHistory = async (req, res) => {
   }
 };
 
-
 // Пополнение баланса и добавление в историю
 export const topUpBalance = async (req, res) => {
   try {
@@ -187,7 +186,8 @@ export const topUpBalance = async (req, res) => {
     }
 
     const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: "Пользователь не найден" });
+    if (!user)
+      return res.status(404).json({ message: "Пользователь не найден" });
 
     // Обновляем баланс
     user.balance += amount;
@@ -198,10 +198,13 @@ export const topUpBalance = async (req, res) => {
       employer: userId,
       freelancer: userId,
       amount,
-      status: "released", // Сразу считаем завершённой
+      status: "released",
+      type: "topup", // ✅ ключевое отличие
     });
 
-    res.status(200).json({ message: "Баланс пополнен", newBalance: user.balance });
+    res
+      .status(200)
+      .json({ message: "Баланс пополнен", newBalance: user.balance });
   } catch (err) {
     console.error("Ошибка при пополнении:", err);
     res.status(500).json({ message: "Не удалось пополнить баланс" });

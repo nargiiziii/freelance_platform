@@ -8,11 +8,24 @@ import { toast } from "react-toastify";
 const CreateProjectPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [skillsRequired, setSkillsRequired] = useState("");
+  const [skillInput, setSkillInput] = useState("");
+  const [skillsRequired, setSkillsRequired] = useState([]);
   const [budget, setBudget] = useState("");
   const [category, setCategory] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const addSkill = () => {
+    const skill = skillInput.trim();
+    if (skill && !skillsRequired.includes(skill)) {
+      setSkillsRequired((prev) => [...prev, skill]);
+      setSkillInput("");
+    }
+  };
+
+  const removeSkill = (skillToRemove) => {
+    setSkillsRequired((prev) => prev.filter((s) => s !== skillToRemove));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,16 +47,11 @@ const CreateProjectPage = () => {
       return;
     }
 
-    const skillsArray = skillsRequired
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-
     dispatch(
       createProject({
         title: trimmedTitle,
         description: trimmedDescription,
-        skillsRequired: skillsArray,
+        skillsRequired,
         budget: parsedBudget,
         category,
       })
@@ -94,11 +102,25 @@ const CreateProjectPage = () => {
           required
         />
 
-        <input
-          value={skillsRequired}
-          onChange={(e) => setSkillsRequired(e.target.value)}
-          placeholder="Необходимые навыки (через запятую)"
-        />
+        <div className={style.skillsSection}>
+          <input
+            value={skillInput}
+            onChange={(e) => setSkillInput(e.target.value)}
+            placeholder="Добавить навык"
+          />
+          <button type="button" onClick={addSkill}>
+            +
+          </button>
+
+          <div className={style.skillsList}>
+            {skillsRequired.map((skill, idx) => (
+              <span key={idx} className={style.skillItem}>
+                {skill}
+                <button type="button" onClick={() => removeSkill(skill)}>✕</button>
+              </span>
+            ))}
+          </div>
+        </div>
 
         <input
           type="number"

@@ -205,3 +205,41 @@ form {
     }
   }
 }
+.skillsSection {
+  margin-top: 1rem;
+
+  input {
+    padding: 8px;
+    width: 70%;
+    margin-right: 8px;
+  }
+
+  button {
+    padding: 8px 12px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}
+
+.skillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.skillItem {
+  background: #eee;
+  padding: 6px 10px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  button {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+  }
+}

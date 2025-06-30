@@ -5,6 +5,7 @@ import { logoutUser } from "../../redux/features/authSlice";
 import style from "./Navlist.module.scss";
 import NotificationDropdown from "../notificationDropdown/NotificationDropdown";
 import { ThemeContext } from "../../context/ThemeContext";
+import { FaSun, FaMoon } from "react-icons/fa";
 
 const Navlist = () => {
   const user = useSelector((state) => state.auth.user);
@@ -151,13 +152,14 @@ const Navlist = () => {
       )}
 
       <li className={style.li}>
-        <button
-          onClick={() => setDarkMode((prev) => !prev)}
-          className={style.themeButton}
-          title="Toggle Theme"
-        >
-          {darkMode ? "☀️" : "🌙"}
-        </button>
+<button
+  onClick={() => setDarkMode((prev) => !prev)}
+  className={style.themeButton}
+  title="Toggle Theme"
+>
+  {darkMode ? <FaSun /> : <FaMoon />}
+</button>
+
       </li>
     </ul>
   );

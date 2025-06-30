@@ -6,6 +6,7 @@ import { fetchChats } from "../redux/features/messageSlice";
 import { getProfile } from "../redux/features/authSlice"; // 👈 импорт профиля
 import Footer from "../components/footer/Footer";
 import "../index.scss";
+import AssistantChat from "../components/aiAssistant/AssistantChat";
 
 const Layout = () => {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ const Layout = () => {
         <Outlet />
       </main>
       {!hideFooter && <Footer />}
+      <AssistantChat /> 
     </div>
   );
 };

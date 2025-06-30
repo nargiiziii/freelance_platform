@@ -1,36 +1,40 @@
-// ProjectListForFreelancer.jsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOpenProjects } from "../../redux/features/projectSlice";
-import { createProposal } from "../../redux/features/proposalSlice";
 import { Link } from "react-router-dom";
+import SendProposalModal from "../../components/sendProposalModal/SendProposalModal";
 import style from "./ProjectListForFreelancer.module.scss";
+
+const categories = ["Web Development", "Design", "Writing", "Marketing"];
 
 function ProjectListForFreelancer() {
   const dispatch = useDispatch();
-  const { openProjects: projects, status } = useSelector((state) => state.projects);
-  const [coverLetter, setCoverLetter] = useState("");
-  const [price, setPrice] = useState("");
+  const { openProjects: projects, status } = useSelector(
+    (state) => state.projects
+  );
   const [activeProject, setActiveProject] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   useEffect(() => {
     dispatch(getOpenProjects());
   }, [dispatch]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!activeProject) return;
-    dispatch(
-      createProposal({
-        projectId: activeProject._id,
-        coverLetter,
-        price: Number(price),
-      })
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    setSelectedCategories((prev) =>
+      prev.includes(value)
+        ? prev.filter((cat) => cat !== value)
+        : [...prev, value]
     );
-    setActiveProject(null);
-    setCoverLetter("");
-    setPrice("");
   };
+
+  const filteredProjects = projects
+    .filter((project) => project.status === "open")
+    .filter((project) =>
+      selectedCategories.length > 0
+        ? selectedCategories.includes(project.category)
+        : true
+    );
 
   if (status === "loading") {
     return <p className={style.loading}>Загрузка проектов...</p>;
@@ -41,75 +45,75 @@ function ProjectListForFreelancer() {
       <aside className={style.leftPanel}>
         <h3 className={style.heading}>Открытые проекты</h3>
         <div className={style.selectBar}>
-          <select onChange={(e) => dispatch(getOpenProjects(e.target.value))}>
-            <option value="">Все категории</option>
-            <option value="Web Development">Web Development</option>
-            <option value="Design">Design</option>
-            <option value="Writing">Writing</option>
-            <option value="Marketing">Marketing</option>
-          </select>
+          <p>Фильтр по категориям:</p>
+          {categories.map((category) => (
+            <label key={category} className={style.checkboxLabel}>
+              <input
+                type="checkbox"
+                value={category}
+                checked={selectedCategories.includes(category)}
+                onChange={handleCategoryChange}
+              />
+              {category}
+            </label>
+          ))}
         </div>
       </aside>
 
       <div className={style.projectList}>
-        {projects
-          .filter((project) => project.status === "open")
-          .map((project) => (
-            <div key={project._id} className={style.card}>
-              <div className={style.headerRow}>
-                <h4 className={style.title}>{project.title}</h4>
-                {project.employer && (
-                  <Link
-                    to={`/messages?user=${project.employer._id}`}
-                    className={style.messageLink}
-                  >
-                    <button className={style.messageBtn}>Написать</button>
-                  </Link>
-                )}
+        {filteredProjects.map((project) => (
+          <div key={project._id} className={style.card}>
+            {project.employer && (
+              <div className={style.topRight}>
+                <Link
+                  to={`/messages?user=${project.employer._id}`}
+                  className={style.messageLink}
+                >
+                  <button className={style.messageBtn}>Написать</button>
+                </Link>
               </div>
-              <p className={style.description}>{project.description}</p>
-              <p><strong>Бюджет:</strong> {project.budget}₽</p>
-              <p><strong>Категория:</strong> {project.category || "Не указана"}</p>
-              {project.employer && (
-                <div className={style.employerInfo}>
-                  <strong>Наниматель:</strong> {project.employer.name}
-                </div>
-              )}
+            )}
 
+            <h4 className={style.title}>{project.title}</h4>
+            <p className={style.description}>{project.description}</p>
+            <p>
+              <strong>Бюджет:</strong> {project.budget}₽
+            </p>
+            <p>
+              <strong>Категория:</strong> {project.category || "Не указана"}
+            </p>
+            {project.employer && (
+              <div className={style.employerInfo}>
+                <strong>Наниматель:</strong> {project.employer.name}
+              </div>
+            )}
+            {project.skillsRequired && project.skillsRequired.length > 0 && (
+              <div className={style.skills}>
+                {project.skillsRequired.map((skill, index) => (
+                  <span key={index} className={style.skill}>
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div className={style.buttonBlock}>
               <button
                 className={style.respondBtn}
-                onClick={() =>
-                  setActiveProject(
-                    activeProject?._id === project._id ? null : project
-                  )
-                }
+                onClick={() => setActiveProject(project)}
               >
-                {activeProject?._id === project._id ? "Скрыть форму" : "Откликнуться"}
+                Откликнуться
               </button>
-
-              {activeProject?._id === project._id && (
-                <form className={style.responseForm} onSubmit={handleSubmit}>
-                  <textarea
-                    required
-                    value={coverLetter}
-                    onChange={(e) => setCoverLetter(e.target.value)}
-                    placeholder="Сопроводительное письмо"
-                  />
-                  <input
-                    type="number"
-                    required
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    placeholder="Предложенная цена"
-                  />
-                  <button type="submit" className={style.submitBtn}>
-                    Отправить отклик
-                  </button>
-                </form>
-              )}
             </div>
-          ))}
+          </div>
+        ))}
       </div>
+
+      {activeProject && (
+        <SendProposalModal
+          project={activeProject}
+          onClose={() => setActiveProject(null)}
+        />
+      )}
     </section>
   );
 }

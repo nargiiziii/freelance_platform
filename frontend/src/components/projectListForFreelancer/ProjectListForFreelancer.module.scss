@@ -10,7 +10,7 @@ $card: #ffffff;
 $border: rgba(155, 133, 184, 0.2);
 $hover: #f0eaff;
 
-// 🌙 Тёмная тема (инверсия)
+// 🌙 Тёмная тема
 $dark-bg: #140a20;
 $dark-primary: #1f1432;
 $dark-accent: #d9b8ff;
@@ -19,6 +19,8 @@ $dark-text: #fdfbff;
 $dark-card: #261a3c;
 $dark-border: rgba(255, 255, 255, 0.1);
 $dark-hover: #382654;
+
+// ---------- Layout ----------
 
 .wrapper {
   display: flex;
@@ -44,13 +46,13 @@ $dark-hover: #382654;
   flex: 0 0 250px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .heading {
   font-size: 2.4rem;
   color: $darkAccent;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 :global(body.dark) .heading {
@@ -85,88 +87,93 @@ $dark-hover: #382654;
   background-color: $dark-card;
   color: $dark-text;
   border: 1px solid $dark-border;
-  background-image: linear-gradient(45deg, transparent 50%, $dark-darkAccent 50%),
+  background-image: linear-gradient(
+      45deg,
+      transparent 50%,
+      $dark-darkAccent 50%
+    ),
     linear-gradient(135deg, $dark-darkAccent 50%, transparent 50%);
 }
 
+// ---------- Project List ----------
+
 .projectList {
-  flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 2rem;
-  max-width: 860px;
-  width: 100%;
+  max-width: 100%;
+  width: 90rem;
 }
 
+// ---------- Card ----------
+
 .card {
+  position: relative;
+  flex: 0 1 calc(50% - 1rem); // 2 карточки в ряд (если хватает места)
   background: $card;
   border: 1px solid $border;
-  border-radius: 16px;
-  padding: 2rem 5rem;
-  box-shadow: 0 4px 20px rgba(197, 150, 247, 0.08);
-  transition: background 0.3s ease;
+  border-radius: 18px;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  transition: background 0.25s ease, box-shadow 0.25s ease;
   color: $text;
 
+  @media (max-width: 768px) {
+    flex: 1 1 100%;
+  }
+
   &:hover {
-    background: $hover;
+    background-color: $hover;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   }
 
   h4.title {
-    font-size: 3.5rem;
+    font-size: 2.4rem;
+    font-weight: 600;
     color: $darkAccent;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   p {
-    margin: 0.6rem 0 1rem;
-    font-size: 1.7rem;
-    color: $text;
+    font-size: 1.6rem;
+    margin: 0.3rem 0;
+    line-height: 1.5;
   }
 
   .employerInfo {
     margin-top: 1rem;
-    font-size: 1.8rem;
-    color: $text;
-  }
-
-  .respondBtn,
-  .messageBtn {
-    width: 15rem;
-    margin-top: 1.2rem;
-    background-color: $darkAccent;
-    color: white;
-    padding: 0.8rem 1.4rem;
-    border: none;
-    border-radius: 10px;
     font-size: 1.6rem;
-    cursor: pointer;
-    transition: 0.3s ease;
-
-    &:hover {
-      background-color: color.adjust($darkAccent, $lightness: -10%);
-    }
+    color: $text;
   }
 }
 
 :global(body.dark) .card {
-  background: $dark-card;
-  border: 1px solid $dark-border;
+  background-color: $dark-card;
+  border-color: $dark-border;
   color: $dark-text;
 
   h4.title {
     color: $dark-darkAccent;
   }
 
-  p,
-  .employerInfo {
+  .employerInfo,
+  p {
     color: $dark-text;
   }
 
   &:hover {
-    background: $dark-hover;
+    background-color: $dark-hover;
   }
 
-  .respondBtn,
+  .respondBtn {
+    background-color: $dark-darkAccent;
+    color: #140a20;
+
+    &:hover {
+      background-color: color.adjust($dark-darkAccent, $lightness: -10%);
+    }
+  }
+
   .messageBtn {
     background-color: $dark-darkAccent;
     color: #140a20;
@@ -177,36 +184,23 @@ $dark-hover: #382654;
   }
 }
 
-.responseForm {
-  margin-top: 1.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  align-items: start;
-  width: 40rem;
+// ---------- Top Right Button ----------
 
-  textarea,
-  input {
-    width: 100%;
-    padding: 1.2rem;
-    border-radius: 10px;
-    border: 1px solid $border;
-    font-size: 1.6rem;
-    resize: none;
-    background-color: $card;
-    color: $text;
-  }
+.topRight {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  z-index: 1;
 
-  .submitBtn {
-    width: 15rem;
-    align-self: flex-start;
+  .messageBtn {
+    padding: 0.6rem 1.3rem;
+    font-size: 1.3rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
     background-color: $darkAccent;
     color: white;
-    padding: 0.8rem 1.6rem;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    cursor: pointer;
+    transition: background-color 0.25s ease;
 
     &:hover {
       background-color: color.adjust($darkAccent, $lightness: -10%);
@@ -214,23 +208,64 @@ $dark-hover: #382654;
   }
 }
 
-:global(body.dark) .responseForm {
-  textarea,
-  input {
-    background-color: $dark-card;
-    color: $dark-text;
-    border: 1px solid $dark-border;
-  }
+// ---------- Bottom Button ----------
 
-  .submitBtn {
-    background-color: $dark-darkAccent;
-    color: #140a20;
+.buttonBlock {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+
+  .respondBtn {
+    padding: 0.9rem 2rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: $darkAccent;
+    color: #fff;
+    transition: background-color 0.25s ease;
 
     &:hover {
-      background-color: color.adjust($dark-darkAccent, $lightness: -10%);
+      background-color: color.adjust($darkAccent, $lightness: -10%);
     }
   }
 }
+
+// ---------- Skills ----------
+
+.skills {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.skill {
+  font-size: 1.3rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background-color: rgba($accent, 0.2);
+  border: 1px solid $border;
+  color: $text;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: $hover;
+  }
+}
+
+:global(body.dark) .skill {
+  background-color: rgba($dark-accent, 0.2);
+  border-color: $dark-border;
+  color: $dark-text;
+
+  &:hover {
+    background-color: $dark-hover;
+  }
+}
+
+// ---------- Loading ----------
 
 .loading {
   text-align: center;
@@ -242,9 +277,62 @@ $dark-hover: #382654;
   color: $dark-text;
 }
 
-.headerRow {
+.checkboxLabel {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.2rem;
+  gap: 10px;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: $text;
+  cursor: pointer;
+  user-select: none;
+
+  input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid $accent;
+    border-radius: 4px;
+    background-color: transparent;
+    display: grid;
+    place-content: center;
+    transition: all 0.2s ease;
+
+    &:checked {
+      background-color: $accent;
+      border-color: $accent;
+
+      &::after {
+        content: "✔";
+        font-size: 12px;
+        color: white;
+      }
+    }
+
+    &:hover {
+      border-color: $darkAccent;
+    }
+  }
+}
+
+:global(body.dark) .checkboxLabel {
+  color: $dark-text;
+
+  input[type="checkbox"] {
+    border-color: $dark-accent;
+
+    &:checked {
+      background-color: $dark-accent;
+      border-color: $dark-accent;
+
+      &::after {
+        color: #140a20;
+      }
+    }
+
+    &:hover {
+      border-color: $dark-darkAccent;
+    }
+  }
 }

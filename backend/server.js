@@ -21,6 +21,7 @@ import escrowRoutes from "./src/routes/escrowRoutes.js";
 import messageRoutes from "./src/routes/messageRoutes.js";
 import reviewRoutes from "./src/routes/reviewRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
+import aiAssistantRoutes from "./src/routes/aiAssistantRoutes.js";
 
 // Загрузка .env
 dotenv.config();
@@ -122,6 +123,7 @@ app.use("/api/escrow", escrowRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/ai-assistant", aiAssistantRoutes);
 
 // Проверка сервера
 app.get("/", (req, res) => {

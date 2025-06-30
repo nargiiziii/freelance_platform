@@ -184,3 +184,28 @@
     border-top: 1px dashed #6e4aa7;
   }
 }
+.skillsBox {
+  margin: 1rem 0;
+}
+
+.skillsTitle {
+  font-size: 16px;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.skillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.skillItem {
+  background-color: #eee;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+}

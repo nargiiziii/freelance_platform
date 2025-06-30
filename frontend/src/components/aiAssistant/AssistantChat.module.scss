@@ -1,0 +1,95 @@
+.wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.fab {
+  background-color: #8e6ce8;
+  border: none;
+  border-radius: 50%;
+  padding: 16px;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.chatBox {
+  width: 320px;
+  height: 420px;
+  background-color: #fff;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.header {
+  background-color: #8e6ce8;
+  color: white;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.messages {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background: #f7f7f7;
+}
+
+.userMsg {
+  align-self: flex-end;
+  background-color: #d9ccff;
+  padding: 8px 12px;
+  margin: 6px 0;
+  border-radius: 12px;
+  max-width: 80%;
+}
+
+.aiMsg {
+  align-self: flex-start;
+  background-color: #eee;
+  padding: 8px 12px;
+  margin: 6px 0;
+  border-radius: 12px;
+  max-width: 80%;
+}
+.inputBox {
+  display: flex;
+  border-top: 1px solid #ddd;
+  padding: 8px;
+  background: white;
+  align-items: center; // ✅ Добавляем выравнивание
+  gap: 8px; // ✅ Пространство между input и кнопкой
+}
+
+.inputBox input {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.inputBox button {
+  background-color: #8e6ce8;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  width:7rem;
+}
+
+.inputBox button:hover {
+  background-color: #764bd1;
+}

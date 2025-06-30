@@ -10,6 +10,13 @@ $border: rgba(198, 165, 247, 0.3);
 $hover-bg: #f0eaff;
 $error: #e57373;
 
+// 🌙 Тёмная тема
+$dark-primary: #1a0e2b;
+$dark-card-bg: rgba(43, 26, 64, 0.85);
+$dark-border: rgba(255, 255, 255, 0.15);
+$dark-text: #f4ebff;
+$dark-muted: #bfa5dd;
+
 .profileWrapper {
   position: relative;
   min-height: 100vh;
@@ -118,7 +125,6 @@ $error: #e57373;
   border: 2px dashed $border;
   cursor: pointer;
   transition: border 0.3s ease;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,5 +238,69 @@ $error: #e57373;
   100% {
     transform: translateY(0) scale(1);
     opacity: 0.25;
+  }
+}
+
+// 🌙 DARK MODE
+:global(body.dark) {
+  .profileWrapper {
+    background-color: $dark-primary;
+  }
+
+  .container {
+    background: $dark-card-bg;
+    border: 1px solid $dark-border;
+    box-shadow: 0 20px 40px rgba(255, 255, 255, 0.05);
+  }
+
+  .title {
+    color: $dark-text;
+  }
+
+  .field label,
+  .avatarField label {
+    color: $dark-text;
+  }
+
+  .field input,
+  .field textarea {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: $dark-text;
+    border: 1px solid $dark-border;
+
+    &:focus {
+      border-color: $accent;
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+  }
+
+  .avatarUploadBox {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: $dark-border;
+
+    &:hover {
+      border-color: $accent;
+    }
+  }
+
+  .avatarPlaceholder {
+    color: $dark-muted;
+  }
+
+  .cancelBtn {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: $dark-text;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  .submitBtn {
+    background-color: $accent;
+
+    &:hover {
+      background-color: color.adjust($accent, $lightness: -6%);
+    }
   }
 }

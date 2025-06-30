@@ -262,3 +262,104 @@ p {
     }
   }
 }
+:global(body.dark) {
+  .form {
+    background: #2b1a40;
+    box-shadow: 0 0 36px rgba(0, 0, 0, 0.2);
+    color: #fdfbff;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    background-color: #1e122f;
+    color: #fdfbff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    &:focus {
+      border-color: #cfb3ff;
+      box-shadow: 0 0 0 3px rgba(185, 153, 244, 0.3);
+    }
+  }
+
+  .label {
+    color: #fdfbff;
+  }
+
+  .fileLabel {
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #bfa5dd;
+
+    &:hover {
+      background-color: #3a275c;
+    }
+  }
+
+  .button {
+    background: #d9c8ff;
+    color: #1a102b;
+
+    &:hover {
+      background: #cfb3ff;
+    }
+  }
+
+  .error {
+    color: #ff4b5c;
+  }
+
+  .toggleButton {
+    background-color: #3a2b55;
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #fdfbff;
+
+    &:hover {
+      background-color: #cfb3ff;
+      color: #1a102b;
+      border-color: #cfb3ff;
+    }
+
+    &.active {
+      background-color: #cfb3ff !important;
+      color: #1a102b !important;
+      border-color: #cfb3ff !important;
+      font-weight: 600 !important;
+      box-shadow: 0 2px 8px rgba(207, 179, 255, 0.3) !important;
+    }
+
+    &:not(.active) {
+      background-color: #3a2b55 !important;
+      color: #fdfbff !important;
+      border-color: rgba(255, 255, 255, 0.15) !important;
+    }
+  }
+
+  .skillInput {
+    background-color: #1e122f;
+    color: #fdfbff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    &:focus {
+      border-color: #cfb3ff;
+      box-shadow: 0 0 0 3px rgba(185, 153, 244, 0.3);
+    }
+  }
+
+  p {
+    color: #bfa5dd;
+  }
+
+  .addSkillButton {
+    background-color: #28a74646 !important;
+  }
+
+  .skillItem {
+    background-color: #3f2a5e;
+    color: #fdfbff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    .removeSkillButton {
+      color: #ff4b5c;
+    }
+  }
+}

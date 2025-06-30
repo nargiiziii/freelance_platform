@@ -41,6 +41,19 @@ const ProjectDetails = () => {
             <h1 className={style.title}>{project.title}</h1>
             <p className={style.description}>{project.description}</p>
           </div>
+
+          {/* ✅ Навыки */}
+          {project.skillsRequired?.length > 0 && (
+            <div className={style.skillsBox}>
+              <h4 className={style.skillsTitle}>Требуемые навыки:</h4>
+              <ul className={style.skillsList}>
+                {project.skillsRequired.map((skill, idx) => (
+                  <li key={idx} className={style.skillItem}>{skill}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div className={style.infoBox}>
             <p><strong>Бюджет:</strong> {project.budget}₽</p>
             <p><strong>Статус:</strong> {project.status}</p>

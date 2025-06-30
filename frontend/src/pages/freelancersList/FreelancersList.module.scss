@@ -6,7 +6,10 @@ $accent: #c6a5f7;
 $darkAccent: #a375f0;
 $text: #2e0f4f;
 $muted: #8a6cae;
+$card-bg: #ffffff;
+$border: #e8def8;
 $hover-bg: #f0eaff;
+$shadow: 0 10px 28px rgba($darkAccent, 0.08);
 
 // 🌙 Тёмная тема
 $dark-primary: #1a0e2b;
@@ -14,8 +17,10 @@ $dark-accent: #d8baff;
 $dark-darkAccent: #e0c9ff;
 $dark-text: #f4ebff;
 $dark-muted: #bba6d8;
+$dark-card-bg: #2b1a40;
+$dark-border: rgba(255, 255, 255, 0.12);
 $dark-hover-bg: #3d2a57;
-$dark-card-bg: rgba(43, 26, 64, 0.8);
+$dark-shadow: 0 10px 28px rgba($darkAccent, 0.15);
 
 .freelancerList {
   padding: 4rem 6%;
@@ -30,33 +35,74 @@ $dark-card-bg: rgba(43, 26, 64, 0.8);
     margin-bottom: 3rem;
   }
 
-  .topBar {
+  .layout {
     display: flex;
-    justify-content: flex-start;
-    margin-bottom: 3.5rem;
+    gap: 4rem;
 
-    .select {
-      padding: 1.2rem 2rem;
-      font-size: 1.3rem;
-      border-radius: 14px;
-      border: 1px solid $accent;
-      background-color: #fff;
-      color: $text;
-      cursor: pointer;
-      transition: background-color 0.3s ease, border-color 0.3s ease;
-      box-shadow: 0 4px 10px rgba($darkAccent, 0.08);
+    @media (max-width: 1024px) {
+      flex-direction: column;
+    }
+  }
 
-      &:hover {
-        background-color: $hover-bg;
-        border-color: $darkAccent;
+  .sidebar {
+    width: 250px;
+    min-width: 200px;
+
+    .checkboxGroup {
+      background: $card-bg;
+      border-radius: 18px;
+      padding: 2rem;
+      box-shadow: $shadow;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+
+      .checkboxLabel {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        color: $text;
+        gap: 0.8rem;
+        cursor: pointer;
+
+        input[type="checkbox"] {
+          appearance: none;
+          width: 18px;
+          height: 18px;
+          border: 2px solid $accent;
+          border-radius: 4px;
+          position: relative;
+          cursor: pointer;
+          transition: background 0.3s ease, border-color 0.3s ease;
+
+          &:checked {
+            background: $accent;
+            border-color: $darkAccent;
+          }
+
+          &:checked::after {
+            content: "✔";
+            color: white;
+            font-size: 1.1rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+          }
+
+          &:hover {
+            border-color: $darkAccent;
+          }
+        }
       }
     }
   }
 
   .cards {
+    width: 95rem;
     display: flex;
     flex-direction: column;
-    gap: 2.2rem;
+    gap: 4rem;
   }
 
   .card {
@@ -67,19 +113,19 @@ $dark-card-bg: rgba(43, 26, 64, 0.8);
     border-radius: 8px;
     background-color: rgba(221, 207, 254, 0.304);
     box-shadow: 0 8px 20px rgba($darkAccent, 0.08);
-    width: 80rem;
+    width: 100%;
 
     .avatar {
-      width: 14rem;
-      height: 14rem;
-      min-width: 100px;
+      width: 9rem;
+      height: 9rem;
+      min-width: 80px;
       border-radius: 50%;
       background-color: $accent;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 34px;
+      font-size: 28px;
       font-weight: bold;
       color: white;
 
@@ -94,14 +140,15 @@ $dark-card-bg: rgba(43, 26, 64, 0.8);
       flex: 1;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
+      gap: 2rem;
 
       .details {
         display: flex;
         flex-direction: column;
 
         h3 {
-          font-size: 2.8rem;
+          font-size: 2.6rem;
           font-weight: 500;
           color: $text;
           margin-bottom: 0.3rem;
@@ -109,7 +156,7 @@ $dark-card-bg: rgba(43, 26, 64, 0.8);
         }
 
         .email {
-          font-size: 1.7rem;
+          font-size: 1.6rem;
           color: $muted;
           margin-bottom: 1rem;
         }
@@ -118,13 +165,92 @@ $dark-card-bg: rgba(43, 26, 64, 0.8);
           font-size: 1.4rem;
           font-weight: 400;
           color: gray;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.8rem;
+        }
+
+        .skills {
+          margin: 1.5rem 0;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.6rem;
+
+          .skill {
+            background-color: $accent;
+            color: white;
+            font-size: 1.7rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 10px;
+          }
+        }
+
+        .portfolio {
+          margin-top: 0.5rem;
+
+          strong {
+            display: block;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: $text;
+          }
+
+          .portfolioGallery {
+            display: flex;
+            gap: 1.2rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            scroll-snap-type: x mandatory;
+
+            &::-webkit-scrollbar {
+              height: 6px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              background-color: $accent;
+              border-radius: 4px;
+            }
+          }
+
+          .portfolioItem {
+            flex: 0 0 auto;
+            width: 160px;
+            height: 110px;
+            border-radius: 1px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba($darkAccent, 0.1);
+            scroll-snap-align: start;
+            position: relative;
+            background-color: white;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              display: block;
+            }
+
+            .title {
+              position: absolute;
+              bottom: 0;
+              width: 100%;
+              background: rgba(0, 0, 0, 0.5);
+              color: white;
+              font-size: 1.1rem;
+              padding: 0.3rem 0.6rem;
+              text-align: center;
+            }
+          }
+
+          .noLink {
+            text-decoration: none;
+            cursor: default;
+          }
         }
       }
 
       .action {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        gap: 1rem;
 
         .button {
           padding: 1rem 2rem;
@@ -132,7 +258,7 @@ $dark-card-bg: rgba(43, 26, 64, 0.8);
           color: white;
           border: none;
           border-radius: 12px;
-          font-size: 1.25rem;
+          font-size: 1.2rem;
           font-weight: 600;
           cursor: pointer;
           transition: background-color 0.3s ease;
@@ -162,14 +288,29 @@ $dark-card-bg: rgba(43, 26, 64, 0.8);
       color: $dark-darkAccent;
     }
 
-    .topBar .select {
-      background-color: $dark-card-bg;
-      color: $dark-text;
-      border: 1px solid $dark-accent;
+    .sidebar .checkboxGroup {
+      background: $dark-card-bg;
+      box-shadow: $dark-shadow;
 
-      &:hover {
-        background-color: $dark-hover-bg;
-        border-color: $dark-darkAccent;
+      .checkboxLabel {
+        color: $dark-text;
+
+        input[type="checkbox"] {
+          border: 2px solid $dark-accent;
+
+          &:checked {
+            background: $dark-accent;
+            border-color: $dark-darkAccent;
+          }
+
+          &:checked::after {
+            color: $dark-primary;
+          }
+
+          &:hover {
+            border-color: $dark-darkAccent;
+          }
+        }
       }
     }
 
@@ -194,6 +335,29 @@ $dark-card-bg: rgba(43, 26, 64, 0.8);
           .category {
             color: lighten($dark-muted, 15%);
           }
+
+          .skills .skill {
+            background-color: $dark-accent;
+          }
+
+          .portfolio {
+            strong {
+              color: $dark-text;
+            }
+
+            .portfolioGallery::-webkit-scrollbar-thumb {
+              background-color: $dark-accent;
+            }
+
+            .portfolioItem {
+              background-color: $dark-card-bg;
+
+              .title {
+                background: rgba(255, 255, 255, 0.1);
+                color: $dark-text;
+              }
+            }
+          }
         }
 
         .action .button {
@@ -204,10 +368,10 @@ $dark-card-bg: rgba(43, 26, 64, 0.8);
           }
         }
       }
-    }
 
-    .loading {
-      color: $dark-text;
+      .loading {
+        color: $dark-text;
+      }
     }
   }
 }

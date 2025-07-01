@@ -405,3 +405,216 @@ $dark-shadow: 0 10px 28px rgba($darkAccent, 0.15);
     }
   }
 }
+
+
+// респонсивность
+
+@media (max-width: 1024px) {
+  .myJobs {
+    .layout {
+      flex-direction: column;
+    }
+
+    .sidebar {
+      flex: unset;
+      width: 100%;
+      position: static;
+    }
+
+    .filters {
+      position: static;
+      top: auto;
+      padding: 2rem;
+      gap: 2rem;
+    }
+
+    .checkboxGroup {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem 2rem;
+
+      .sortLabel {
+        font-size: 1.4rem;
+        grid-column: span 2;
+      }
+
+      label {
+        font-size: 1.3rem;
+        gap: 0.5rem;
+        display: flex;
+        align-items: center;
+
+        input[type="checkbox"] {
+          width: 13px;
+          height: 13px;
+
+          &:checked::after {
+            font-size: 0.85rem;
+          }
+        }
+      }
+    }
+
+    .projects {
+      width: 100%;
+    }
+
+    .projectCard {
+      padding: 2.5rem 2rem;
+
+      .cardContent {
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .buttonGroup {
+        align-items: stretch;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .myJobs {
+    padding: 2rem 4%;
+
+    h2 {
+      font-size: 2.4rem;
+    }
+
+    .filters {
+      padding: 1.6rem;
+      gap: 1.6rem;
+    }
+
+    .checkboxGroup {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem 1.4rem;
+
+      .sortLabel {
+        font-size: 1.3rem;
+        grid-column: span 2;
+      }
+
+      label {
+        font-size: 1.2rem;
+        gap: 0.4rem;
+
+        input[type="checkbox"] {
+          width: 12px;
+          height: 12px;
+
+          &:checked::after {
+            font-size: 0.8rem;
+          }
+        }
+      }
+    }
+
+    .projectCard {
+      padding: 2rem 1.6rem;
+
+      .infoBlock {
+        .projectTitle {
+          font-size: 1.8rem;
+        }
+
+        .projectText {
+          font-size: 1.4rem;
+        }
+
+        .postedDate {
+          font-size: 1.2rem;
+        }
+
+        .statusWithBadge .badge {
+          font-size: 1.3rem;
+          padding: 0.4rem 0.6rem;
+        }
+
+        .statusLabel {
+          font-size: 1.1rem;
+        }
+      }
+
+      .buttonGroup {
+        gap: 0.6rem;
+
+        .actionButton,
+        .deleteButton {
+          padding: 1.2rem 1rem;
+          font-size: 1.4rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .myJobs {
+    .filters {
+      padding: 1.2rem;
+      gap: 1.4rem;
+    }
+
+    .checkboxGroup {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem 1rem;
+
+      .sortLabel {
+        font-size: 1.2rem;
+        grid-column: span 2;
+      }
+
+      label {
+        font-size: 1.1rem;
+        gap: 0.3rem;
+
+        input[type="checkbox"] {
+          width: 11px;
+          height: 11px;
+
+          &:checked::after {
+            font-size: 0.75rem;
+          }
+        }
+      }
+    }
+
+    .projectCard {
+      padding: 1.6rem 1.2rem;
+
+      .infoBlock {
+        .projectTitle {
+          font-size: 1.6rem;
+        }
+
+        .projectText {
+          font-size: 1.3rem;
+        }
+
+        .postedDate {
+          font-size: 1.1rem;
+        }
+
+        .statusWithBadge .badge {
+          font-size: 1.2rem;
+        }
+
+        .statusLabel {
+          font-size: 1rem;
+        }
+      }
+
+      .buttonGroup {
+        .actionButton,
+        .deleteButton {
+          font-size: 1.3rem;
+          padding: 1rem 0.8rem;
+        }
+      }
+    }
+  }
+}

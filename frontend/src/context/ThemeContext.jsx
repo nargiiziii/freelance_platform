@@ -9,7 +9,7 @@ export const ThemeProvider = ({ children }) => {
   });
 
 useEffect(() => {
-  console.log("darkMode:", darkMode); // 👈 добавь это
+  // console.log("darkMode:", darkMode); 
   if (darkMode) {
     document.body.classList.add("dark");
   } else {

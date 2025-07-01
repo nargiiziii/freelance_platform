@@ -1,159 +1,183 @@
-  .ul {
-    display: flex;
-    align-items: center;
-    padding: 0;
-    margin: 0;
-    height: 100%;
-  }
+.ul {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 1.6rem;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  flex-wrap: wrap;
+  list-style: none;
+}
 
-  .li {
-    list-style: none;
-    font-size: 18px;
-    background: none; 
-  }
+.li {
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+}
 
-  .li a {
-    display: inline-block;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: background 0.2s ease, color 0.2s ease;
-    color: inherit;
-  }
+.li a {
+  display: inline-block;
+  border-radius: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+  color: #4b0077;
+  font-weight: 600;
+  font-family: var(--font-sec);
+  text-decoration: none;
+}
 
-  .li a:hover {
-    background-color: rgba(0, 0, 0, 0.06);
-  }
+:global(body.dark) .li a {
+  color: #f4ebff;
+}
+:global(body.dark) .li {
+background-color: transparent;}
 
-  :global(body.dark) .li {
-    background: none;
-  }
+.button {
+  background-color: #6a4ef6;
+  border-radius: 10px;
+  padding: 10px 0;
+  border: none;
+  cursor: pointer;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(106, 78, 246, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  text-align: center;
+  margin: 0;
+}
 
-  :global(body.dark) .li a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
+.button:hover {
+  background-color: #fff;
+  color: #7e62f9;
+  box-shadow: 0 4px 12px rgba(126, 98, 249, 0.4);
+}
 
-  .button {
-    background-color: #6a4ef6;
-    border-radius: 8px;
-    padding: 12px 24px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    color: white;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    box-shadow: 0 4px 10px rgba(106, 78, 246, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-  }
+:global(body.dark) .button {
+  background-color: #d9b8ff;
+  color: #1b0935;
+  box-shadow: 0 4px 10px rgba(217, 184, 255, 0.2);
+}
 
-  .button a {
-    color: inherit;
-    text-decoration: none;
-    width: 100%;
-    display: block;
-  }
+:global(body.dark) .button:hover {
+  background-color: #b88aff;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(217, 184, 255, 0.4);
+}
 
-  .button:hover {
-    background-color: #fff;
-    box-shadow: 0 4px 12px rgba(126, 98, 249, 0.4);
-    color: #7e62f9;
-  }
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  transition: transform 0.2s;
+}
 
-  // 🌙 ТЁМНАЯ ТЕМА
-  :global(body.dark) .button {
-    background-color: #d9b8ff;
-    color: #1b0935;
-    box-shadow: 0 4px 10px rgba(217, 184, 255, 0.2);
-  }
+.avatar:hover {
+  transform: scale(1.05);
+}
 
-  :global(body.dark) .button:hover {
-    background-color: #b88aff;
-    color: #fff;
-    box-shadow: 0 4px 14px rgba(217, 184, 255, 0.4);
-  }
+.avatarPlaceholder {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: gray;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid white;
-    transition: transform 0.2s;
-  }
+:global(body.dark) .avatarPlaceholder {
+  background-color: #a088c2;
+  color: #1b0935;
+  border: 2px solid #d9b8ff;
+}
 
-  .avatar:hover {
-    transform: scale(1.05);
-  }
-
-  .avatarPlaceholder {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background-color: gray;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  :global(body.dark) .avatarPlaceholder {
-    background-color: #a088c2;
-    color: #1b0935;
-    border: 2px solid #d9b8ff;
-  }
-
-  .profileLink {
-    display: flex;
-    align-items: center;
-  }
+.profileLink {
+  display: flex;
+  align-items: center;
+}
 
 .themeButton {
   background: transparent;
-  border: 1px solid rgb(124, 69, 206);
+  border: 1px solid #7c45ce;
   cursor: pointer;
-  padding: 8px;
+  padding: 10px;
   border-radius: 10px;
   font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background 0.3s ease, transform 0.2s ease;
-  margin: 0 1rem;
-
-  &:hover {
-    background-color: rgba(106, 78, 246, 0.08); // светлая подсветка
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(106, 78, 246, 0.4); // фокус для доступности
-  }
-
-  svg {
-    transition: color 0.3s ease;
-    color: #6a4ef6;
-  }
+  width: 60px;
+  margin: 0;
 }
 
-// 🌙 Тёмная тема
-:global(body.dark) .themeButton {
-  svg {
-    color: #d8baff;
+.themeButton:hover {
+  background-color: rgba(106, 78, 246, 0.08);
+}
+
+.themeButton:active {
+  transform: scale(0.95);
+}
+
+.themeButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(106, 78, 246, 0.4);
+}
+
+.themeButton svg {
+  transition: color 0.3s ease;
+  color: #6a4ef6;
+}
+
+:global(body.dark) .themeButton svg {
+  color: #d8baff;
+}
+
+:global(body.dark) .themeButton:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+:global(body.dark) .themeButton:focus {
+  box-shadow: 0 0 0 2px rgba(198, 165, 247, 0.4);
+}
+
+// 🌐 Mobile: выравнивание по ЛЕВОМУ краю и фикс. ширина
+@media (max-width: 767px) {
+  .ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
   }
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+  .li {
+    width: auto;
+    justify-content: flex-start;
   }
 
-  &:focus {
-    box-shadow: 0 0 0 2px rgba(198, 165, 247, 0.4);
+  .li a {
+    width: auto;
+    text-align: left;
+  }
+
+  .button {
+    width: 120px;
+    text-align: center;
+  }
+
+  .themeButton {
+    width: 50px;
+  }
+
+  .profileLink {
+    justify-content: flex-start;
   }
 }

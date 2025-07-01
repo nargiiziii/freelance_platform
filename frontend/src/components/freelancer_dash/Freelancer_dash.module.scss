@@ -613,3 +613,194 @@ $hoverAccent: #d3baf8;
     color: #d9b8ff;
   }
 }
+
+// 📱 Адаптивность
+
+@media (max-width: 768px) {
+  .freelancerContent {
+    padding: 2rem 4%;
+    flex-direction: column;
+  }
+
+  .rightSide {
+    margin-top: 2rem;
+  }
+
+  .profile {
+    max-width: 100%;
+    padding: 2rem;
+
+    .avatar,
+    .avatarPlaceholder {
+      width: 130px;
+      height: 130px;
+    }
+
+    .info {
+      .name {
+        font-size: 3rem;
+      }
+
+      .role,
+      .balance {
+        font-size: 1.4rem;
+      }
+
+      .editButton {
+        font-size: 1.4rem;
+        padding: 0.6rem 1.2rem;
+      }
+    }
+  }
+
+  .sectionContent {
+    padding: 2rem;
+
+    h3 {
+      font-size: 1.8rem;
+    }
+
+    p,
+    .skillsBox span,
+    .bioBox p,
+    .statusBox p {
+      font-size: 1.5rem;
+    }
+
+    strong {
+      font-size: 1.6rem;
+    }
+
+    .skillBadge {
+      font-size: 1.1rem;
+      padding: 0.4rem 1rem;
+    }
+
+    ul li {
+      padding: 1rem;
+      font-size: 1.1rem;
+
+      strong {
+        font-size: 1.4rem;
+      }
+
+      small {
+        font-size: 0.9rem;
+      }
+    }
+
+    .addProjectButton {
+      width: 100%;
+      font-size: 1.5rem;
+      padding: 0.7rem 1.3rem;
+    }
+
+    .activityCard {
+      padding: 1.6rem;
+
+      h4 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1.5rem;
+      }
+    }
+
+    .proposalsWrapper h4 {
+      font-size: 1.4rem;
+    }
+
+    .profileGrid {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .tabMenu {
+    flex-direction: column;
+    gap: 1rem;
+
+    .tabButton {
+      width: 100%;
+      font-size: 1.4rem;
+      padding: 0.6rem 1.2rem;
+    }
+  }
+
+  .reviewItem {
+    width: 100%;
+    padding: 1.6rem;
+  }
+
+  .reviewUser {
+    font-size: 1.7rem;
+  }
+
+  .reviewComment {
+    font-size: 1.5rem;
+  }
+
+  .reviewStars {
+    font-size: 1.3rem;
+  }
+
+  .reviewDate {
+    font-size: 1.3rem;
+  }
+
+  .portfolioGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolioItem {
+    height: 160px;
+  }
+
+  .portfolioContent strong {
+    font-size: 2.3rem;
+  }
+
+  .portfolioContent p {
+    font-size: 1.5rem;
+  }
+
+  .viewButton {
+    font-size: 1.5rem;
+    padding: 0.4rem 0.9rem;
+  }
+
+  .leftColumn {
+    width: 100%;
+  }
+
+  .profileTwoColumn {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 400px) {
+  .profile .info .name {
+    font-size: 2.6rem;
+  }
+
+  .reviewUser {
+    font-size: 1.6rem;
+  }
+
+  .reviewComment {
+    font-size: 1.4rem;
+  }
+
+  .reviewStars {
+    font-size: 1.2rem;
+  }
+
+  .portfolioContent strong {
+    font-size: 2rem;
+  }
+
+  .portfolioContent p {
+    font-size: 1.4rem;
+  }
+}

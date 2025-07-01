@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { getProfile } from "./redux/features/authSlice";
 import "./App.css";
+
 // Toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Общие страницы
+// 📄 Общие страницы
 import Layout from "./pages/Layout";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
@@ -17,20 +18,22 @@ import EditProfile from "./pages/editProf/EditProdile";
 import BalancePage from "./pages/balancePage/BalancePage";
 import MessagesPage from "./pages/messagesPage/MessagesPage";
 import FreelancersList from "./pages/freelancersList/FreelancersList";
+import FreelancerDetail from "./pages/freelancerDetail/FreelancerDetail";
 
-// Страницы фрилансера
+// 🧑‍💻 Страницы фрилансера
 import FreelancerDash from "./components/freelancer_dash/Freelancer_dash";
 import ProjectListForFreelancer from "./components/projectListForFreelancer/ProjectListForFreelancer";
 import MyProposalsFreel from "./pages/myProposalsFreel/MyProposalsFreel";
 
-// Страницы работодателя
+// 👨‍💼 Страницы работодателя
 import EmployeeDash from "./components/employee_dash/Employee_dash";
 import CreateProjectPage from "./pages/createProjectPage/CreateProjectPage";
 import MyJobs from "./pages/myJobs/MyJobs";
 import ProjectDetails from "./pages/projectDetails/ProjectDetails";
 import EditProject from "./pages/editProject/EditProject";
+
+// 🛠 Страница администратора
 import AdminPanel from "./pages/admin/AdminPanel";
-import FreelancerDetail from "./pages/freelancerDetail/FreelancerDetail";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +44,7 @@ const router = createBrowserRouter([
       </div>
     ),
     children: [
+      // 📄 Общие маршруты
       { path: "/", element: <Home /> },
       { path: "/register", element: <Register /> },
       { path: "/login", element: <Login /> },
@@ -48,17 +52,23 @@ const router = createBrowserRouter([
       { path: "/edit-profile", element: <EditProfile /> },
       { path: "/escrow", element: <BalancePage /> },
       { path: "/messages", element: <MessagesPage /> },
-      { path: "/freelancers", element: <FreelancersList /> },
+
+      // 🧑‍💻 Маршруты фрилансера
       { path: "/freelancer-dash", element: <FreelancerDash /> },
       { path: "/jobs", element: <ProjectListForFreelancer /> },
       { path: "/my-proposals", element: <MyProposalsFreel /> },
+
+      // 👨‍💼 Маршруты работодателя
       { path: "/employee-dash", element: <EmployeeDash /> },
       { path: "/create-project", element: <CreateProjectPage /> },
       { path: "/my-jobs", element: <MyJobs /> },
       { path: "/employer/project/:id", element: <ProjectDetails /> },
       { path: "/edit-project/:id", element: <EditProject /> },
-      { path: "/admin", element: <AdminPanel /> },
+      { path: "/freelancers", element: <FreelancersList /> },
       { path: "/freelancers/:id", element: <FreelancerDetail /> },
+      
+      // 🛠 Админ-панель
+      { path: "/admin", element: <AdminPanel /> },
     ],
   },
 ]);
@@ -87,7 +97,7 @@ function App() {
         draggable
         pauseOnHover
         theme="light"
-        className="toast-container" 
+        className="toast-container"
       />
     </>
   );

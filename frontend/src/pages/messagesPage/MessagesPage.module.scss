@@ -337,3 +337,120 @@ $dark-hover-bg: #372655;
     color: $dark-muted;
   }
 }
+
+
+// респонсивность
+
+
+@media (max-width: 1024px) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .chatList {
+    width: 100%;
+    min-width: unset;
+    max-height: 300px;
+    padding: 2rem;
+    border-right: none;
+    border-bottom: 1px solid $border;
+
+    .title {
+      font-size: 2.4rem;
+    }
+
+    .chatCard {
+      padding: 1.2rem;
+      .avatarWrapper {
+        width: 48px;
+        height: 48px;
+        margin-right: 1rem;
+      }
+      .chatInfo {
+        .name {
+          font-size: 1.6rem;
+        }
+        .preview {
+          font-size: 1.3rem;
+        }
+      }
+    }
+  }
+
+  .chatRoom {
+    padding: 2rem;
+
+    .header {
+      img {
+        width: 48px;
+        height: 48px;
+      }
+
+      h3 {
+        font-size: 1.8rem;
+      }
+    }
+
+    .chatBox {
+      padding: 1rem 0;
+      gap: 1rem;
+    }
+
+    .messageRow {
+      .messageBubble {
+        font-size: 1.4rem;
+        padding: 1.2rem 1.8rem;
+        max-width: 85%;
+      }
+    }
+
+    .inputArea {
+      flex-direction: column;
+      gap: 1rem;
+
+      input {
+        padding: 1.2rem 1.6rem;
+        font-size: 1.4rem;
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+        font-size: 1.4rem;
+        padding: 1.2rem 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .chatList {
+    .chatCard {
+      .chatInfo {
+        .name {
+          font-size: 1.4rem;
+        }
+        .preview {
+          font-size: 1.2rem;
+        }
+      }
+      .unreadBadge {
+        font-size: 1rem;
+        padding: 0.3rem 0.8rem;
+      }
+    }
+  }
+
+  .chatRoom {
+    .messageRow {
+      .messageBubble {
+        font-size: 1.3rem;
+        padding: 1rem 1.6rem;
+      }
+    }
+
+    .typingIndicator {
+      font-size: 1.2rem;
+    }
+  }
+}

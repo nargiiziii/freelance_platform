@@ -243,3 +243,85 @@ form {
     cursor: pointer;
   }
 }
+
+
+// Твой основной код остаётся таким же как выше...
+
+// 💡 РЕСПОНСИВНЫЕ ДОПОЛНЕНИЯ
+@media (max-width: 768px) {
+  .modal {
+    padding: 3rem 2rem;
+  }
+
+  form {
+    padding: 2.5rem;
+    gap: 1.8rem;
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    input,
+    textarea {
+      font-size: 1.2rem;
+      padding: 1.2rem 1.4rem;
+    }
+
+    .categoryButtons {
+      gap: 0.8rem;
+
+      .categoryBtn {
+        padding: 1rem 1.4rem;
+        font-size: 1.1rem;
+      }
+    }
+
+    button {
+      padding: 1.1rem 1.6rem;
+      font-size: 1.2rem;
+    }
+  }
+
+  .skillsSection {
+    input {
+      width: 100%;
+      margin-bottom: 0.6rem;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .skillsList {
+    gap: 6px;
+  }
+
+  .skillItem {
+    padding: 5px 9px;
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  form {
+    padding: 2rem;
+    gap: 1.5rem;
+
+    h3 {
+      font-size: 1.8rem;
+    }
+
+    .categoryButtons {
+      flex-direction: column;
+
+      .categoryBtn {
+        width: 100%;
+      }
+    }
+
+    button {
+      width: 100%;
+    }
+  }
+}

@@ -164,7 +164,7 @@ $hoverAccent: #d3baf8;
     font-size: 1.4rem;
     margin: 1rem 0.5rem;
     transition: background 0.3s;
-    width: 11rem;
+    width: 10rem;
 
     &:hover {
       background-color: color.adjust($darkAccent, $lightness: -10%);
@@ -413,6 +413,7 @@ $hoverAccent: #d3baf8;
       color: #fdfbff;
       box-shadow: 0 1px 6px rgba(216, 186, 255, 0.1);
     }
+
   }
 
   .tabMenu {
@@ -466,5 +467,136 @@ $hoverAccent: #d3baf8;
 
   .reviewComment {
     color: #fdfbff;
+  }
+}
+
+
+// 🔽 РЕСПОНСИВНОСТЬ
+
+// Контейнеры
+@media (max-width: 1200px) {
+  .employeeContent {
+    padding: 2rem 6%;
+  }
+}
+
+@media (max-width: 768px) {
+  .employeeContent {
+    flex-direction: column;
+    padding: 2rem 4%;
+    font-size: 1.4rem;
+  }
+
+  .rightSide {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .employeeContent {
+    padding: 1.5rem 2rem;
+    font-size: 1.3rem;
+  }
+
+  .profile {
+    padding: 1.4rem;
+  }
+
+  .profile .avatar {
+    width: 110px;
+    height: 110px;
+  }
+
+  .profile .editButton {
+    padding: 0.8rem 1.4rem;
+    width: 100%;
+    font-size: 1.3rem;
+  }
+
+  .profile .stats p button {
+    padding: 0.6rem 1rem;
+    width: 100%;
+    font-size: 1.3rem;
+  }
+
+  .sectionContent {
+    padding: 1.6rem;
+  }
+
+  .sectionContent button {
+    font-size: 1.3rem;
+    padding: 0.8rem 1.4rem;
+    width: 100%;
+  }
+
+  .sectionContent .addBtn {
+    width: 100%;
+  }
+
+  .sectionContent .projectCard {
+    padding: 1.4rem;
+  }
+
+  .reviewItem {
+    padding: 1.5rem;
+    width: 100%;
+  }
+
+  .reviewDate {
+    font-size: 1.2rem;
+  }
+
+  .reviewUser {
+    font-size: 1.7rem;
+  }
+
+  .reviewComment {
+    font-size: 1.4rem;
+  }
+
+  .tabMenu {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.6rem;
+    justify-content: center;
+  }
+
+  .tabButton {
+    width: auto;
+    min-width: 10rem;
+    font-size: 1.2rem;
+    padding: 0.8rem 1.4rem;
+  }
+
+  // 👉 Кнопки фильтров проектов
+  .tabMenu .tabButton,
+  .tabMenu .activeTab {
+    width: 80%;
+    max-width: 220px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 1.3rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .sectionContent .projectList {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1000px) {
+  .sectionContent .projectList {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .reviewItem {
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }

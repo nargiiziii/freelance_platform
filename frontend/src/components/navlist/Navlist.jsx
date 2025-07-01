@@ -7,7 +7,7 @@ import NotificationDropdown from "../notificationDropdown/NotificationDropdown";
 import { ThemeContext } from "../../context/ThemeContext";
 import { FaSun, FaMoon } from "react-icons/fa";
 
-const Navlist = () => {
+const Navlist = ({ onClick }) => {
   const user = useSelector((state) => state.auth.user);
   const chats = useSelector((state) => state.messages.chats);
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ const Navlist = () => {
   const handleLogout = async () => {
     await dispatch(logoutUser());
     navigate("/");
+    if (onClick) onClick();
   };
 
   const getDashboardPath = () => {
@@ -32,16 +33,16 @@ const Navlist = () => {
   return (
     <ul className={style.ul}>
       <li className={style.li}>
-        <Link to="/">HOME</Link>
+        <Link to="/" onClick={onClick}>HOME</Link>
       </li>
 
       {!user && (
         <>
           <li className={style.li}>
-            <Link to="/login">LOGIN</Link>
+            <Link to="/login" onClick={onClick}>LOGIN</Link>
           </li>
           <li className={style.li}>
-            <Link to="/register">
+            <Link to="/register" onClick={onClick}>
               <button className={style.button}>SIGN UP</button>
             </Link>
           </li>
@@ -51,13 +52,13 @@ const Navlist = () => {
       {user && user.role === "freelancer" && (
         <>
           <li className={style.li}>
-            <Link to="/jobs">JOBS</Link>
+            <Link to="/jobs" onClick={onClick}>JOBS</Link>
           </li>
           <li className={style.li}>
-            <Link to="/my-proposals">MY PROPOSALS</Link>
+            <Link to="/my-proposals" onClick={onClick}>MY PROPOSALS</Link>
           </li>
           <li className={style.li} style={{ position: "relative" }}>
-            <Link to="/messages">
+            <Link to="/messages" onClick={onClick}>
               MESSAGES
               {totalUnread > 0 && (
                 <span
@@ -78,7 +79,7 @@ const Navlist = () => {
             </Link>
           </li>
           <li className={style.li}>
-            <Link to="/escrow">ESCROW</Link>
+            <Link to="/escrow" onClick={onClick}>ESCROW</Link>
           </li>
         </>
       )}
@@ -86,13 +87,13 @@ const Navlist = () => {
       {user && user.role === "employer" && (
         <>
           <li className={style.li}>
-            <Link to="/create-project">POST A JOB</Link>
+            <Link to="/create-project" onClick={onClick}>POST A JOB</Link>
           </li>
           <li className={style.li}>
-            <Link to="/my-jobs">MY JOBS</Link>
+            <Link to="/my-jobs" onClick={onClick}>MY JOBS</Link>
           </li>
           <li className={style.li} style={{ position: "relative" }}>
-            <Link to="/messages">
+            <Link to="/messages" onClick={onClick}>
               MESSAGES
               {totalUnread > 0 && (
                 <span
@@ -113,10 +114,10 @@ const Navlist = () => {
             </Link>
           </li>
           <li className={style.li}>
-            <Link to="/freelancers">FIND FREELANCERS</Link>
+            <Link to="/freelancers" onClick={onClick}>FIND FREELANCERS</Link>
           </li>
           <li className={style.li}>
-            <Link to="/escrow">ESCROW</Link>
+            <Link to="/escrow" onClick={onClick}>ESCROW</Link>
           </li>
         </>
       )}
@@ -128,7 +129,7 @@ const Navlist = () => {
           </li>
 
           <li className={style.li}>
-            <Link to={getDashboardPath()} className={style.profileLink}>
+            <Link to={getDashboardPath()} className={style.profileLink} onClick={onClick}>
               {user.avatar ? (
                 <img
                   src={`http://localhost:3000/${user.avatar}`}
@@ -152,14 +153,16 @@ const Navlist = () => {
       )}
 
       <li className={style.li}>
-<button
-  onClick={() => setDarkMode((prev) => !prev)}
-  className={style.themeButton}
-  title="Toggle Theme"
->
-  {darkMode ? <FaSun /> : <FaMoon />}
-</button>
-
+        <button
+          onClick={() => {
+            setDarkMode((prev) => !prev);
+            if (onClick) onClick();
+          }}
+          className={style.themeButton}
+          title="Toggle Theme"
+        >
+          {darkMode ? <FaSun /> : <FaMoon />}
+        </button>
       </li>
     </ul>
   );

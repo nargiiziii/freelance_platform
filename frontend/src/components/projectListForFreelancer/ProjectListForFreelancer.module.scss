@@ -34,6 +34,13 @@ $dark-hover: #382654;
 
   @media (max-width: 768px) {
     flex-direction: column;
+    padding: 2rem 5%;
+    gap: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1.5rem 4%;
+    font-size: 1.1rem;
   }
 }
 
@@ -47,12 +54,24 @@ $dark-hover: #382654;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  @media (max-width: 768px) {
+    flex: 1 1 100%;
+  }
 }
 
 .heading {
   font-size: 2.4rem;
   color: $darkAccent;
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.8rem;
+  }
 }
 
 :global(body.dark) .heading {
@@ -68,8 +87,7 @@ $dark-hover: #382654;
   color: $text;
   font-size: 1.6rem;
   appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, $darkAccent 50%),
-    linear-gradient(135deg, $darkAccent 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, $darkAccent 50%), linear-gradient(135deg, $darkAccent 50%, transparent 50%);
   background-position: calc(100% - 1.5rem) center, calc(100% - 1rem) center;
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
@@ -81,18 +99,23 @@ $dark-hover: #382654;
     border-color: $darkAccent;
     box-shadow: 0 0 0 3px rgba($darkAccent, 0.2);
   }
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    padding: 1rem 1.2rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.4rem;
+    padding: 0.9rem 1rem;
+  }
 }
 
 :global(body.dark) .selectBar select {
   background-color: $dark-card;
   color: $dark-text;
   border: 1px solid $dark-border;
-  background-image: linear-gradient(
-      45deg,
-      transparent 50%,
-      $dark-darkAccent 50%
-    ),
-    linear-gradient(135deg, $dark-darkAccent 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, $dark-darkAccent 50%), linear-gradient(135deg, $dark-darkAccent 50%, transparent 50%);
 }
 
 // ---------- Project List ----------
@@ -103,13 +126,22 @@ $dark-hover: #382654;
   gap: 2rem;
   max-width: 100%;
   width: 90rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    gap: 1rem;
+  }
 }
 
 // ---------- Card ----------
 
 .card {
   position: relative;
-  flex: 0 1 calc(50% - 1rem); // 2 карточки в ряд (если хватает места)
+  flex: 0 1 calc(50% - 1rem);
   background: $card;
   border: 1px solid $border;
   border-radius: 18px;
@@ -120,6 +152,11 @@ $dark-hover: #382654;
 
   @media (max-width: 768px) {
     flex: 1 1 100%;
+    padding: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1.5rem;
   }
 
   &:hover {
@@ -132,18 +169,33 @@ $dark-hover: #382654;
     font-weight: 600;
     color: $darkAccent;
     margin-bottom: 1rem;
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1.8rem;
+    }
   }
 
-  p {
+  p,
+  .employerInfo {
     font-size: 1.6rem;
     margin: 0.3rem 0;
     line-height: 1.5;
+
+    @media (max-width: 768px) {
+      font-size: 1.4rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1.3rem;
+    }
   }
 
   .employerInfo {
     margin-top: 1rem;
-    font-size: 1.6rem;
-    color: $text;
   }
 }
 
@@ -165,15 +217,7 @@ $dark-hover: #382654;
     background-color: $dark-hover;
   }
 
-  .respondBtn {
-    background-color: $dark-darkAccent;
-    color: #140a20;
-
-    &:hover {
-      background-color: color.adjust($dark-darkAccent, $lightness: -10%);
-    }
-  }
-
+  .respondBtn,
   .messageBtn {
     background-color: $dark-darkAccent;
     color: #140a20;
@@ -205,6 +249,11 @@ $dark-hover: #382654;
     &:hover {
       background-color: color.adjust($darkAccent, $lightness: -10%);
     }
+
+    @media (max-width: 480px) {
+      font-size: 1.2rem;
+      padding: 0.5rem 1.2rem;
+    }
   }
 }
 
@@ -229,6 +278,11 @@ $dark-hover: #382654;
     &:hover {
       background-color: color.adjust($darkAccent, $lightness: -10%);
     }
+
+    @media (max-width: 480px) {
+      font-size: 1.2rem;
+      padding: 0.6rem 1.5rem;
+    }
   }
 }
 
@@ -239,6 +293,10 @@ $dark-hover: #382654;
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
+
+  @media (max-width: 480px) {
+    gap: 0.4rem;
+  }
 }
 
 .skill {
@@ -252,6 +310,11 @@ $dark-hover: #382654;
 
   &:hover {
     background-color: $hover;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+    padding: 0.3rem 0.8rem;
   }
 }
 
@@ -271,11 +334,17 @@ $dark-hover: #382654;
   text-align: center;
   color: $text;
   font-size: 1.6rem;
+
+  @media (max-width: 480px) {
+    font-size: 1.4rem;
+  }
 }
 
 :global(body.dark) .loading {
   color: $dark-text;
 }
+
+// ---------- Checkbox ----------
 
 .checkboxLabel {
   display: flex;
@@ -312,6 +381,19 @@ $dark-hover: #382654;
 
     &:hover {
       border-color: $darkAccent;
+    }
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.3rem;
+
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+
+      &::after {
+        font-size: 10px;
+      }
     }
   }
 }

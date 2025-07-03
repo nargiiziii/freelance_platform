@@ -105,6 +105,9 @@ $dark-hover: #382654;
   &.accepted {
     background-color: #6ecb8b;
   }
+    &.refunded {
+    background-color: #e6ca70;
+  }
 
   &.rejected {
     background-color: #e57373;

@@ -116,22 +116,27 @@ form {
     .inputSec {
       display: flex;
       align-items: center;
+      gap: 0.8rem;
+
       input {
-        width: 30rem;
+        flex: 1;
+        min-width: 0;
       }
+
       .addBtn {
+        flex-shrink: 0;
         width: 4rem;
       }
     }
 
-    .skillsList{
+    .skillsList {
       display: flex;
       align-items: center;
       justify-content: center;
     }
   }
 
-  .buttonGroup{
+  .buttonGroup {
     display: flex;
     gap: 1rem;
     width: 100%;

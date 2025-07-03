@@ -30,6 +30,7 @@ export default function FreelancerProposals() {
             <span className={`${style.status} ${style[item.status]}`}>
               {item.status === "pending" && "⏳ Gözləmədədir"}
               {item.status === "accepted" && "✅ Qəbul edilib"}
+              {item.status === "refunded" && " Geri qaytarılıb"}
               {item.status === "rejected" && "❌ Rədd edilib"}
               {item.status === "submitted" && "📤 İş göndərilib"}
             </span>

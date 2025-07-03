@@ -195,6 +195,7 @@ $dark-shadow: 0 10px 28px rgba($darkAccent, 0.15);
 
           .portfolioGallery {
             display: flex;
+            flex-wrap: wrap;
             gap: 1.2rem;
             overflow-x: auto;
             padding-bottom: 0.5rem;

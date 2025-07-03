@@ -46,7 +46,7 @@ $shadow: 0 6px 20px rgba($darkAccent, 0.08);
         transition: color 0.2s;
 
         &.filled {
-          color: $accent;
+          color: $border;
         }
 
         &:hover {

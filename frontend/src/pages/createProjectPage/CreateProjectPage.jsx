@@ -61,8 +61,7 @@ const CreateProjectPage = () => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        const message =
-          err?.response?.data?.message || "Balansınız boşdur!";
+        const message = err?.response?.data?.message || "Balansınız boşdur!";
         toast.error(message);
       });
   };
@@ -103,20 +102,24 @@ const CreateProjectPage = () => {
         />
 
         <div className={style.skillsSection}>
-          <input
-            value={skillInput}
-            onChange={(e) => setSkillInput(e.target.value)}
-            placeholder="Bacarıq əlavə et"
-          />
-          <button type="button" onClick={addSkill}>
-            +
-          </button>
+          <div className={style.inputSec}>
+            <input
+              value={skillInput}
+              onChange={(e) => setSkillInput(e.target.value)}
+              placeholder="Bacarıq əlavə et"
+            />
+            <button type="button" className={style.addBtn} onClick={addSkill}>
+              +
+            </button>
+          </div>
 
           <div className={style.skillsList}>
             {skillsRequired.map((skill, idx) => (
               <span key={idx} className={style.skillItem}>
                 {skill}
-                <button type="button" onClick={() => removeSkill(skill)}>✕</button>
+                <button type="button" onClick={() => removeSkill(skill)}>
+                  ✕
+                </button>
               </span>
             ))}
           </div>

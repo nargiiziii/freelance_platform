@@ -8,6 +8,7 @@ const ReviewForm = ({ toUserId, projectId, onSubmitSuccess }) => {
   const [rating, setRating] = useState(5);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [submitted, setSubmitted] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -22,23 +23,25 @@ const ReviewForm = ({ toUserId, projectId, onSubmitSuccess }) => {
 
     try {
       await dispatch(sendReview(reviewData)).unwrap();
-      toast.success("Отзыв успешно отправлен!");
-      setRating(5);
-      setHoveredRating(0);
-      setComment("");
+      toast.success("Rəy uğurla göndərildi!");
+      setSubmitted(true);
       if (onSubmitSuccess) onSubmitSuccess();
     } catch (err) {
       toast.error(
-        "Ошибка при отправке отзыва: " +
-          (typeof err === "string" ? err : "Попробуйте позже")
+        "Rəyi göndərərkən xəta baş verdi: " +
+          (typeof err === "string" ? err : "Zəhmət olmasa bir az sonra yenidən cəhd edin")
       );
     }
   };
 
+  if (submitted) {
+    return <p className={style.successMessage}>Rəyiniz üçün təşəkkür edirik!</p>;
+  }
+
   return (
     <form onSubmit={handleSubmit} className={style.reviewForm}>
       <div className={style.ratingRow}>
-        <label>Оценка:</label>
+        <label>Qiymət:</label>
         <div className={style.starRating}>
           {[1, 2, 3, 4, 5].map((star) => (
             <span
@@ -56,7 +59,7 @@ const ReviewForm = ({ toUserId, projectId, onSubmitSuccess }) => {
         </div>
       </div>
 
-      <label>Комментарий:</label>
+      <label>Rəy:</label>
       <textarea
         value={comment}
         onChange={(e) => setComment(e.target.value)}
@@ -64,7 +67,7 @@ const ReviewForm = ({ toUserId, projectId, onSubmitSuccess }) => {
         rows={4}
       />
 
-      <button type="submit">Отправить отзыв</button>
+      <button type="submit">Rəyi göndər</button>
     </form>
   );
 };

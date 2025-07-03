@@ -5,7 +5,10 @@ import { IoChatbubbleEllipsesSharp, IoCloseSharp } from "react-icons/io5";
 const AssistantChat = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "assistant", text: "Привет! Я могу помочь с платформой 😊" },
+    {
+      role: "assistant",
+      text: "Salam! Mən FreelaBot! Bu platformadan istifadə ilə bağlı sizə kömək edə bilərəm 😊",
+    },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,20 +19,20 @@ const AssistantChat = () => {
   const isDragging = useRef(false);
 
   const systemPrompt = `
-Ты — вежливый и понятный помощник фриланс-платформы. Помогай пользователям в зависимости от их роли.
+Sən — bu frilans platformasının nəzakətli və aydın danışan köməkçisisən. İstifadəçinin roluna əsasən ona məlumat ver.Sualina esasen qisa cavablar ver, layiheye aid ne sual verse konkret sualina cavab ver.
 
-Если пользователь пишет: "я наниматель" или "я работодатель", то объясни следующее:
+Əgər istifadəçi yazırsa: "mən işəgötürənəm" və ya "frilanserəm", bunu izah et:
 
-На платформе наниматели создают проекты — это задачи, которые будут выполнять фрилансеры. После создания проекта фрилансеры отправляют отклики (предложения). Наниматель может принять или отклонить отклик. При принятии отклика с баланса нанимателя списываются деньги в эскроу. Фрилансер начинает выполнять проект. Когда работа будет готова, фрилансер отправляет файл. Наниматель переходит на страницу Project Detail, где он может:
-— либо оплатить фрилансеру за выполненную работу (деньги переходят из эскроу),
-— либо отклонить работу и вернуть деньги обратно на свой баланс.
+Platformada işəgötürənlər layihə yaradır — bu, frilanserlərin yerinə yetirdiyi tapşırıqlardır. Layihə yaradıldıqdan sonra frilanserlər müraciət göndərir. İşəgötürən bu müraciətləri qəbul və ya rədd edə bilər. Əgər müraciət qəbul olunarsa, işəgötürənin balansından vəsait eskro hesabına köçürülür. Frilanser işi yerinə yetirməyə başlayır. İş tamamlandıqda, frilanser nəticəni göndərir. İşəgötürən "Layihə detalları" səhifəsinə keçərək:
+— işi təsdiqləyib ödənişi frilanserə göndərə,
+— və ya işi rədd edib pulu balansına qaytara bilər.
 
-Если пользователь пишет: "я фрилансер", то объясни следующее:
+Əgər istifadəçi yazırsa: "mən frilanserəm", bunu izah et:
 
-Фрилансеры могут перейти на страницу со списком открытых проектов. Они выбирают интересные проекты и отправляют отклики. Наниматель может принять или отклонить отклик. Если отклик принят — начинается работа. Фрилансер выполняет задание и отправляет результат через страницу My Proposals. После этого наниматель либо одобряет работу и выплачивает оплату, либо отклоняет её.
+Frilanserlər açıq layihələr siyahısına keçə bilər. Maraqlı layihəni seçib müraciət göndərirlər. Əgər müraciət qəbul olunarsa — iş başlayır. Frilanser tapşırığı yerinə yetirib nəticəni "Müraciətlərim" səhifəsi vasitəsilə göndərir. Bundan sonra işəgötürən işi ya təsdiqləyib ödəniş edir, ya da rədd edir.
 
-Если вопрос не по теме платформы (например, про погоду или философию), вежливо откажись и скажи, что ты помощник только по функционалу сайта.
-Отвечай дружелюбно, понятно и коротко.
+Əgər sual platforma ilə bağlı deyilsə (məsələn, hava haqqında və ya fəlsəfi sual), nəzakətlə imtina et və bildir ki, sən yalnız saytın funksionallığı üzrə kömək edə bilərsən.
+Cavabların səmimi, aydın və qısa olsun.
 `;
 
   const sendMessage = async () => {
@@ -52,19 +55,18 @@ const AssistantChat = () => {
       });
 
       const data = await res.json();
-      const reply = data.reply || "Извините, я не поняла 😢";
+      const reply = data.reply || "Bağışlayın, sualı başa düşmədim 😢";
       setMessages((prev) => [...prev, { role: "assistant", text: reply }]);
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: "Произошла ошибка 😵" },
+        { role: "assistant", text: "Xəta baş verdi 😵" },
       ]);
     } finally {
       setLoading(false);
     }
   };
 
-  // --- Drag Logic ---
   const handleMouseDown = (e) => {
     isDragging.current = false;
     offset.current = {
@@ -86,8 +88,6 @@ const AssistantChat = () => {
   const handleMouseUp = () => {
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
-
-    // Только клик, не drag — открываем
     if (!open && !isDragging.current) {
       setOpen(true);
     }
@@ -102,8 +102,11 @@ const AssistantChat = () => {
       {open ? (
         <div className={style.chatBox}>
           <div className={style.header} onMouseDown={handleMouseDown}>
-            <span>🤖 Чат-помощник</span>
-            <button className={style.closeButton} onClick={() => setOpen(false)}>
+            <span>🤖 FreelaBot </span>
+            <button
+              className={style.closeButton}
+              onClick={() => setOpen(false)}
+            >
               <IoCloseSharp />
             </button>
           </div>
@@ -116,17 +119,17 @@ const AssistantChat = () => {
                 {msg.text}
               </div>
             ))}
-            {loading && <div className={style.aiMsg}>Печатает...</div>}
+            {loading && <div className={style.aiMsg}>Yazır...</div>}
           </div>
           <div className={style.inputBox}>
             <input
               type="text"
-              placeholder="Задай вопрос..."
+              placeholder="Sualını yaz..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             />
-            <button onClick={sendMessage}>Send</button>
+            <button onClick={sendMessage}>Göndər</button>
           </div>
         </div>
       ) : (
@@ -134,7 +137,7 @@ const AssistantChat = () => {
           className={style.fab}
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
-          title="Помощник"
+          title="Köməkçi"
         >
           <IoChatbubbleEllipsesSharp />
         </button>

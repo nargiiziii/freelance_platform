@@ -136,6 +136,6 @@ $dark-hover: #382654;
   color: #1b0935;
 
   &:hover {
-    background-color: lighten($darkAccent, 10%);
+    background-color: color.adjust($darkAccent, $lightness: 10%);
   }
 }

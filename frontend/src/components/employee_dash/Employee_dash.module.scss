@@ -210,6 +210,12 @@ $hoverAccent: #d3baf8;
       padding: 0.6rem 1.3rem;
       width: 16rem;
     }
+
+    .projectHeader{
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
   }
 
   ul {

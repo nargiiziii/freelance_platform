@@ -16,6 +16,18 @@ const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  React.useEffect(() => {
+    if (isOpen) {
+      setTitle("");
+      setDescription("");
+      setLink("");
+      setTechnologies("");
+      setDate("");
+      setImageFile(null);
+      setError(null);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e) => {

@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "../../axiosInstance";
 import ProposalListEmp from "../../components/proposalListEmp/ProposalListEmp";
 import style from "./ProjectDetails.module.scss";
 import ReviewForm from "../../components/reviewForm/ReviewForm";
 import useNotificationCleaner from "../../hooks/useNotificationCleaner";
+import { fetchUserReviews } from "../../redux/features/reviewSlice";
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const userReviews = useSelector((state) => state.reviews.reviews);
   useNotificationCleaner([`new-${id}`, `sub-${id}`]);
 
   useEffect(() => {
@@ -20,8 +25,10 @@ const ProjectDetails = () => {
         console.error("Layihə yüklənərkən xəta baş verdi:", err);
       }
     };
+
     fetchProject();
-  }, [id]);
+    dispatch(fetchUserReviews());
+  }, [id, dispatch]);
 
   if (!project) return <p className={style.loading}>Layihə yüklənir...</p>;
 
@@ -32,6 +39,11 @@ const ProjectDetails = () => {
   );
 
   const freelancer = acceptedProposal?.freelancer;
+
+  const hasLeftReview = userReviews.some(
+    (review) =>
+      review.projectId === project._id && review.fromUser === user._id
+  );
 
   return (
     <div className={style.projectPage}>
@@ -84,12 +96,14 @@ const ProjectDetails = () => {
 
                 {project.status === "closed" &&
                   project.escrow?.status === "released" &&
-                  acceptedProposal?.workFile && (
+                  acceptedProposal?.workFile &&
+                  !hasLeftReview && (
                     <div className={style.reviewBox}>
                       <h3 className={style.sectionTitle}>Freelancer-i qiymətləndirin</h3>
                       <ReviewForm
                         toUserId={freelancer._id}
                         projectId={project._id}
+                        onSubmitSuccess={() => dispatch(fetchUserReviews())}
                       />
                     </div>
                   )}

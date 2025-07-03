@@ -84,7 +84,7 @@ function EmployeeDash() {
           <p className={style.role}>{user.role}</p>
           <p className={style.balance}>
             <strong>Balans:</strong>{" "}
-            {user.balance?.toLocaleString("ru-RU") || 0}₽
+            {user.balance?.toLocaleString("ru-RU") || 0}₼
           </p>
           <button
             onClick={() => navigate("/edit-profile")}
@@ -98,7 +98,7 @@ function EmployeeDash() {
             <p>✉️ Yeni müraciətlər: {newProposals}</p>
             <p>🛠️ İşlənənlər: {inProgress}</p>
             <p>
-              💸 Balans: {user.balance?.toLocaleString("ru-RU") || 0}₽
+              💸 Balans: {user.balance?.toLocaleString("ru-RU") || 0}₼
               <button
                 onClick={() => navigate("/escrow")}
                 className={style.topUpButton}

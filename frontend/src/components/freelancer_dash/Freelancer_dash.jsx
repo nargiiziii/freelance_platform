@@ -67,8 +67,6 @@ function FreelancerDash() {
   };
 
   const handleDelete = async (itemId) => {
-    if (!window.confirm("Bu layihəni silmək istəyirsiniz?")) return;
-
     try {
       await axios.delete(`/users/portfolio/${itemId}`);
       dispatch(getProfile());
@@ -84,7 +82,7 @@ function FreelancerDash() {
 
   if (!user) return <p>Yüklənir...</p>;
 
- return (
+  return (
     <div className={style.freelancerContent}>
       <div className={style.profile}>
         {user.avatar ? (
@@ -103,7 +101,7 @@ function FreelancerDash() {
           <p className={style.role}>{user.role || "Rol göstərilməyib"}</p>
           <p className={style.balance}>
             <strong>Balans:</strong>{" "}
-            {user.balance?.toLocaleString("ru-RU") || 0}₽
+            {user.balance?.toLocaleString("ru-RU") || 0}₼
           </p>
           <button onClick={handleEditProfile} className={style.editButton}>
             Profili redaktə et

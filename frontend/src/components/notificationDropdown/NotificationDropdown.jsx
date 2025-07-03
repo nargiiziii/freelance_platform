@@ -50,7 +50,7 @@ const NotificationDropdown = ({ role }) => {
     if (hasNewMessage) {
       list.push({
         id: msgId,
-        text: "📩 Новое сообщение",
+        text: "📩 Yeni mesaj",
         link: "/messages",
       });
     }
@@ -60,7 +60,7 @@ const NotificationDropdown = ({ role }) => {
         if (p.status === "accepted") {
           list.push({
             id: `acc-${p._id}`,
-            text: "✅ Отклик принят",
+            text: "✅ Təklif qəbul edildi",
             link: "/my-proposals",
           });
         }
@@ -68,7 +68,7 @@ const NotificationDropdown = ({ role }) => {
         if (p.project?.escrow?.status === "released") {
           list.push({
             id: `esc-${p._id}`,
-            text: "💰 Получено $" + p.project.escrow.amount,
+            text: "💰 Alınan məbləğ: $" + p.project.escrow.amount,
             link: "/escrow",
           });
         }
@@ -84,7 +84,7 @@ const NotificationDropdown = ({ role }) => {
         if (hasProposals) {
           list.push({
             id: `new-${proj._id}`,
-            text: "📝 Новый отклик",
+            text: "📝 Yeni təklif",
             link: `/employer/project/${proj._id}`,
           });
         }
@@ -92,7 +92,7 @@ const NotificationDropdown = ({ role }) => {
         if (proj.status?.toLowerCase() === "submitted") {
           list.push({
             id: `sub-${proj._id}`,
-            text: "📦 Работа сдана",
+            text: "📦 İş təhvil verildi",
             link: `/employer/project/${proj._id}`,
           });
         }
@@ -165,9 +165,9 @@ const NotificationDropdown = ({ role }) => {
       if (role === "employer") {
         dispatch(getEmployerProjects());
       }
-    }, 30000); // каждые 30 секунд
+    }, 30000);
 
-    return () => clearInterval(interval); // очистка таймера при размонтировании
+    return () => clearInterval(interval);
   }, [dispatch, role]);
 
   return (
@@ -179,7 +179,7 @@ const NotificationDropdown = ({ role }) => {
 
       {isOpen && (
         <div className={styles.dropdown}>
-          <h4 className={styles.title}>Уведомления</h4>
+          <h4 className={styles.title}>Bildirişlər</h4>
           {notifications.slice(0, 5).map((n) => (
             <div
               key={n.id}
@@ -191,7 +191,7 @@ const NotificationDropdown = ({ role }) => {
             </div>
           ))}
           {notifications.length === 0 && (
-            <p className={styles.empty}>Нет новых уведомлений</p>
+            <p className={styles.empty}>Yeni bildiriş yoxdur</p>
           )}
         </div>
       )}

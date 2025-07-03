@@ -1,3 +1,5 @@
+// AdminPanel.jsx
+
 import React, { useEffect, useState } from "react";
 import axios from "../../axiosInstance";
 import { useSelector } from "react-redux";
@@ -52,7 +54,7 @@ export default function AdminPanel() {
       setEscrows(resEscrows.data);
       setReviews(resReviews.data);
     } catch (err) {
-      console.error("Ошибка загрузки:", err.message);
+      console.error("Yükləmə xətası:", err.message);
     }
   };
 
@@ -61,7 +63,7 @@ export default function AdminPanel() {
       await axios.put(`/admin/${action}-user/${id}`);
       fetchAllData();
     } catch (err) {
-      console.error("Ошибка:", err.message);
+      console.error("Xəta:", err.message);
     }
   };
 
@@ -70,9 +72,10 @@ export default function AdminPanel() {
       await axios.delete(`/admin/${type}/${id}`);
       fetchAllData();
     } catch (err) {
-      console.error(`Ошибка удаления ${type}:`, err.message);
+      console.error(`${type} silinmə xətası:`, err.message);
     }
   };
+
   const handleEscrowAction = async (id, action) => {
     try {
       const endpoint =
@@ -80,10 +83,10 @@ export default function AdminPanel() {
           ? `/admin/escrows/${id}/force-release`
           : `/admin/escrows/${id}/force-refund`;
 
-      await axios.post(endpoint); // ✅ Используем POST
+      await axios.post(endpoint);
       fetchAllData();
     } catch (err) {
-      console.error("Ошибка Escrow:", err.message);
+      console.error("Escrow xətası:", err.message);
     }
   };
 
@@ -97,8 +100,8 @@ export default function AdminPanel() {
           }}
         ></div>
         <div className={style.adminText}>
-          <strong>Администратор</strong>
-          <p className={style.status}>● онлайн</p>
+          <strong>Admin</strong>
+          <p className={style.status}>● onlayn</p>
         </div>
       </div>
 
@@ -108,25 +111,25 @@ export default function AdminPanel() {
             className={activeTab === "dashboard" ? style.active : ""}
             onClick={() => setActiveTab("dashboard")}
           >
-            📊 Dashboard
+            📊 Panel
           </li>
           <li
             className={activeTab === "users" ? style.active : ""}
             onClick={() => setActiveTab("users")}
           >
-            👥 Пользователи
+            👥 İstifadəçilər
           </li>
           <li
             className={activeTab === "projects" ? style.active : ""}
             onClick={() => setActiveTab("projects")}
           >
-            📁 Проекты
+            📁 Layihələr
           </li>
           <li
             className={activeTab === "proposals" ? style.active : ""}
             onClick={() => setActiveTab("proposals")}
           >
-            📝 Отклики
+            📝 Təkliflər
           </li>
           <li
             className={activeTab === "escrows" ? style.active : ""}
@@ -138,7 +141,7 @@ export default function AdminPanel() {
             className={activeTab === "reviews" ? style.active : ""}
             onClick={() => setActiveTab("reviews")}
           >
-            ⭐ Отзывы
+            ⭐ Rəylər
           </li>
         </ul>
       </nav>
@@ -148,23 +151,23 @@ export default function AdminPanel() {
   const renderDashboard = () => (
     <div className={style.dashboardGrid}>
       <div className={`${style.card} ${style.pink}`}>
-        <h3>Проекты</h3>
+        <h3>Layihələr</h3>
         <p>{stats?.projects}</p>
       </div>
       <div className={`${style.card} ${style.blue}`}>
-        <h3>Пользователи</h3>
+        <h3>İstifadəçilər</h3>
         <p>{stats?.users}</p>
       </div>
       <div className={`${style.card} ${style.green}`}>
-        <h3>Отзывы</h3>
+        <h3>Rəylər</h3>
         <p>{stats?.comments}</p>
       </div>
       <div className={`${style.card} ${style.orange}`}>
-        <h3>Посетители</h3>
+        <h3>Ziyarətçilər</h3>
         <p>{stats?.newVisitors}</p>
       </div>
       <div className={style.chartPlaceholder}>
-        <h3>CPU Usage</h3>
+        <h3>CPU Yüklənməsi</h3>
         <div className={style.fakeChart}></div>
       </div>
     </div>
@@ -173,11 +176,7 @@ export default function AdminPanel() {
   const renderTable = (columns, data) => (
     <table className={style.table}>
       <thead>
-        <tr>
-          {columns.map((col) => (
-            <th key={col}>{col}</th>
-          ))}
-        </tr>
+        <tr>{columns.map((col) => <th key={col}>{col}</th>)}</tr>
       </thead>
       <tbody>{data}</tbody>
     </table>
@@ -189,11 +188,8 @@ export default function AdminPanel() {
     if (activeTab === "users")
       return (
         <>
-          <button
-            className={style.addButton}
-            onClick={() => setModalOpen(true)}
-          >
-            ➕ Добавить нового пользователя
+          <button className={style.addButton} onClick={() => setModalOpen(true)}>
+            ➕ Yeni istifadəçi əlavə et
           </button>
 
           {modalOpen && (
@@ -215,23 +211,23 @@ export default function AdminPanel() {
             </div>
           )}
           {renderTable(
-            ["Имя", "Email", "Роль", "Статус", "Действия"],
+            ["Ad", "Email", "Rol", "Status", "Əməliyyatlar"],
             users.map((u) => (
               <tr key={u._id}>
                 <td>{u.name}</td>
                 <td>{u.email}</td>
                 <td>{u.role}</td>
-                <td>{u.isBlocked ? "Заблокирован" : "Активен"}</td>
+                <td>{u.isBlocked ? "Bloklanıb" : "Aktiv"}</td>
                 <td>
                   <button
                     onClick={() =>
                       handleUserAction(u._id, u.isBlocked ? "unblock" : "block")
                     }
                   >
-                    {u.isBlocked ? "Разблокировать" : "Заблокировать"}
+                    {u.isBlocked ? "Blokdan çıxar" : "Blokla"}
                   </button>
                   <button onClick={() => handleDelete("delete-user", u._id)}>
-                    Удалить
+                    Sil
                   </button>
                 </td>
               </tr>
@@ -244,7 +240,7 @@ export default function AdminPanel() {
       return (
         <>
           {renderTable(
-            ["Название", "Статус", "Бюджет", "Категория", "Действия"],
+            ["Ad", "Status", "Büdcə", "Kateqoriya", "Əməliyyatlar"],
             projects.map((p) => (
               <tr key={p._id}>
                 <td>{p.title}</td>
@@ -253,10 +249,10 @@ export default function AdminPanel() {
                 <td>{p.category}</td>
                 <td>
                   <button onClick={() => setEditingProject(p)}>
-                    ✏️ Редактировать
+                    ✏️ Redaktə et
                   </button>
                   <button onClick={() => handleDelete("projects", p._id)}>
-                    🗑️ Удалить
+                    🗑️ Sil
                   </button>
                 </td>
               </tr>
@@ -277,7 +273,7 @@ export default function AdminPanel() {
 
     if (activeTab === "proposals")
       return renderTable(
-        ["Цена", "Статус", "Сообщение", "Удалить"],
+        ["Qiymət", "Status", "Mesaj", "Sil"],
         proposals.map((p) => (
           <tr key={p._id}>
             <td>{p.price}$</td>
@@ -285,40 +281,47 @@ export default function AdminPanel() {
             <td>{p.coverLetter?.slice(0, 50)}...</td>
             <td>
               <button onClick={() => handleDelete("proposals", p._id)}>
-                Удалить
+                Sil
               </button>
             </td>
           </tr>
         ))
       );
 
-    if (activeTab === "escrows")
+    if (activeTab === "escrows") {
+      if (escrows.length === 0) {
+        return (
+          <div className={style.emptyMessage}>
+            <p>Hazırda heç bir escrow əməliyyatı mövcud deyil.</p>
+          </div>
+        );
+      }
       return (
         <div className={style.escrowGrid}>
           {escrows.map((e) => (
             <div key={e._id} className={style.escrowCard}>
-              <h3>Проект: {e.project?.title || "—"}</h3>
+              <h3>Layihə: {e.project?.title || "—"}</h3>
               <p>
-                <strong>Фрилансер:</strong> {e.freelancer?.name || "—"} (
+                <strong>Freelancer:</strong> {e.freelancer?.name || "—"} (
                 {e.freelancer?.email})
               </p>
               <p>
-                <strong>Наниматель:</strong> {e.employer?.name || "—"} (
+                <strong>İşverən:</strong> {e.employer?.name || "—"} (
                 {e.employer?.email})
               </p>
               <p>
-                <strong>Сумма:</strong> {e.amount}$
+                <strong>Məbləğ:</strong> {e.amount}$
               </p>
               <p>
-                <strong>Статус:</strong> {e.status}
+                <strong>Status:</strong> {e.status}
               </p>
               {e.status === "funded" && (
                 <div className={style.actions}>
                   <button onClick={() => handleEscrowAction(e._id, "release")}>
-                    💸 Выплатить
+                    💸 Ödə
                   </button>
                   <button onClick={() => handleEscrowAction(e._id, "refund")}>
-                    ↩️ Вернуть
+                    ↩️ Geri qaytar
                   </button>
                 </div>
               )}
@@ -326,17 +329,18 @@ export default function AdminPanel() {
           ))}
         </div>
       );
+    }
 
     if (activeTab === "reviews")
       return renderTable(
-        ["Оценка", "Комментарий", "Удалить"],
+        ["Reytinq", "Rəy", "Sil"],
         reviews.map((r) => (
           <tr key={r._id}>
             <td>{r.rating}⭐</td>
             <td>{r.comment}</td>
             <td>
               <button onClick={() => handleDelete("reviews", r._id)}>
-                Удалить
+                Sil
               </button>
             </td>
           </tr>

@@ -20,23 +20,24 @@ const reviewSchema = new mongoose.Schema(
 );
 
 // Схема элемента портфолио фрилансера: информация о выполненной работе
-const portfolioItemSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true },
-    link: { type: String },
-    description: { type: String },
-    technologies: { type: [String], default: [] },
-    date: { type: String },
-    image: { type: String },
-  },
-  { _id: false }
-);
+const portfolioItemSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  link: { type: String },
+  description: { type: String },
+  technologies: { type: [String], default: [] },
+  date: { type: String },
+  image: { type: String },
+});
 
 // Основная схема пользователя: общие поля, а также специфичные для фрилансеров и нанимателей
 const userSchema = new mongoose.Schema(
   {
     // Роль пользователя (фрилансер или наниматель)
-    role: { type: String, enum: ["freelancer", "employer", "admin"], required: true },
+    role: {
+      type: String,
+      enum: ["freelancer", "employer", "admin"],
+      required: true,
+    },
 
     // Основные личные данные
     name: { type: String, required: true },

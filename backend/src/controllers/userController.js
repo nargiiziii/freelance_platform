@@ -2,6 +2,8 @@
 import User from "../models/user.js";
 import mongoose from "mongoose";
 import Proposal from "../models/proposal.js";
+import fs from "fs";
+import path from "path";
 
 // Контроллер для обновления профиля пользователя (имя, email, аватар, био)
 export const updateUser = async (req, res) => {
@@ -55,6 +57,39 @@ export const addPortfolioItem = async (req, res) => {
       .json({ message: "Ошибка при добавлении проекта в портфолио" });
   }
 };
+
+// Удаление проекта из портфолио пользователя
+export const deletePortfolioItem = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const itemId = req.params.itemId;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "Пользователь не найден" });
+
+    const item = user.portfolio.find((p) => p._id.toString() === itemId);
+    if (!item) return res.status(404).json({ message: "Проект не найден в портфолио" });
+
+    // Удаляем файл, если есть
+    if (item.image) {
+      const imagePath = path.join("uploads", item.image);
+      fs.unlink(imagePath, (err) => {
+        if (err) console.error("Ошибка при удалении изображения:", err.message);
+      });
+    }
+
+    // Удаляем элемент из массива
+    user.portfolio = user.portfolio.filter((p) => p._id.toString() !== itemId);
+    await user.save();
+
+    res.json({ message: "Проект удалён", portfolio: user.portfolio });
+  } catch (err) {
+    console.error("Ошибка при удалении портфолио:", err);
+    res.status(500).json({ message: "Ошибка сервера" });
+  }
+};
+
+
 
 // Контроллер для получения информации о пользователе по ID
 export const getUser = async (req, res) => {

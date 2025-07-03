@@ -39,7 +39,7 @@ const MyProposalsFreel = () => {
   const handleSubmit = async (proposalId, projectId) => {
     const file = selectedFile[proposalId];
     if (!file) {
-      toast.warn("Выберите файл перед отправкой.");
+      toast.warn("Zəhmət olmasa göndərməzdən əvvəl fayl seçin.");
       return;
     }
 
@@ -47,10 +47,10 @@ const MyProposalsFreel = () => {
 
     try {
       await dispatch(submitWork({ projectId, file })).unwrap();
-      toast.success("Работа успешно отправлена!");
+      toast.success("İş uğurla göndərildi!");
       await dispatch(getMyProposals());
     } catch (err) {
-      toast.error("Ошибка при отправке файла.");
+      toast.error("Fayl göndərilərkən xəta baş verdi.");
     } finally {
       setSubmitting((prev) => ({ ...prev, [proposalId]: false }));
     }
@@ -58,12 +58,12 @@ const MyProposalsFreel = () => {
 
   return (
     <>
-      <h2>Мои отклики</h2>
+      <h2>Müraciətlərim</h2>
       <div className={style.container}>
-        {status === "loading" && <p>Загрузка...</p>}
+        {status === "loading" && <p>Yüklənir...</p>}
         {error && <p className={style.error}>{error}</p>}
         {Array.isArray(myProposals) && myProposals.length === 0 ? (
-          <p>Вы пока не отправляли откликов.</p>
+          <p>Hələ ki heç bir müraciət göndərməmisiniz.</p>
         ) : (
           <ul className={style.list}>
             {myProposals.map((proposal) => {
@@ -90,25 +90,25 @@ const MyProposalsFreel = () => {
                 >
                   <div className={style.top}>
                     <div className={style.left}>
-                      <h3>{proposal.project?.title || "Проект удалён"}</h3>
+                      <h3>{proposal.project?.title || "Layihə silinib"}</h3>
                       {isProjectPaid && (
-                        <p className={style.statusPaid}>Проект оплачен</p>
+                        <p className={style.statusPaid}>Layihə ödənilib</p>
                       )}
                       <p>
-                        <strong>Ваше сообщение:</strong> {proposal.coverLetter}
+                        <strong>Mesajınız:</strong> {proposal.coverLetter}
                       </p>
                       <p>
-                        <strong>Цена:</strong> {proposal.price}₽
+                        <strong>Məbləğ:</strong> {proposal.price}₼
                       </p>
                       <p>
-                        <strong>Статус:</strong>{" "}
-                        {proposal.status === "pending" && "На рассмотрении"}
-                        {proposal.status === "accepted" && "Принят"}
-                        {proposal.status === "rejected" && "Отклонён"}
-                        {proposal.status === "submitted" && "Работа отправлена"}
+                        <strong>Status:</strong>{" "}
+                        {proposal.status === "pending" && "Baxışdadır"}
+                        {proposal.status === "accepted" && "Qəbul edilib"}
+                        {proposal.status === "rejected" && "Rədd edilib"}
+                        {proposal.status === "submitted" && "İş göndərilib"}
                         {proposal.status === "refunded" && (
                           <span className={style.refundedLabel}>
-                            Работа отклонена — средства возвращены
+                            İş qəbul edilmədi — vəsait geri qaytarıldı
                           </span>
                         )}
                       </p>
@@ -125,7 +125,7 @@ const MyProposalsFreel = () => {
                             >
                               <path d="M12 16v-8m0 0l-3 3m3-3l3 3m9 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            Нажмите для загрузки файла
+                            Fayl yükləmək üçün klikləyin
                             <input
                               type="file"
                               onChange={(e) =>
@@ -144,8 +144,8 @@ const MyProposalsFreel = () => {
                             disabled={submitting[proposal._id]}
                           >
                             {submitting[proposal._id]
-                              ? "Отправка..."
-                              : "Отправить работу"}
+                              ? "Göndərilir..."
+                              : "İşi göndər"}
                           </button>
                         </div>
                       )}
@@ -153,7 +153,7 @@ const MyProposalsFreel = () => {
                       {proposal.status === "submitted" && proposal.workFile && (
                         <div className={style.submittedBlock}>
                           <p className={style.fileSent}>
-                            Вы отправили файл:{" "}
+                            Göndərdiyiniz fayl:{" "}
                             <a
                               href={`http://localhost:3000/uploads/${proposal.workFile}`}
                               target="_blank"
@@ -165,7 +165,7 @@ const MyProposalsFreel = () => {
 
                           {isProjectPaid && (
                             <p className={style.completedLabel}>
-                              ✔ Работа завершена — оплата получена
+                              ✔ İş tamamlandı — ödəniş qəbul edildi
                             </p>
                           )}
                         </div>
@@ -175,7 +175,7 @@ const MyProposalsFreel = () => {
 
                   {isProjectPaid && !hasLeftReview && (
                     <div className={style.reviewBlock}>
-                      <h4>Оцените заказчика:</h4>
+                      <h4>İşəgötürəni qiymətləndirin:</h4>
                       <ReviewForm
                         toUserId={proposal.project?.employer?._id}
                         projectId={proposal.project?._id}

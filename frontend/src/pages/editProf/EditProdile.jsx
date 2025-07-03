@@ -39,7 +39,7 @@ function EditProfile() {
     if (e.target.files.length > 0) {
       const file = e.target.files[0];
       if (!file.type.startsWith("image/")) {
-        alert("Пожалуйста, выберите файл изображения (jpg, png, gif и др.)");
+        alert("Zəhmət olmasa, şəkil faylı seçin (jpg, png, gif və s.)");
         return;
       }
       setAvatarFile(file);
@@ -50,7 +50,7 @@ function EditProfile() {
     e.preventDefault();
 
     if (!user?.id) {
-      alert("Ошибка: пользователь не найден или не загружен (user.id отсутствует)");
+      alert("Xəta: istifadəçi tapılmadı və ya yüklənməyib (user.id yoxdur)");
       return;
     }
 
@@ -77,7 +77,7 @@ function EditProfile() {
       navigate("/dashboard");
     } catch (err) {
       console.error(err);
-      alert("Ошибка при обновлении профиля");
+      alert("Profil yenilənərkən xəta baş verdi");
     }
   };
 
@@ -112,15 +112,15 @@ function EditProfile() {
       <div className={style.glowDots}>{renderGlowDots()}</div>
 
       <div className={style.container}>
-        <h2 className={style.title}>Редактировать профиль</h2>
+        <h2 className={style.title}>Profilə düzəliş et</h2>
         <form onSubmit={handleSubmit} className={style.form}>
           <div className={style.field}>
-            <label>Имя</label>
+            <label>Ad</label>
             <input
               name="name"
               value={form.name}
               onChange={handleChange}
-              placeholder="Имя"
+              placeholder="Adınızı daxil edin"
               required
             />
           </div>
@@ -130,21 +130,21 @@ function EditProfile() {
               name="email"
               value={form.email}
               onChange={handleChange}
-              placeholder="Email"
+              placeholder="Email ünvanınız"
               required
             />
           </div>
           <div className={style.field}>
-            <label>О себе</label>
+            <label>Haqqınızda</label>
             <textarea
               name="bio"
               value={form.bio}
               onChange={handleChange}
-              placeholder="Расскажите о себе..."
+              placeholder="Özünüz haqqında məlumat verin..."
             />
           </div>
           <div className={style.avatarField}>
-            <label>Аватар</label>
+            <label>Avatar</label>
             <div className={style.avatarWrapper}>
               <div className={style.avatarUploadBox}>
                 {avatarFile || form.avatar ? (
@@ -154,12 +154,12 @@ function EditProfile() {
                         ? URL.createObjectURL(avatarFile)
                         : `/${form.avatar}`
                     }
-                    alt="Аватар"
+                    alt="Avatar"
                     className={style.avatarPreview}
                   />
                 ) : (
                   <div className={style.avatarPlaceholder}>
-                    Выбрать изображение
+                    Şəkil seçin
                   </div>
                 )}
                 <input
@@ -174,14 +174,14 @@ function EditProfile() {
 
           <div className={style.buttonGroup}>
             <button type="submit" className={style.submitBtn}>
-              Сохранить
+              Yadda saxla
             </button>
             <button
               type="button"
               className={style.cancelBtn}
               onClick={() => navigate(-1)}
             >
-              Отмена
+              Ləğv et
             </button>
           </div>
         </form>

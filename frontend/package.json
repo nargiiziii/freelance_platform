@@ -16,6 +16,7 @@
     "@mui/material": "^7.1.1",
     "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.9.0",
+    "formik": "^2.4.6",
     "install": "^0.13.0",
     "lucide-react": "^0.522.0",
     "npm": "^11.4.1",
@@ -27,7 +28,8 @@
     "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",
     "sass": "^1.89.1",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

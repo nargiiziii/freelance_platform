@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "../../axiosInstance";
 import { getFreelancerProjects } from "../../redux/features/projectSlice";
 import AddPortfolioModal from "../addPortfolioModal/AddPortfolioModal";
 import style from "./Freelancer_dash.module.scss";
 import SubmitWorkModal from "../submitWork/SubmitWorkModal";
-import { fetchReviewsForUser, fetchUserReviews } from "../../redux/features/reviewSlice";
+import {
+  fetchReviewsForUser,
+  fetchUserReviews,
+} from "../../redux/features/reviewSlice";
 import FreelancerProposals from "../freelancerProposals/FreelancerProposals";
 import { fetchFreelancerStats } from "../../redux/features/userSlice";
+import { getProfile } from "../../redux/features/authSlice";
 
 function FreelancerDash() {
   const navigate = useNavigate();
@@ -17,14 +22,14 @@ function FreelancerDash() {
   const reviews = useSelector((state) => state.reviews.reviews);
   const loading = useSelector((state) => state.reviews.loading);
 
-  const [activeSection, setActiveSection] = useState("Профиль");
+  const [activeSection, setActiveSection] = useState("Profil");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(null);
   const [portfolio, setPortfolio] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [filterStatus, setFilterStatus] = useState("all");
 
-  const sections = ["Профиль", "Портфолио", "Отзывы"];
+  const sections = ["Profil", "Portfolio", "Rəylər"];
 
   useEffect(() => {
     dispatch(getFreelancerProjects());
@@ -35,7 +40,6 @@ function FreelancerDash() {
   }, [user]);
 
   const stats = useSelector((state) => state.user.stats);
-  // console.log("stats из Redux:", stats);
 
   useEffect(() => {
     if (user?.id) {
@@ -55,19 +59,32 @@ function FreelancerDash() {
 
   useEffect(() => {
     if (!user?.id) return;
-    dispatch(fetchReviewsForUser(user.id)); 
+    dispatch(fetchReviewsForUser(user.id));
   }, [user?.id, dispatch]);
 
   const handleProjectAdded = (updatedUser) => {
     setPortfolio(updatedUser.portfolio || []);
   };
 
+  const handleDelete = async (itemId) => {
+    if (!window.confirm("Bu layihəni silmək istəyirsiniz?")) return;
+
+    try {
+      await axios.delete(`/users/portfolio/${itemId}`);
+      dispatch(getProfile());
+    } catch (err) {
+      console.error("Silinmə xətası:", err);
+      alert("Layihəni silmək zamanı xəta baş verdi.");
+    }
+  };
+
   const handleEditProfile = () => {
     navigate("/edit-profile");
   };
 
-  if (!user) return <p>Загрузка...</p>;
-  return (
+  if (!user) return <p>Yüklənir...</p>;
+
+ return (
     <div className={style.freelancerContent}>
       <div className={style.profile}>
         {user.avatar ? (
@@ -82,14 +99,14 @@ function FreelancerDash() {
           </div>
         )}
         <div className={style.info}>
-          <p className={style.name}>{user.name || "Имя не указано"}</p>
-          <p className={style.role}>{user.role || "Роль не указана"}</p>
+          <p className={style.name}>{user.name || "Ad göstərilməyib"}</p>
+          <p className={style.role}>{user.role || "Rol göstərilməyib"}</p>
           <p className={style.balance}>
-            <strong>Баланс:</strong>{" "}
+            <strong>Balans:</strong>{" "}
             {user.balance?.toLocaleString("ru-RU") || 0}₽
           </p>
           <button onClick={handleEditProfile} className={style.editButton}>
-            Редактировать профиль
+            Profili redaktə et
           </button>
         </div>
       </div>
@@ -110,18 +127,18 @@ function FreelancerDash() {
         </div>
 
         <main className={style.sectionContent}>
-          {activeSection === "Профиль" && (
+          {activeSection === "Profil" && (
             <section className={style.section}>
-              <h3>Профиль</h3>
+              <h3>Profil</h3>
               <div className={style.profileTwoColumn}>
                 <div className={style.leftColumn}>
                   <div className={style.bioBox}>
-                    <strong>Биография:</strong>
-                    <p>{user.bio || "Нет описания"}</p>
+                    <strong>Bioqrafiya:</strong>
+                    <p>{user.bio || "Açıqlama yoxdur"}</p>
                   </div>
 
                   <div className={style.skillsBox}>
-                    <strong>Навыки:</strong>
+                    <strong>Bacarıqlar:</strong>
                     {user.skills?.length ? (
                       <div className={style.skillsList}>
                         {user.skills.map((skill, index) => (
@@ -131,50 +148,50 @@ function FreelancerDash() {
                         ))}
                       </div>
                     ) : (
-                      <span>Нет навыков</span>
+                      <span>Bacarıq yoxdur</span>
                     )}
                   </div>
 
                   <div className={style.statusBox}>
                     <p>
-                      <strong>Статус:</strong>{" "}
-                      {user.isAvailable ? "Доступен" : "Не доступен"}
+                      <strong>Status:</strong>{" "}
+                      {user.isAvailable ? "Mövcuddur" : "Mövcud deyil"}
                     </p>
                     <p>
-                      <strong>Выполнено проектов:</strong>{" "}
+                      <strong>Tamamlanmış layihələr:</strong>{" "}
                       {user.completedProjectsCount || 0}
                     </p>
                   </div>
                 </div>
 
                 <div className={style.activityCard}>
-                  <h4>Активность</h4>
+                  <h4>Fəaliyyət</h4>
                   <p>
-                    🔄 Последний вход:{" "}
+                    🔄 Son giriş:{" "}
                     {stats?.lastSeen
                       ? new Date(stats.lastSeen).toLocaleDateString()
-                      : "Нет данных"}
+                      : "Məlumat yoxdur"}
                   </p>
-                  <p>📤 Отправлено откликов: {stats?.proposalsCount ?? 0}</p>
-                  <p>⭐ Общий рейтинг: {stats?.averageRating ?? "0.0"}</p>
+                  <p>📤 Göndərilən müraciətlər: {stats?.proposalsCount ?? 0}</p>
+                  <p>⭐ Orta reytinq: {stats?.averageRating ?? "0.0"}</p>
                 </div>
               </div>
 
               <div className={style.proposalsWrapper}>
-                <h4>📁 История откликов</h4>
+                <h4>📁 Müraciət tarixçəsi</h4>
                 <FreelancerProposals />
               </div>
             </section>
           )}
 
-          {activeSection === "Портфолио" && (
+          {activeSection === "Portfolio" && (
             <section className={style.section}>
-              <h3>Портфолио</h3>
+              <h3>Portfel</h3>
               <button
                 className={style.addProjectButton}
                 onClick={() => setIsModalOpen(true)}
               >
-                + Добавить проект
+                + Layihə əlavə et
               </button>
               {portfolio?.length ? (
                 <div className={style.portfolioGrid}>
@@ -199,14 +216,20 @@ function FreelancerDash() {
                           rel="noopener noreferrer"
                           className={style.viewButton}
                         >
-                          Смотреть проект
+                          Layihəyə bax
                         </a>
                       </div>
+                      <button
+                        className={style.deleteButton}
+                        onClick={() => handleDelete(item._id)}
+                      >
+                        🗑 Sil
+                      </button>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p>Портфолио отсутствует</p>
+                <p>Portfel boşdur</p>
               )}
               <AddPortfolioModal
                 isOpen={isModalOpen}
@@ -217,11 +240,11 @@ function FreelancerDash() {
             </section>
           )}
 
-          {activeSection === "Отзывы" && (
+          {activeSection === "Rəylər" && (
             <section className={`${style.section} ${style.reviewsSection}`}>
-              <h3>Отзывы</h3>
+              <h3>Rəylər</h3>
               {loading ? (
-                <p className={style.reviewsLoading}>Загрузка отзывов...</p>
+                <p className={style.reviewsLoading}>Rəylər yüklənir...</p>
               ) : reviews.length ? (
                 <ul>
                   {reviews.map((review, i) => (
@@ -230,7 +253,7 @@ function FreelancerDash() {
                         {new Date(review.createdAt).toLocaleDateString()}
                       </div>
                       <div className={style.reviewUser}>
-                        {review.fromUser?.name || "Аноним"}
+                        {review.fromUser?.name || "Anonim"}
                       </div>
                       <div className={style.reviewStars}>
                         {"⭐".repeat(review.rating)}
@@ -242,7 +265,7 @@ function FreelancerDash() {
                   ))}
                 </ul>
               ) : (
-                <p className={style.reviewsEmpty}>Отзывы отсутствуют</p>
+                <p className={style.reviewsEmpty}>Heç bir rəy yoxdur</p>
               )}
             </section>
           )}

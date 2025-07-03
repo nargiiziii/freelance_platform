@@ -33,9 +33,9 @@ const EditProject = ({ project: initialProject, fromAdmin = false, onClose }) =>
       await axios.patch(`/projects/${projectId}`, project);
 
       if (fromAdmin && onClose) {
-        onClose(); // Закрытие модального окна в админке
+        onClose(); // Admin panelində pəncərəni bağla
       } else {
-        navigate("/my-jobs"); // Перенаправление для нанимателя
+        navigate("/my-jobs"); // İşlərim səhifəsinə yönləndir
       }
     } catch (err) {
       console.error(err);
@@ -53,19 +53,19 @@ const EditProject = ({ project: initialProject, fromAdmin = false, onClose }) =>
   return (
     <div className={styles.editProjectWrapper}>
       <div className={styles.formContainer}>
-        <h2 className={styles.title}>Редактировать проект</h2>
+        <h2 className={styles.title}>Layihəni redaktə et</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
           <input
             type="text"
             name="title"
-            placeholder="Название"
+            placeholder="Layihənin adı"
             value={project.title}
             onChange={handleChange}
             className={styles.input}
           />
           <textarea
             name="description"
-            placeholder="Описание"
+            placeholder="Ətraflı təsvir"
             value={project.description}
             onChange={handleChange}
             className={styles.textarea}
@@ -73,7 +73,7 @@ const EditProject = ({ project: initialProject, fromAdmin = false, onClose }) =>
           <input
             type="number"
             name="budget"
-            placeholder="Бюджет"
+            placeholder="Büdcə"
             value={project.budget}
             onChange={handleChange}
             className={styles.input}
@@ -81,21 +81,21 @@ const EditProject = ({ project: initialProject, fromAdmin = false, onClose }) =>
           <input
             type="text"
             name="category"
-            placeholder="Категория"
+            placeholder="Kateqoriya"
             value={project.category}
             onChange={handleChange}
             className={styles.input}
           />
           <div className={styles.buttons}>
             <button type="submit" className={styles.saveBtn}>
-              💾 Сохранить
+              💾 Yadda saxla
             </button>
             <button
               type="button"
               onClick={handleCancel}
               className={styles.cancelBtn}
             >
-              ❌ Отмена
+              ❌ Ləğv et
             </button>
           </div>
         </form>

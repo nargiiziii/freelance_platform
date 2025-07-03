@@ -196,10 +196,10 @@ const MessagesPage = () => {
   return (
     <div className={style.wrapper}>
       <div className={style.chatList}>
-        <h2 className={style.title}>Ваши чаты</h2>
+        <h2 className={style.title}>Söhbətləriniz</h2>
         {safeChats.length === 0 ? (
           <div className={style.emptyState}>
-            <p>Нет активных диалогов</p>
+            <p>Aktiv söhbət yoxdur</p>
           </div>
         ) : (
           safeChats.map((chat) => {
@@ -209,11 +209,10 @@ const MessagesPage = () => {
                 (m) => m && String(m._id) !== String(currentUser.id)
               );
 
-            const lastMsg = chat?.lastMessage?.content || "Нет сообщений";
+            const lastMsg = chat?.lastMessage?.content || "Mesaj yoxdur";
             const unreadCount = chat?.unreadCount || 0;
 
             if (!partner) return null;
-            // console.log("chat partner:", partner);
             return (
               <div
                 key={chat._id}
@@ -255,6 +254,7 @@ const MessagesPage = () => {
         )}
       </div>
 
+      {/* ChatRoom */}
       <div className={style.chatRoom}>
         {selectedUserId ? (
           <>
@@ -268,19 +268,19 @@ const MessagesPage = () => {
               )}
 
               <div>
-                <h3>{receiverInfo?.name || "Пользователь"}</h3>
+                <h3>{receiverInfo?.name || "İstifadəçi"}</h3>
                 <p className={style.lastSeen}>
                   {receiverInfo?.lastSeen
-                    ? `last seen: ${new Date(
+                    ? `son aktivlik: ${new Date(
                         receiverInfo.lastSeen
-                      ).toLocaleString("ru-RU", {
+                      ).toLocaleString("az-AZ", {
                         day: "numeric",
                         month: "long",
                         year: "numeric",
                         hour: "2-digit",
                         minute: "2-digit",
                       })}`
-                    : "Нет данных о входе"}
+                    : "Giriş məlumatı yoxdur"}
                 </p>
               </div>
             </div>
@@ -320,7 +320,7 @@ const MessagesPage = () => {
 
               {typing && (
                 <div className={style.typingIndicator}>
-                  {receiverInfo?.name || "Пользователь"} печатает...
+                  {receiverInfo?.name || "İstifadəçi"} yazır...
                 </div>
               )}
 
@@ -332,13 +332,13 @@ const MessagesPage = () => {
                 type="text"
                 value={newMsg}
                 onChange={handleTyping}
-                placeholder="Введите сообщение"
+                placeholder="Mesajınızı yazın"
               />
-              <button onClick={handleSend}>Отправить</button>
+              <button onClick={handleSend}>Göndər</button>
             </div>
           </>
         ) : (
-          <div className={style.selectPrompt}>Выберите чат слева</div>
+          <div className={style.selectPrompt}>Soldan bir söhbət seçin</div>
         )}
       </div>
     </div>

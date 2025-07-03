@@ -33,17 +33,21 @@ const Navlist = ({ onClick }) => {
   return (
     <ul className={style.ul}>
       <li className={style.li}>
-        <Link to="/" onClick={onClick}>HOME</Link>
+        <Link to="/" onClick={onClick}>
+          ANA SƏHİFƏ
+        </Link>
       </li>
 
       {!user && (
         <>
           <li className={style.li}>
-            <Link to="/login" onClick={onClick}>LOGIN</Link>
+            <Link to="/login" onClick={onClick}>
+              GİRİŞ
+            </Link>
           </li>
           <li className={style.li}>
             <Link to="/register" onClick={onClick}>
-              <button className={style.button}>SIGN UP</button>
+              <button className={style.button}>QEYDİYYAT</button>
             </Link>
           </li>
         </>
@@ -52,14 +56,18 @@ const Navlist = ({ onClick }) => {
       {user && user.role === "freelancer" && (
         <>
           <li className={style.li}>
-            <Link to="/jobs" onClick={onClick}>JOBS</Link>
+            <Link to="/jobs" onClick={onClick}>
+              ELANLAR
+            </Link>
           </li>
           <li className={style.li}>
-            <Link to="/my-proposals" onClick={onClick}>MY PROPOSALS</Link>
+            <Link to="/my-proposals" onClick={onClick}>
+              TƏKLİFLƏRİM
+            </Link>
           </li>
           <li className={style.li} style={{ position: "relative" }}>
             <Link to="/messages" onClick={onClick}>
-              MESSAGES
+              MESAJLAR
               {totalUnread > 0 && (
                 <span
                   style={{
@@ -79,7 +87,9 @@ const Navlist = ({ onClick }) => {
             </Link>
           </li>
           <li className={style.li}>
-            <Link to="/escrow" onClick={onClick}>ESCROW</Link>
+            <Link to="/escrow" onClick={onClick}>
+              ESCROW
+            </Link>
           </li>
         </>
       )}
@@ -87,14 +97,18 @@ const Navlist = ({ onClick }) => {
       {user && user.role === "employer" && (
         <>
           <li className={style.li}>
-            <Link to="/create-project" onClick={onClick}>POST A JOB</Link>
+            <Link to="/create-project" onClick={onClick}>
+              İŞ YERLƏŞDİR
+            </Link>
           </li>
           <li className={style.li}>
-            <Link to="/my-jobs" onClick={onClick}>MY JOBS</Link>
+            <Link to="/my-jobs" onClick={onClick}>
+              ELANLARIM
+            </Link>
           </li>
           <li className={style.li} style={{ position: "relative" }}>
             <Link to="/messages" onClick={onClick}>
-              MESSAGES
+              MESAJLAR
               {totalUnread > 0 && (
                 <span
                   style={{
@@ -114,10 +128,14 @@ const Navlist = ({ onClick }) => {
             </Link>
           </li>
           <li className={style.li}>
-            <Link to="/freelancers" onClick={onClick}>FIND FREELANCERS</Link>
+            <Link to="/freelancers" onClick={onClick}>
+              FRELANSER AXTAR
+            </Link>
           </li>
           <li className={style.li}>
-            <Link to="/escrow" onClick={onClick}>ESCROW</Link>
+            <Link to="/escrow" onClick={onClick}>
+              ESCROW
+            </Link>
           </li>
         </>
       )}
@@ -129,7 +147,11 @@ const Navlist = ({ onClick }) => {
           </li>
 
           <li className={style.li}>
-            <Link to={getDashboardPath()} className={style.profileLink} onClick={onClick}>
+            <Link
+              to={getDashboardPath()}
+              className={style.profileLink}
+              onClick={onClick}
+            >
               {user.avatar ? (
                 <img
                   src={`http://localhost:3000/${user.avatar}`}
@@ -146,7 +168,7 @@ const Navlist = ({ onClick }) => {
 
           <li className={style.li}>
             <button className={style.button} onClick={handleLogout}>
-              LOGOUT
+              ÇIXIŞ
             </button>
           </li>
         </>
@@ -159,7 +181,7 @@ const Navlist = ({ onClick }) => {
             if (onClick) onClick();
           }}
           className={style.themeButton}
-          title="Toggle Theme"
+          title="Rejimi dəyiş"
         >
           {darkMode ? <FaSun /> : <FaMoon />}
         </button>

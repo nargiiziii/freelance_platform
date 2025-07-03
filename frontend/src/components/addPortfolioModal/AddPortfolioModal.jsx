@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "../../axiosInstance";
 import { useDispatch } from "react-redux";
-import { getProfile } from "../../redux/features/authSlice"; // 🔹 Импортируем getProfile
+import { getProfile } from "../../redux/features/authSlice";
 import style from "./AddPortfolioModal.module.scss";
 
 const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
-  const dispatch = useDispatch(); // 🔹 Хук для вызова Redux действий
+  const dispatch = useDispatch();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -41,16 +41,13 @@ const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
 
     try {
       await axios.post("http://localhost:3000/api/users/portfolio", formData);
-
-      // 🔄 Обновляем пользователя в Redux, чтобы подтянуть новое портфолио
       await dispatch(getProfile());
-
       onClose();
     } catch (err) {
       setError(
         err.response?.data?.message ||
           err.message ||
-          "Ошибка при добавлении проекта"
+          "Layihəni əlavə edərkən xəta baş verdi"
       );
     } finally {
       setLoading(false);
@@ -66,11 +63,11 @@ const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
 
         <form onSubmit={handleSubmit}>
           <div className={style.uploadField}>
-            <label>Изображение проекта</label>
+            <label>Layihənin şəkli</label>
             <div className={style.uploadRow}>
               <div className={style.fileInputWrapper}>
                 <label className={style.customButton}>
-                  Загрузить файл
+                  Fayl yüklə
                   <input
                     type="file"
                     accept="image/*"
@@ -84,7 +81,7 @@ const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
                   <div className={style.fileName}>{imageFile.name}</div>
                   <img
                     src={URL.createObjectURL(imageFile)}
-                    alt="Preview"
+                    alt="Ön baxış"
                     className={style.imagePreview}
                   />
                 </div>
@@ -93,7 +90,7 @@ const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
           </div>
 
           <div className={style.field}>
-            <label>Название проекта *</label>
+            <label>Layihənin adı *</label>
             <input
               type="text"
               value={title}
@@ -103,7 +100,7 @@ const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
           </div>
 
           <div className={style.field}>
-            <label>Описание *</label>
+            <label>Təsvir *</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -113,7 +110,7 @@ const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
           </div>
 
           <div className={style.field}>
-            <label>Ссылка на проект</label>
+            <label>Layihəyə keçid</label>
             <input
               type="url"
               value={link}
@@ -123,7 +120,7 @@ const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
           </div>
 
           <div className={style.field}>
-            <label>Технологии (через запятую)</label>
+            <label>Texnologiyalar (vergüllə ayırın)</label>
             <input
               type="text"
               value={technologies}
@@ -133,7 +130,7 @@ const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
           </div>
 
           <div className={style.field}>
-            <label>Дата выполнения</label>
+            <label>İcra tarixi</label>
             <input
               type="date"
               value={date}
@@ -145,10 +142,10 @@ const AddPortfolioModal = ({ isOpen, onClose, userId }) => {
 
           <div className={style.buttons}>
             <button type="submit" disabled={loading}>
-              {loading ? "Сохраняем..." : "Добавить проект"}
+              {loading ? "Yüklənir..." : "Layihə əlavə et"}
             </button>
             <button type="button" onClick={onClose} disabled={loading}>
-              Отмена
+              Ləğv et
             </button>
           </div>
         </form>

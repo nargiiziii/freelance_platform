@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import style from "./FreelancersList.module.scss";
 import { Link } from "react-router-dom";
 
-const categories = ["Все", "Web Development", "Design", "Writing", "Marketing"];
+const categories = ["All", "Web Development", "Design", "Writing", "Marketing"];
 
 const FreelancersList = () => {
   const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategories, setSelectedCategories] = useState(["Все"]);
+  const [selectedCategories, setSelectedCategories] = useState(["All"]);
 
   const fetchFreelancers = (categories = []) => {
     setLoading(true);
     const query =
-      categories.includes("Все") || categories.length === 0
+      categories.includes("All") || categories.length === 0
         ? ""
         : `?category=${encodeURIComponent(categories.join(","))}`;
     fetch(`http://localhost:3000/api/users/freelancers/all${query}`)
@@ -31,10 +31,10 @@ const FreelancersList = () => {
   const handleCategoryChange = (e) => {
     const { value, checked } = e.target;
 
-    if (value === "Все") {
+    if (value === "All") {
       if (checked) {
-        setSelectedCategories(["Все"]);
-        fetchFreelancers(["Все"]);
+        setSelectedCategories(["All"]);
+        fetchFreelancers(["All"]);
       } else {
         setSelectedCategories([]);
         fetchFreelancers([]);
@@ -43,22 +43,22 @@ const FreelancersList = () => {
     }
 
     let updatedCategories = checked
-      ? [...selectedCategories.filter((c) => c !== "Все"), value]
+      ? [...selectedCategories.filter((c) => c !== "All"), value]
       : selectedCategories.filter((cat) => cat !== value);
 
     if (updatedCategories.length === 0) {
-      updatedCategories = ["Все"];
+      updatedCategories = ["All"];
     }
 
     setSelectedCategories(updatedCategories);
     fetchFreelancers(updatedCategories);
   };
 
-  if (loading) return <p className={style.loading}>Загрузка фрилансеров...</p>;
+  if (loading) return <p className={style.loading}>Frilanserlər yüklənir...</p>;
 
   return (
     <div className={style.freelancerList}>
-      <h2>Список фрилансеров</h2>
+      <h2>Frilanser Siyahısı</h2>
 
       <div className={style.layout}>
         <div className={style.sidebar}>
@@ -84,7 +84,7 @@ const FreelancersList = () => {
                 {user.avatar ? (
                   <img
                     src={`http://localhost:3000/${user.avatar}`}
-                    alt="avatar"
+                    alt="Avatar"
                   />
                 ) : (
                   <span>{user.name?.[0]}</span>
@@ -110,7 +110,7 @@ const FreelancersList = () => {
 
                   {user.portfolio?.length > 0 && (
                     <div className={style.portfolio}>
-                      <strong>Портфолио:</strong>
+                      <strong>Portfel:</strong>
                       <div className={style.portfolioGallery}>
                         {user.portfolio.map((item, i) => (
                           <div key={i} className={style.portfolioItem}>
@@ -128,14 +128,14 @@ const FreelancersList = () => {
                                   }
                                 />
                                 <div className={style.title}>
-                                  {item.title || "Проект"}
+                                  {item.title || "Layihə"}
                                 </div>
                               </a>
                             ) : (
                               <div className={style.noLink}>
                                 <img
                                   src={`http://localhost:3000/${item.image}`}
-                                  alt={item.title || "Проект"}
+                                  alt={item.title || "Layihə"}
                                 />
                                 <div className={style.title}>{item.title}</div>
                               </div>
@@ -149,10 +149,10 @@ const FreelancersList = () => {
 
                 <div className={style.action}>
                   <Link to={`/messages?user=${user._id}`}>
-                    <button className={style.button}>Отправить сообщение</button>
+                    <button className={style.button}>Mesaj göndər</button>
                   </Link>
                   <Link to={`/freelancers/${user._id}`}>
-                    <button className={style.button}>Посмотреть профиль</button>
+                    <button className={style.button}>Profilə bax</button>
                   </Link>
                 </div>
               </div>

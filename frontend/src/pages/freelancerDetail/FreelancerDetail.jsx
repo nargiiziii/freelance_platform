@@ -24,7 +24,7 @@ const FreelancerDetail = () => {
         setStats(statsData);
         setLoading(false);
       } catch (err) {
-        console.error("Ошибка загрузки данных фрилансера", err);
+        console.error("Freelancer məlumatları yüklənərkən xəta baş verdi", err);
         setLoading(false);
       }
     };
@@ -32,8 +32,8 @@ const FreelancerDetail = () => {
     fetchFreelancer();
   }, [id]);
 
-  if (loading) return <p className={style.loading}>Загрузка профиля...</p>;
-  if (!freelancer) return <p className={style.error}>Фрилансер не найден</p>;
+  if (loading) return <p className={style.loading}>Profil yüklənir...</p>;
+  if (!freelancer) return <p className={style.error}>Freelancer tapılmadı</p>;
 
   return (
     <div className={style.detailContainer}>
@@ -46,17 +46,17 @@ const FreelancerDetail = () => {
         <div className={style.info}>
           <h2>{freelancer.name}</h2>
           <p>{freelancer.email}</p>
-          <p className={style.bio}>{freelancer.bio || "Нет описания"}</p>
+          <p className={style.bio}>{freelancer.bio || "Haqqında məlumat yoxdur"}</p>
           <div className={style.stats}>
-            <p>Последний вход: {new Date(stats?.lastSeen).toLocaleDateString()}</p>
-            <p>Откликов: {stats?.proposalsCount}</p>
-            <p>Рейтинг: ⭐ {stats?.averageRating}</p>
+            <p>Son aktivlik: {new Date(stats?.lastSeen).toLocaleDateString()}</p>
+            <p>Göndərilən təkliflər: {stats?.proposalsCount}</p>
+            <p>Reytinq: ⭐ {stats?.averageRating}</p>
           </div>
         </div>
       </div>
 
       <div className={style.section}>
-        <h3>Навыки</h3>
+        <h3>Bacarıqlar</h3>
         {freelancer.skills?.length ? (
           <div className={style.skillsList}>
             {freelancer.skills.map((skill, i) => (
@@ -64,12 +64,12 @@ const FreelancerDetail = () => {
             ))}
           </div>
         ) : (
-          <p>Навыки не указаны</p>
+          <p>Bacarıqlar qeyd edilməyib</p>
         )}
       </div>
 
       <div className={style.section}>
-        <h3>Портфолио</h3>
+        <h3>Portfolio</h3>
         {freelancer.portfolio?.length ? (
           <div className={style.portfolioGrid}>
             {freelancer.portfolio.map((item, i) => (
@@ -90,7 +90,7 @@ const FreelancerDetail = () => {
             ))}
           </div>
         ) : (
-          <p>Портфолио отсутствует</p>
+          <p>Portfolio mövcud deyil</p>
         )}
       </div>
 
@@ -98,7 +98,7 @@ const FreelancerDetail = () => {
         className={style.messageButton}
         onClick={() => navigate(`/messages?user=${freelancer._id}`)}
       >
-        Написать сообщение
+        Mesaj göndər
       </button>
     </div>
   );

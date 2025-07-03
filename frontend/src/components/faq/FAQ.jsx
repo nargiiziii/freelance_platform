@@ -3,23 +3,29 @@ import styles from "./FAQ.module.scss";
 
 const questions = [
   {
-    question: "How does escrow work?",
+    question: "Escrow sistemi nədir və necə işləyir?",
     answer:
-      "Escrow is a mechanism where funds are held in an account until the project is completed. Once the conditions are met, the funds are released to the contractor.",
+      "Escrow — işəgötürənin vəsaiti əvvəlcədən platformada bloklamasıdır. Freelancer işi tamamlaya və işəgötürən onu təsdiqləyəndən sonra vəsait freelancerə köçürülür.",
   },
   {
-    question: "What if the project is not completed?",
+    question: "Freelancer necə müraciət edə bilər?",
     answer:
-      "You can open a dispute. The administration will review the details and make a decision.",
+      'Freelancer kimi qeydiyyatdan keçin, uyğun layihəni seçin və "Müraciət et" düyməsini klikləyin.',
   },
   {
-    question: "How to submit an application?",
-    answer: 'Register, choose a project, and click "Submit Application".',
+    question: "İşəgötürən təklifi necə qəbul edir?",
+    answer:
+      "Müraciətlər siyahısından freelancerin təklifini seçərək onu qəbul edə bilərsiniz. Qəbul etdikdən sonra vəsait escrow-a köçürüləcək.",
   },
   {
-    question: "How long does it take to get approved?",
+    question: "İş tamamlandıqdan sonra nə baş verir?",
     answer:
-      "Approval typically takes 1-3 business days after submitting your application.",
+      "Freelancer işi təqdim edir. İşəgötürən işi nəzərdən keçirir və razı qalarsa, ödənişi buraxa bilər. Bundan sonra hər iki tərəf rəy yaza bilər.",
+  },
+  {
+    question: "Mesajlaşma necə işləyir?",
+    answer:
+      "Hər iki istifadəçi layihə və müraciət çərçivəsində bir-biri ilə real vaxtda mesajlaşa bilər. Bu, işin gedişatını rahat izləməyə kömək edir.",
   },
 ];
 
@@ -32,7 +38,7 @@ const FAQ = () => {
 
   return (
     <div className={styles.faq_area}>
-      <h2 className={styles.title}>Questions & Answers</h2>
+      <h2 className={styles.title}>Suallar & Cavablar</h2>
       <div className={styles.list}>
         {questions.map((item, index) => (
           <div key={index} className={styles.item}>

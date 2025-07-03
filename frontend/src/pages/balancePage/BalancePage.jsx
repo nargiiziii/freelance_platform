@@ -9,8 +9,7 @@ import useNotificationCleaner from "../../hooks/useNotificationCleaner";
 function BalancePage() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const [amount, setAmount] = useState(0);
-  const [message, setMessage] = useState("");
+  const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
 
@@ -20,97 +19,87 @@ function BalancePage() {
     axios
       .get("/escrow/history")
       .then((res) => setTransactions(res.data))
-      .catch((err) => console.error("Ошибка загрузки истории", err));
+      .catch((err) => console.error("Tarix yüklənərkən xəta baş verdi", err));
   }, [dispatch]);
 
   const handleTopUp = async () => {
+    if (!amount || isNaN(amount) || Number(amount) <= 0) return;
+
     try {
       setLoading(true);
-      setMessage("");
       await dispatch(topUpBalance(Number(amount))).unwrap();
-      toast.success("Balance successfully replenished!");
-      setAmount(0);
+      toast.success("Balans uğurla artırıldı!");
+      setAmount("");
 
-      // 👉 Сразу обновляем историю
       const res = await axios.get("/escrow/history");
       setTransactions(res.data);
     } catch (err) {
-      const msg = err?.response?.data?.message || "Error while replenishing";
+      const msg =
+        err?.response?.data?.message || "Balans artırılarkən xəta baş verdi";
       toast.error(msg);
-      setMessage(msg);
     } finally {
       setLoading(false);
     }
   };
 
-  if (!user) return <p>Вы не авторизованы</p>;
+  if (!user) return <p>Siz daxil olmamısınız</p>;
   useNotificationCleaner("esc");
 
   return (
-    <div className={style.balanceContainer}>
-      <h2 className={style.heading}> Ваш баланс</h2>
-
-      <p className={style.balanceText}>
-        Текущий баланс: <strong>{user.balance} монет</strong>
+    <div className={style.balancePage}>
+      <h2 className={style.title}>Balans</h2>
+      <p className={style.balanceAmount}>
+        Cari balans:{" "}
+        <span>
+          {typeof user.balance === "number" ? user.balance.toFixed(2) : "0.00"}₼
+        </span>
       </p>
-
-      <div className={style.inputGroup}>
-        <label htmlFor="amount">Сумма пополнения:</label>
+      <div className={style.topupForm}>
         <input
           type="number"
-          id="amount"
+          placeholder="Məbləği daxil edin"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
+        <button onClick={handleTopUp} disabled={loading}>
+          {loading ? "Yüklənir..." : "Balansı artır"}
+        </button>
       </div>
 
-      <button
-        onClick={handleTopUp}
-        className={style.topUpButton}
-        disabled={loading || amount <= 0}
-      >
-        {loading ? "Пополнение..." : "Пополнить баланс"}
-      </button>
-
-      {message && <p className={style.message}>{message}</p>}
-
-      <h3 className={style.subheading}>🧾 История транзакций</h3>
+      <h3 className={style.subtitle}>Əməliyyatlar tarixi</h3>
       <div className={style.tableWrapper}>
-        <table className={style.table}>
+        <table>
           <thead>
             <tr>
-              <th>Дата</th>
-              <th>От</th>
-              <th>Кому</th>
-              <th>Сумма</th>
-              <th>Статус</th>
+              <th>Tarix</th>
+              <th>Kimdən</th>
+              <th>Kimə</th>
+              <th>Məbləğ</th>
+              <th>Növ</th>
+              <th>Status</th>
             </tr>
           </thead>
+
           <tbody>
             {transactions.length === 0 ? (
               <tr>
-                <td
-                  className={style.tableCell}
-                  colSpan="5"
-                  style={{ textAlign: "center" }}
-                >
-                  Нет транзакций
+                <td colSpan="6" style={{ textAlign: "center" }}>
+                  Heç bir əməliyyat yoxdur
                 </td>
               </tr>
             ) : (
               transactions.map((t, idx) => {
-                const isIncome = t.direction === "income";
-                const colorClass = isIncome ? style.greenText : style.redText;
+                const isIncoming = t.direction === "income";
+                const colorClass = isIncoming ? style.green : style.red;
 
                 return (
                   <tr key={idx}>
-                    <td className={style.tableCell}>{t.date}</td>
-                    <td className={style.tableCell}>{t.from}</td>
-                    <td className={style.tableCell}>{t.to}</td>
-                    <td className={`${style.tableCell} ${colorClass}`}>
-                      {t.amount}
-                    </td>
-                    <td className={style.tableCell}>{t.status}</td>
+                    <td>{new Date(t.date).toLocaleString()}</td>
+                    <td>{t.from || "—"}</td>
+                    <td>{t.to || "—"}</td>
+                    <td className={colorClass}>{t.amount}₼</td>
+                    <td>{t.type}</td>
+                    <td>{t.status}</td>
                   </tr>
                 );
               })

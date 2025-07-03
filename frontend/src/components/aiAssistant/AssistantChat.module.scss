@@ -1,8 +1,7 @@
 .wrapper {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
   z-index: 9999;
+  cursor: grab;
 }
 
 .fab {
@@ -34,7 +33,29 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: move;
 }
+
+.closeButton {
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:  rgba(255, 255, 255, 0.085);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.316); // необязательно, но приятно наводится
+}
+
 
 .messages {
   flex: 1;
@@ -60,13 +81,14 @@
   border-radius: 12px;
   max-width: 80%;
 }
+
 .inputBox {
   display: flex;
   border-top: 1px solid #ddd;
   padding: 8px;
   background: white;
-  align-items: center; // ✅ Добавляем выравнивание
-  gap: 8px; // ✅ Пространство между input и кнопкой
+  align-items: center;
+  gap: 8px;
 }
 
 .inputBox input {
@@ -86,8 +108,8 @@
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  width: 7rem;
   transition: background 0.2s ease;
-  width:7rem;
 }
 
 .inputBox button:hover {

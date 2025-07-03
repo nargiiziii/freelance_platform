@@ -5,8 +5,15 @@ import styles from "./MyJobs.module.scss";
 import axios from "../../axiosInstance";
 import ConfirmModal from "../../components/confirmModal/ConfirmModal";
 
-// Иконки
-import { FaFileAlt, FaThumbtack, FaSearch, FaEdit, FaTrash, FaCheck } from "react-icons/fa";
+// İkonlar
+import {
+  FaFileAlt,
+  FaThumbtack,
+  FaSearch,
+  FaEdit,
+  FaTrash,
+  FaCheck,
+} from "react-icons/fa";
 
 const MyJobs = () => {
   const { user } = useSelector((state) => state.auth);
@@ -88,13 +95,13 @@ const MyJobs = () => {
   const getStatusLabel = (status) => {
     switch (status) {
       case "open":
-        return "Открыт";
+        return "Açıq";
       case "in_progress":
-        return "В работе";
+        return "İcra olunur";
       case "submitted":
-        return "Работа отправлена";
+        return "İş təqdim edilib";
       case "closed":
-        return "Завершён";
+        return "Tamamlanıb";
       default:
         return status;
     }
@@ -102,7 +109,9 @@ const MyJobs = () => {
 
   return (
     <div className={styles.myJobs}>
-      <h2><FaFileAlt /> Мои проекты</h2>
+      <h2>
+        <FaFileAlt /> Layihələrim
+      </h2>
 
       <div className={styles.layout}>
         <div className={styles.sidebar}>
@@ -122,14 +131,14 @@ const MyJobs = () => {
             </div>
 
             <div className={styles.checkboxGroup}>
-              <span className={styles.sortLabel}>Сортировать по:</span>
+              <span className={styles.sortLabel}>Sıralama:</span>
               <label>
                 <input
                   type="checkbox"
                   checked={sortBy === "date_desc"}
                   onChange={() => handleSortCheckbox("date_desc")}
                 />
-                Новые сначала
+                Əvvəlcə yenilər
               </label>
               <label>
                 <input
@@ -137,7 +146,7 @@ const MyJobs = () => {
                   checked={sortBy === "date_asc"}
                   onChange={() => handleSortCheckbox("date_asc")}
                 />
-                Старые сначала
+                Əvvəlcə köhnələr
               </label>
               <label>
                 <input
@@ -145,7 +154,7 @@ const MyJobs = () => {
                   checked={sortBy === "responses_desc"}
                   onChange={() => handleSortCheckbox("responses_desc")}
                 />
-                Больше откликов
+                Çox müraciət
               </label>
               <label>
                 <input
@@ -153,7 +162,7 @@ const MyJobs = () => {
                   checked={sortBy === "responses_asc"}
                   onChange={() => handleSortCheckbox("responses_asc")}
                 />
-                Меньше откликов
+                Az müraciət
               </label>
             </div>
           </div>
@@ -176,7 +185,7 @@ const MyJobs = () => {
               >
                 {completed && (
                   <span className={styles.completedLabel}>
-                    <FaCheck /> Завершено
+                    <FaCheck /> Tamamlandı
                   </span>
                 )}
 
@@ -195,13 +204,14 @@ const MyJobs = () => {
                     </h3>
 
                     <p className={styles.postedDate}>
-                      Posted in {new Date(project.createdAt).toLocaleDateString()}
+                      Elan tarixi:{" "}
+                      {new Date(project.createdAt).toLocaleDateString()}
                     </p>
                     <p className={styles.projectText}>
-                      Категория: {project.category}
+                      Kateqoriya: {project.category}
                     </p>
                     <p className={styles.projectText}>
-                      Бюджет: {project.budget}₽
+                      Büdcə: {project.budget}₼
                     </p>
                     <p className={styles.projectText}>
                       {project.description.slice(0, 100)}...
@@ -215,7 +225,7 @@ const MyJobs = () => {
                         navigate(`/employer/project/${project._id}`)
                       }
                     >
-                      <FaSearch /> Подробнее
+                      <FaSearch /> Ətraflı
                     </button>
 
                     {!completed && project.status === "open" && (
@@ -226,7 +236,7 @@ const MyJobs = () => {
                             navigate(`/edit-project/${project._id}`)
                           }
                         >
-                          <FaEdit /> Редактировать
+                          <FaEdit /> Redaktə et
                         </button>
 
                         {noProposals && (
@@ -234,7 +244,7 @@ const MyJobs = () => {
                             className={styles.deleteButton}
                             onClick={() => confirmDelete(project._id)}
                           >
-                            <FaTrash /> Удалить
+                            <FaTrash /> Sil
                           </button>
                         )}
                       </>
@@ -249,7 +259,7 @@ const MyJobs = () => {
 
       {showModal && (
         <ConfirmModal
-          message="Вы точно хотите удалить проект?"
+          message="Layihəni silmək istədiyinizə əminsiniz?"
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
         />

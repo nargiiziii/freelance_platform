@@ -7,8 +7,8 @@ const ConfirmModal = ({ message, onConfirm, onCancel }) => {
       <div className={styles.modal}>
         <p>{message}</p>
         <div className={styles.buttons}>
-          <button className={styles.confirm} onClick={onConfirm}>Да</button>
-          <button className={styles.cancel} onClick={onCancel}>Отмена</button>
+          <button className={styles.confirm} onClick={onConfirm}>Bəli</button>
+          <button className={styles.cancel} onClick={onCancel}>Ləğv et</button>
         </div>
       </div>
     </div>

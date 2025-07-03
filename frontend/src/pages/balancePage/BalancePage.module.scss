@@ -1,150 +1,187 @@
-.balanceContainer {
-  padding: 24px;
-  max-width: 800px;
+.balancePage {
+  padding: 3rem 6%;
+  max-width: 80rem;
   margin: 0 auto;
   background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.05);
   color: #1e1e1e;
+  font-family: "Segoe UI", sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 2rem 4%;
+  }
+
+  @media (max-width: 480px) {
+    padding: 2rem 2rem;
+    border-radius: 8px;
+  }
 }
 
-:global(body.dark) .balanceContainer {
+:global(body.dark) .balancePage {
   background-color: #261a3c;
   color: #f5eefe;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
 }
 
-.heading {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 16px;
+.title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+
+  @media (max-width: 480px) {
+    font-size: 2.2rem;
+  }
 }
 
-.balanceText {
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-.inputGroup {
-  margin-bottom: 20px;
+.topupForm {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+
+  input {
+    padding: 1rem 1.4rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #1e1e1e;
+    font-size: 1.6rem;
+    flex: 1;
+    min-width: 20rem;
+
+    @media (max-width: 480px) {
+      font-size: 1.4rem;
+    }
+  }
+
+  :global(body.dark) & input {
+    background-color: #1f1432;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #f5eefe;
+  }
+
+  button {
+    padding: 1rem 2.2rem;
+    margin: 0;
+    width: 14rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    background-color: #2459f1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background-color: #1d47c5;
+    }
+
+    &:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+
+    :global(body.dark) & {
+      background-color: #6c9aff;
+      color: #1b0935;
+    }
+
+    :global(body.dark) &:disabled {
+      background-color: #555;
+      color: #ccc;
+    }
+
+    @media (max-width: 480px) {
+      width: 100%;
+      font-size: 1.5rem;
+    }
+  }
 }
 
-.inputGroup label {
-  font-weight: 500;
-  margin-bottom: 6px;
-}
+.subtitle {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 1.4rem;
+  color: inherit;
 
-.inputGroup input {
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #1e1e1e;
-}
-
-:global(body.dark) .inputGroup input {
-  background-color: #1f1432;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #f5eefe;
-}
-
-.topUpButton {
-  padding: 10px 20px;
-  background-color: #2459f1;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-:global(body.dark) .topUpButton {
-  background-color: #6c9aff;
-  color: #1b0935;
-}
-
-.topUpButton:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
-}
-
-:global(body.dark) .topUpButton:disabled {
-  background-color: #555;
-  color: #ccc;
-}
-
-.message {
-  margin-top: 12px;
-  color: green;
-  font-size: 14px;
-}
-
-:global(body.dark) .message {
-  color: #75ff9e;
-}
-
-.subheading {
-  font-size: 20px;
-  margin-top: 32px;
-  margin-bottom: 12px;
+  @media (max-width: 480px) {
+    font-size: 1.8rem;
+  }
 }
 
 .tableWrapper {
   overflow-x: auto;
 }
 
-.table {
+table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 1.5rem;
+  min-width: 50rem;
+
+  @media (max-width: 480px) {
+    font-size: 1.4rem;
+  }
+}
+
+th,
+td {
+  padding: 1rem;
+  border: 1px solid #ccc;
   text-align: left;
 }
 
-.table th,
-.table td {
-  padding: 10px;
-  border: 1px solid #ccc;
-}
-
-:global(body.dark) .table th,
-:global(body.dark) .table td {
+:global(body.dark) th,
+:global(body.dark) td {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.table thead {
+thead {
   background-color: #f0f0f0;
 }
 
-:global(body.dark) .table thead {
+:global(body.dark) thead {
   background-color: #2f1d48;
 }
 
-.greenText {
+.green {
   color: green;
-  font-weight: bold;
+  font-weight: 600;
 }
 
-:global(body.dark) .greenText {
+:global(body.dark) .green {
   color: #75ff9e;
 }
 
-.redText {
-  color: red;
-  font-weight: bold;
+.red {
+  color: crimson;
+  font-weight: 600;
 }
 
-:global(body.dark) .redText {
+:global(body.dark) .red {
   color: #ff6e85;
 }
 
-.tableCell {
-  padding: 10px;
-  border: 1px solid #ccc;
-}
+.balanceAmount {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
 
-:global(body.dark) .tableCell {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  span {
+    font-weight: 600;
+    color: #4b0077;
+  }
+
+  :global(body.dark) & span {
+    color: #e3c6ff;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.4rem;
+  }
 }

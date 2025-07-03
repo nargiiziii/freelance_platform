@@ -9,33 +9,32 @@ import { FaHandshake } from "react-icons/fa";
 const WhyEscrow = () => {
   return (
     <div className={style.whyEscrow}>
-      <h3>Why Use Escrow?</h3>
+      <h3>Niyə Escrow?</h3>
       <p>
-        Our built-in escrow system ensures secure payments between clients and
-        freelancers. Funds are only released when both parties are satisfied.
+        Escrow sistemi ödənişlərin təhlükəsizliyini təmin edir. Vəsaitlər yalnız razılıq olduqda verilir.
       </p>
       <div className={style.esc_cards}>
         <EscrowCard
-          head={"Secure Payments"}
-          text={"Funds are held safely until the work is approved"}
+          head={"Təhlükəsiz Ödəniş"}
+          text={"İş təsdiqlənənədək vəsait saxlanılır"}
           icon={<MdOutlineVerifiedUser />}
         />
 
         <EscrowCard
-          head={"Balanced Collaboration"}
-          text={"A neutral system ensures that no one is taken advantage of"}
+          head={"Ədalətli Əməkdaşlıq"}
+          text={"Sistem hər iki tərəfi qoruyur"}
           icon={<MdOutlineBalance />}
         />
 
         <EscrowCard
-          head={"Dispute Resolution"}
-          text={"Fair system to handle any disagreements"}
+          head={"Mübahisə Həlli"}
+          text={"Problem yarandıqda ədalətli yanaşma"}
           icon={<AiOutlineSmile />}
         />
 
         <EscrowCard
-          head={"Mutual Trust"}
-          text={"Build strong working relationships with confidence"}
+          head={"Etibar"}
+          text={"Güvənli iş münasibətləri qurun"}
           icon={<FaHandshake />}
         />
       </div>

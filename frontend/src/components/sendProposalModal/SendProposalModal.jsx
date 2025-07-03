@@ -1,4 +1,3 @@
-// src/components/sendProposalModal/SendProposalModal.jsx
 import React, { useState } from "react";
 import style from "./SendProposalModal.module.scss";
 import { useDispatch } from "react-redux";
@@ -24,24 +23,24 @@ const SendProposalModal = ({ project, onClose }) => {
   return (
     <div className={style.backdrop}>
       <div className={style.modal}>
-        <h3>Отклик на проект: {project.title}</h3>
+        <h3>Layihəyə müraciət: {project.title}</h3>
         <form onSubmit={handleSubmit}>
           <textarea
             required
             value={coverLetter}
             onChange={(e) => setCoverLetter(e.target.value)}
-            placeholder="Сопроводительное письмо"
+            placeholder="Müraciət məktubu"
           />
           <input
             type="number"
             required
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            placeholder="Предложенная цена"
+            placeholder="Təklif olunan məbləğ"
           />
           <div className={style.buttons}>
-            <button type="submit">Отправить</button>
-            <button type="button" onClick={onClose}>Отмена</button>
+            <button type="submit">Göndər</button>
+            <button type="button" onClick={onClose}>Ləğv et</button>
           </div>
         </form>
       </div>

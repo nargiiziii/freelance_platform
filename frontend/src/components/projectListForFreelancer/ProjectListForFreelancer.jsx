@@ -37,15 +37,15 @@ function ProjectListForFreelancer() {
     );
 
   if (status === "loading") {
-    return <p className={style.loading}>Загрузка проектов...</p>;
+    return <p className={style.loading}>Layihələr yüklənir...</p>;
   }
 
   return (
     <section className={style.wrapper}>
       <aside className={style.leftPanel}>
-        <h3 className={style.heading}>Открытые проекты</h3>
+        <h3 className={style.heading}>Açıq layihələr</h3>
         <div className={style.selectBar}>
-          <p>Фильтр по категориям:</p>
+          <p>Kateqoriyalara görə filtr:</p>
           {categories.map((category) => (
             <label key={category} className={style.checkboxLabel}>
               <input
@@ -69,7 +69,7 @@ function ProjectListForFreelancer() {
                   to={`/messages?user=${project.employer._id}`}
                   className={style.messageLink}
                 >
-                  <button className={style.messageBtn}>Написать</button>
+                  <button className={style.messageBtn}>Yazmaq</button>
                 </Link>
               </div>
             )}
@@ -77,14 +77,14 @@ function ProjectListForFreelancer() {
             <h4 className={style.title}>{project.title}</h4>
             <p className={style.description}>{project.description}</p>
             <p>
-              <strong>Бюджет:</strong> {project.budget}₽
+              <strong>Büdcə:</strong> {project.budget}₽
             </p>
             <p>
-              <strong>Категория:</strong> {project.category || "Не указана"}
+              <strong>Kateqoriya:</strong> {project.category || "Göstərilməyib"}
             </p>
             {project.employer && (
               <div className={style.employerInfo}>
-                <strong>Наниматель:</strong> {project.employer.name}
+                <strong>İşəgötürən:</strong> {project.employer.name}
               </div>
             )}
             {project.skillsRequired && project.skillsRequired.length > 0 && (
@@ -101,7 +101,7 @@ function ProjectListForFreelancer() {
                 className={style.respondBtn}
                 onClick={() => setActiveProject(project)}
               >
-                Откликнуться
+                Müraciət et
               </button>
             </div>
           </div>

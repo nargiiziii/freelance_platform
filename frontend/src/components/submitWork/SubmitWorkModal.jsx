@@ -15,7 +15,6 @@ const SubmitWorkModal = ({ projectId, onClose }) => {
           `http://localhost:3000/api/proposals/project/${projectId}`
         );
         const updatedProposals = await res.json();
-        // 🔁 Обнови localProposals (через колбэк, или прокинь setProposals из родителя)
         window.dispatchEvent(
           new CustomEvent("proposalsUpdated", { detail: updatedProposals })
         );
@@ -25,15 +24,15 @@ const SubmitWorkModal = ({ projectId, onClose }) => {
 
   return (
     <div style={{ padding: 20, border: "1px solid gray" }}>
-      <h3>Отправить выполненную работу</h3>
+      <h3>Yerinə yetirilmiş işi göndər</h3>
       <input
         type="file"
         accept="*/*"
         onChange={(e) => setFile(e.target.files[0])}
         style={{ marginBottom: 10 }}
       />
-      <button onClick={handleSubmit}>📤 Отправить</button>
-      <button onClick={onClose}>❌ Отмена</button>
+      <button onClick={handleSubmit}>📤 Göndər</button>
+      <button onClick={onClose}>❌ Ləğv et</button>
     </div>
   );
 };

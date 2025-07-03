@@ -21,13 +21,11 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
   useEffect(() => {
     const fetchProposals = async () => {
       try {
-        const result = await dispatch(
-          getProposalsByProject(projectId)
-        ).unwrap();
+        const result = await dispatch(getProposalsByProject(projectId)).unwrap();
         setLocalProposals(result);
       } catch (err) {
-        console.error("Ошибка загрузки откликов:", err);
-        toast.error("❌ Не удалось загрузить отклики");
+        console.error("Təkliflərin yüklənməsi zamanı xəta:", err);
+        toast.error("❌ Təklifləri yükləmək mümkün olmadı");
       }
     };
 
@@ -44,14 +42,14 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
         setLocalProposals(updatedList);
         dispatch(getEmployerProjects());
         dispatch(getMyProposals());
-        toast.success("✅ Отклик принят");
+        toast.success("✅ Təklif qəbul edildi");
 
         if (onProjectUpdated) {
           try {
             const res = await axios.get(`/projects/${projectId}`);
             onProjectUpdated(res.data);
           } catch (err) {
-            console.error("❌ Ошибка при обновлении проекта:", err);
+            console.error("❌ Layihənin yenilənməsi zamanı xəta:", err);
           }
         }
       })
@@ -59,7 +57,7 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
         const message =
           typeof err === "string"
             ? err
-            : err?.message || "❌ Не удалось принять отклик";
+            : err?.message || "❌ Təklifi qəbul etmək mümkün olmadı";
         toast.error(message);
       });
   };
@@ -71,7 +69,6 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
     try {
       const updatedEscrow = await dispatch(releaseFunds(escrow._id)).unwrap();
 
-      // 🔄 Обновляем локальные отклики
       const updatedList = localProposals.map((p) => {
         if (p.project?.escrow?._id === updatedEscrow.escrow._id) {
           return {
@@ -89,19 +86,19 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
 
       dispatch(getProfile());
       dispatch(getMyProposals());
-      toast.success("✅ Отклик принят");
+      toast.success("✅ Təklif qəbul edildi və ödəniş edildi");
 
       if (onProjectUpdated) {
         try {
           const res = await axios.get(`/projects/${projectId}`);
-          onProjectUpdated(res.data); // 🔁 обновляем данные проекта в ProjectDetails
+          onProjectUpdated(res.data);
         } catch (err) {
-          console.error("❌ Ошибка при обновлении проекта:", err);
+          console.error("❌ Layihənin yenilənməsi zamanı xəta:", err);
         }
       }
     } catch (err) {
-      console.error("Ошибка при переводе средств:", err);
-      toast.error("❌ Не удалось перевести оплату");
+      console.error("Ödəniş zamanı xəta:", err);
+      toast.error("❌ Ödənişi həyata keçirmək mümkün olmadı");
     }
   };
 
@@ -126,24 +123,22 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
           return p;
         });
         setLocalProposals(updatedList);
-        toast.success("💰 Средства возвращены работодателю");
+        toast.success("💰 Vəsait işəgötürənə qaytarıldı");
       })
       .catch((err) => {
-        console.error("Ошибка при возврате средств:", err);
-        toast.error("❌ Не удалось вернуть средства");
+        console.error("Vəsaitin qaytarılması zamanı xəta:", err);
+        toast.error("❌ Vəsaiti qaytarmaq mümkün olmadı");
       });
   };
 
   const activeProposals = localProposals.filter((p) => p.status !== "rejected");
-  const rejectedProposals = localProposals.filter(
-    (p) => p.status === "rejected"
-  );
+  const rejectedProposals = localProposals.filter((p) => p.status === "rejected");
 
   return (
     <div className={style.proposalList}>
-      {localProposals.length > 0 && <h4 className={style.heading}>Отклики</h4>}
+      {localProposals.length > 0 && <h4 className={style.heading}>Təkliflər</h4>}
       {localProposals.length === 0 ? (
-        <p className={style.noProposals}>Откликов пока нет</p>
+        <p className={style.noProposals}>Hələlik heç bir təklif yoxdur</p>
       ) : (
         <>
           <div className={style.proposalGrid}>
@@ -154,17 +149,17 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
                 <div key={proposal._id} className={style.proposalCard}>
                   <div className={style.infoBlock}>
                     <p>
-                      <strong>Фрилансер:</strong>{" "}
-                      {proposal.freelancer?.name || "Без имени"}
+                      <strong>Freelancer:</strong>{" "}
+                      {proposal.freelancer?.name || "Ad göstərilməyib"}
                     </p>
                     <p>
-                      <strong>Письмо:</strong> {proposal.coverLetter}
+                      <strong>Məktub:</strong> {proposal.coverLetter}
                     </p>
                     <p>
-                      <strong>Цена:</strong> {proposal.price}₽
+                      <strong>Qiymət:</strong> {proposal.price}₽
                     </p>
                     <p>
-                      <strong>Статус:</strong> {proposal.status}
+                      <strong>Status:</strong> {proposal.status}
                     </p>
                   </div>
 
@@ -174,7 +169,7 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
                         className={style.acceptButton}
                         onClick={() => handleAccept(proposal._id)}
                       >
-                        ✅ Принять
+                        ✅ Qəbul et
                       </button>
                       <button
                         className={style.rejectButton}
@@ -190,12 +185,12 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
                               setLocalProposals(updatedList);
                             })
                             .catch((err) => {
-                              console.error("Ошибка при отклонении:", err);
-                              alert("Ошибка: не удалось отклонить отклик");
+                              console.error("İmtina zamanı xəta:", err);
+                              alert("Xəta: təklifi imtina etmək mümkün olmadı");
                             });
                         }}
                       >
-                        ❌ Отклонить
+                        ❌ İmtina et
                       </button>
                     </div>
                   )}
@@ -205,7 +200,7 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
                     proposal.project?.status !== "closed" && (
                       <div className={style.workBlock}>
                         <p>
-                          <strong>Фрилансер сдал работу:</strong>
+                          <strong>Freelancer işi təhvil verib:</strong>
                         </p>
                         <a
                           href={`http://localhost:3000/api/proposals/download/${proposal.workFile}`}
@@ -213,7 +208,7 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
                           rel="noopener noreferrer"
                           className={style.downloadLink}
                         >
-                          📥 Скачать файл
+                          📥 Faylı yüklə
                         </a>
 
                         {escrow ? (
@@ -224,29 +219,29 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
                                   className={style.acceptButton}
                                   onClick={() => handleReleaseFunds(proposal)}
                                 >
-                                Принять и оплатить
+                                  Qəbul et və ödə
                                 </button>
                                 <button
                                   className={style.rejectButton}
                                   onClick={() => handleRefund(proposal)}
                                   style={{ marginLeft: "10px" }}
                                 >
-                                  Отклонить и вернуть деньги
+                                  İmtina et və pulu qaytar
                                 </button>
                               </div>
                             ) : escrow.status === "refunded" ? (
                               <p style={{ color: "blue", marginTop: 10 }}>
-                                💰 Средства возвращены
+                                💰 Vəsait qaytarılıb
                               </p>
                             ) : (
                               <p style={{ color: "green", marginTop: 10 }}>
-                                ✅ Работа оплачена
+                                ✅ İş ödənildi
                               </p>
                             )}
                           </>
                         ) : (
                           <p style={{ color: "red", marginTop: 10 }}>
-                            ❗ Escrow не найден
+                            ❗ Escrow tapılmadı
                           </p>
                         )}
                       </div>
@@ -255,36 +250,35 @@ const ProposalListEmp = ({ projectId, onProjectUpdated }) => {
               );
             })}
           </div>
-          <div className={style.proposalGrid}>
-            {rejectedProposals.length > 0 && (
-              <div style={{ marginTop: "40px" }}>
-                <h4 className={style.heading}>Отклонённые отклики</h4>
-                {rejectedProposals.map((proposal) => (
-                  <div
-                    key={proposal._id}
-                    className={style.proposalCard}
-                    style={{ backgroundColor: "#f0f0f0", color: "#999" }}
-                  >
-                    <div className={style.infoBlock}>
-                      <p>
-                        <strong>Фрилансер:</strong>{" "}
-                        {proposal.freelancer?.name || "Без имени"}
-                      </p>
-                      <p>
-                        <strong>Письмо:</strong> {proposal.coverLetter}
-                      </p>
-                      <p>
-                        <strong>Цена:</strong> {proposal.price}₽
-                      </p>
-                      <p>
-                        <strong>Статус:</strong> {proposal.status}
-                      </p>
-                    </div>
+
+          {rejectedProposals.length > 0 && (
+            <div className={style.proposalGrid} style={{ marginTop: "40px" }}>
+              <h4 className={style.heading}>İmtina olunmuş təkliflər</h4>
+              {rejectedProposals.map((proposal) => (
+                <div
+                  key={proposal._id}
+                  className={style.proposalCard}
+                  style={{ backgroundColor: "#f0f0f0", color: "#999" }}
+                >
+                  <div className={style.infoBlock}>
+                    <p>
+                      <strong>Freelancer:</strong>{" "}
+                      {proposal.freelancer?.name || "Ad göstərilməyib"}
+                    </p>
+                    <p>
+                      <strong>Məktub:</strong> {proposal.coverLetter}
+                    </p>
+                    <p>
+                      <strong>Qiymət:</strong> {proposal.price}₽
+                    </p>
+                    <p>
+                      <strong>Status:</strong> {proposal.status}
+                    </p>
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
+                </div>
+              ))}
+            </div>
+          )}
         </>
       )}
     </div>

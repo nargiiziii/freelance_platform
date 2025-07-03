@@ -6,7 +6,8 @@ import {
   getUser,
   topUpBalance,
   getFreelancers,
-  getFreelancerStats
+  getFreelancerStats,
+  deletePortfolioItem 
 } from '../controllers/userController.js';
 import { verifyToken } from '../middleware/jwtMiddleware.js';
 
@@ -30,6 +31,9 @@ router.put('/:id', updateUser);
 
 // Загрузка элемента портфолио (требует токен)
 router.post('/portfolio', verifyToken, upload.single('image'), addPortfolioItem);
+
+// Удаление элемента портфолио (требует токен)
+router.delete("/portfolio/:itemId", verifyToken, deletePortfolioItem);
 
 // Получение пользователя по ID
 router.get('/:id', getUser);

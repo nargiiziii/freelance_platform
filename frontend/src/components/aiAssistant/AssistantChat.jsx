@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import style from "./AssistantChat.module.scss";
-import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
-import { IoCloseSharp } from "react-icons/io5";
+import { IoChatbubbleEllipsesSharp, IoCloseSharp } from "react-icons/io5";
 
 const AssistantChat = () => {
   const [open, setOpen] = useState(false);
@@ -10,6 +9,11 @@ const AssistantChat = () => {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [position, setPosition] = useState({ x: 20, y: 20 });
+
+  const dragRef = useRef(null);
+  const offset = useRef({ x: 0, y: 0 });
+  const isDragging = useRef(false);
 
   const systemPrompt = `
 Ты — вежливый и понятный помощник фриланс-платформы. Помогай пользователям в зависимости от их роли.
@@ -30,7 +34,6 @@ const AssistantChat = () => {
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-
     const userMessage = { role: "user", text: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
@@ -51,7 +54,7 @@ const AssistantChat = () => {
       const data = await res.json();
       const reply = data.reply || "Извините, я не поняла 😢";
       setMessages((prev) => [...prev, { role: "assistant", text: reply }]);
-    } catch (err) {
+    } catch {
       setMessages((prev) => [
         ...prev,
         { role: "assistant", text: "Произошла ошибка 😵" },
@@ -61,13 +64,46 @@ const AssistantChat = () => {
     }
   };
 
+  // --- Drag Logic ---
+  const handleMouseDown = (e) => {
+    isDragging.current = false;
+    offset.current = {
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
+    };
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+  };
+
+  const handleMouseMove = (e) => {
+    setPosition({
+      x: e.clientX - offset.current.x,
+      y: e.clientY - offset.current.y,
+    });
+    isDragging.current = true;
+  };
+
+  const handleMouseUp = () => {
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
+
+    // Только клик, не drag — открываем
+    if (!open && !isDragging.current) {
+      setOpen(true);
+    }
+  };
+
   return (
-    <div className={style.wrapper}>
-      {open && (
+    <div
+      ref={dragRef}
+      className={style.wrapper}
+      style={{ left: position.x, top: position.y }}
+    >
+      {open ? (
         <div className={style.chatBox}>
-          <div className={style.header}>
+          <div className={style.header} onMouseDown={handleMouseDown}>
             <span>🤖 Чат-помощник</span>
-            <button onClick={() => setOpen(false)}>
+            <button className={style.closeButton} onClick={() => setOpen(false)}>
               <IoCloseSharp />
             </button>
           </div>
@@ -93,12 +129,11 @@ const AssistantChat = () => {
             <button onClick={sendMessage}>Send</button>
           </div>
         </div>
-      )}
-
-      {!open && (
+      ) : (
         <button
           className={style.fab}
-          onClick={() => setOpen(true)}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
           title="Помощник"
         >
           <IoChatbubbleEllipsesSharp />

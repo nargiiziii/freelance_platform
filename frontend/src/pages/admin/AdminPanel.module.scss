@@ -356,7 +356,7 @@ h3 {
   width: 1rem;
   background: transparent;
   border: none;
-  font-size: 1.4rem; 
+  font-size: 1.4rem;
   cursor: pointer;
   color: #999;
   display: flex;
@@ -367,3 +367,13 @@ h3 {
     color: #333;
   }
 }
+
+.emptyMessage {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 1.6rem;
+  color: #888;
+  font-style: italic;
+}
+
+

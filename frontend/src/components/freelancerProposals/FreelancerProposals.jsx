@@ -13,32 +13,32 @@ export default function FreelancerProposals() {
     dispatch(getMyProposals());
   }, [dispatch]);
 
-  if (status === "loading") return <p>Загрузка откликов...</p>;
-  if (!myProposals.length) return <p>Вы пока не отправили ни одного отклика.</p>;
+  if (status === "loading") return <p>Oflaynlar yüklənir...</p>;
+  if (!myProposals.length) return <p>Hələ heç bir müraciət göndərməmisiniz.</p>;
 
-  const recentProposals = myProposals.slice(0, 3); // последние 3
+  const recentProposals = myProposals.slice(0, 3); // son 3
 
   return (
     <div className={style.responsesWrapper}>
       <div className={style.responsesGrid}>
         {recentProposals.map((item) => (
           <div className={style.card} key={item._id}>
-            <h5>💼 {item.project?.title || "Без названия"}</h5>
-            <p><strong>Дата:</strong> {new Date(item.createdAt).toLocaleDateString()}</p>
-            <p><strong>Цена:</strong> {item.price} ₽</p>
-            <p><strong>Сообщение:</strong> {item.coverLetter}</p>
+            <h5>💼 {item.project?.title || "Başlıqsız"}</h5>
+            <p><strong>Tarix:</strong> {new Date(item.createdAt).toLocaleDateString()}</p>
+            <p><strong>Qiymət:</strong> {item.price} ₼</p>
+            <p><strong>Mesaj:</strong> {item.coverLetter}</p>
             <span className={`${style.status} ${style[item.status]}`}>
-              {item.status === "pending" && "⏳ Ожидание"}
-              {item.status === "accepted" && "✅ Принят"}
-              {item.status === "rejected" && "❌ Отклонён"}
-              {item.status === "submitted" && "📤 Отправлена работа"}
+              {item.status === "pending" && "⏳ Gözləmədədir"}
+              {item.status === "accepted" && "✅ Qəbul edilib"}
+              {item.status === "rejected" && "❌ Rədd edilib"}
+              {item.status === "submitted" && "📤 İş göndərilib"}
             </span>
           </div>
         ))}
       </div>
 
       <button className={style.viewAllBtn} onClick={() => navigate("/my-proposals")}>
-        Смотреть все отклики →
+        Bütün müraciətlərə bax →
       </button>
     </div>
   );

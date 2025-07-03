@@ -1,20 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/features/authSlice";
 import { useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import style from "./Login.module.scss";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  const initialValues = {
+    email: "",
+    password: "",
+  };
 
-    const result = await dispatch(loginUser({ email, password }));
+  const validationSchema = Yup.object({
+    email: Yup.string().email("E-poçt düzgün deyil").required("E-poçt vacibdir"),
+    password: Yup.string().required("Şifrə vacibdir"),
+  });
+
+  const handleSubmit = async (values) => {
+    const result = await dispatch(loginUser(values));
 
     if (result.meta.requestStatus === "fulfilled") {
       const user = result.payload.user;
@@ -30,30 +38,44 @@ function Login() {
   return (
     <div className={style.loginContainer}>
       <div className={style.loginBox}>
-        <h2 className={style.title}>Вход</h2>
-        <form onSubmit={submitHandler}>
-          <input
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Пароль"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit" disabled={loading}>
-            Войти
-          </button>
-          {error && <p className={style.error}>{error}</p>}
-        </form>
+        <h2 className={style.title}>Giriş</h2>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {() => (
+            <Form>
+              <Field
+                name="email"
+                type="email"
+                placeholder="E-poçt"
+                className={style.input}
+              />
+              <ErrorMessage name="email" component="div" className={style.error} />
+
+              <Field
+                name="password"
+                type="password"
+                placeholder="Şifrə"
+                className={style.input}
+              />
+              <ErrorMessage name="password" component="div" className={style.error} />
+
+              <button type="submit" disabled={loading}>
+                Daxil ol
+              </button>
+
+              {error && <p className={style.error}>{error}</p>}
+            </Form>
+          )}
+        </Formik>
 
         <div className={style.welcomeWrapper}>
-          <div className={style.welcomeText}>Welcome</div>
+          <div className={style.welcomeText}>Xoş gəlmisiniz</div>
           <span className={style.wave}>👋</span>
         </div>
-        <div className={style.subtext}>Glad to see you again!</div>
+        <div className={style.subtext}>Sizi yenidən görmək xoşdur!</div>
       </div>
     </div>
   );

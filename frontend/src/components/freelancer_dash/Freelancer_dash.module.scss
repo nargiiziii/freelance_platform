@@ -779,6 +779,27 @@ $hoverAccent: #d3baf8;
   }
 }
 
+.deleteButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 9999;
+  background-color: #8829ed;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  width: 10rem;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #9e54ed;
+  }
+}
+
+
 @media (max-width: 400px) {
   .profile .info .name {
     font-size: 2.6rem;

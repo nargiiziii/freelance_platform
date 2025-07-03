@@ -1,34 +1,47 @@
 import React, { useState } from "react";
 import axios from "../../axiosInstance";
 import { useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import style from "./Register.module.scss";
-import { HiPlusSm } from "react-icons/hi"; // новый красивый плюс
-import { AiOutlineClose } from "react-icons/ai"; // оставить крестик
+import { HiPlusSm } from "react-icons/hi";
+import { AiOutlineClose } from "react-icons/ai";
 
 export default function Register() {
   const navigate = useNavigate();
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [skills, setSkills] = useState([]);
+  const [newSkill, setNewSkill] = useState("");
+  const [error, setError] = useState("");
 
-  const [form, setForm] = useState({
+  const categories = ["Web Development", "Design", "Writing", "Marketing"];
+
+  const initialValues = {
     role: "freelancer",
     name: "",
     email: "",
     password: "",
     bio: "",
     category: "",
-    skills: [],
-    portfolio: [],
-  });
-
-  const [avatarFile, setAvatarFile] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(null);
-  const [error, setError] = useState("");
-  const [newSkill, setNewSkill] = useState("");
-
-  const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleFileChange = (e) => {
+  const validationSchema = Yup.object({
+    role: Yup.string().required(),
+    name: Yup.string().required("Ad vacibdir"),
+    email: Yup.string().email("Etibarsız e-poçt").required("E-poçt vacibdir"),
+    password: Yup.string()
+      .min(6, "Minimum 6 simvol")
+      .required("Şifrə vacibdir"),
+    bio: Yup.string().required("Haqqınızda məlumat vacibdir"),
+    category: Yup.string().when("role", (role, schema) =>
+      role === "freelancer"
+        ? schema.required("Kateqoriya vacibdir")
+        : schema.notRequired()
+    ),
+  });
+
+  const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setAvatarFile(file);
@@ -36,29 +49,38 @@ export default function Register() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+  const addSkill = () => {
+    const trimmed = newSkill.trim();
+    if (trimmed && !skills.includes(trimmed)) {
+      setSkills((prev) => [...prev, trimmed]);
+    }
+    setNewSkill("");
+  };
 
+  const removeSkill = (index) => {
+    setSkills((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async (values) => {
+    setError("");
     try {
       const formData = new FormData();
-      formData.append("role", form.role);
-      formData.append("name", form.name);
-      formData.append("email", form.email);
-      formData.append("password", form.password);
-      formData.append("bio", form.bio);
-      formData.append("category", form.category);
+      formData.append("role", values.role);
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      formData.append("bio", values.bio);
+      if (values.role === "freelancer") {
+        formData.append("category", values.category);
+      }
 
       if (avatarFile) {
         formData.append("avatar", avatarFile);
       }
 
-      const filteredSkills = form.skills.filter((skill) => skill.trim() !== "");
-      if (filteredSkills.length)
-        formData.append("skills", JSON.stringify(filteredSkills));
-
-      if (form.portfolio.length)
-        formData.append("portfolio", JSON.stringify(form.portfolio));
+      if (skills.length > 0) {
+        formData.append("skills", JSON.stringify(skills));
+      }
 
       await axios.post("/auth/register", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -67,165 +89,165 @@ export default function Register() {
 
       navigate("/login");
     } catch (err) {
-      setError(err.response?.data?.message || "Ошибка при регистрации");
+      setError(
+        err.response?.data?.message || "Qeydiyyat zamanı xəta baş verdi"
+      );
     }
   };
-
-  const addSkill = () => {
-    const trimmed = newSkill.trim();
-    if (trimmed && !form.skills.includes(trimmed)) {
-      setForm((prev) => ({ ...prev, skills: [...prev.skills, trimmed] }));
-    }
-    setNewSkill("");
-  };
-
-  const removeSkill = (index) => {
-    const updatedSkills = [...form.skills];
-    updatedSkills.splice(index, 1);
-    setForm((prev) => ({ ...prev, skills: updatedSkills }));
-  };
-
-  const categories = ["Web Development", "Design", "Writing", "Marketing"];
 
   return (
-    <form onSubmit={handleSubmit} className={style.form}>
-      <div className={style.buttonGroup}>
-        <button
-          type="button"
-          className={`${style.toggleButton} ${form.role === "freelancer" ? style.active : ""}`}
-          onClick={() =>
-            setForm((prev) => ({
-              ...prev,
-              role: "freelancer",
-              category: "",
-            }))
-          }
-        >
-          Freelancer
-        </button>
-        <button
-          type="button"
-          className={`${style.toggleButton} ${form.role === "employer" ? style.active : ""}`}
-          onClick={() =>
-            setForm((prev) => ({
-              ...prev,
-              role: "employer",
-              category: "",
-            }))
-          }
-        >
-          Employer
-        </button>
-      </div>
-
-      <input
-        name="name"
-        placeholder="Name"
-        value={form.name}
-        onChange={handleChange}
-        className={style.input}
-      />
-
-      <input
-        name="email"
-        type="email"
-        placeholder="Email"
-        value={form.email}
-        onChange={handleChange}
-        className={style.input}
-      />
-
-      <input
-        name="password"
-        type="password"
-        placeholder="Password"
-        value={form.password}
-        onChange={handleChange}
-        className={style.input}
-      />
-
-      <textarea
-        name="bio"
-        placeholder="Tell us about yourself"
-        value={form.bio}
-        onChange={handleChange}
-        className={style.textarea}
-      />
-
-      {form.role === "freelancer" && (
-        <>
-            <p>Choose category:</p>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      {({ values, setFieldValue }) => (
+        <Form className={style.form}>
           <div className={style.buttonGroup}>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                className={`${style.toggleButton} ${form.category === cat ? style.active : ""}`}
-                onClick={() => setForm((prev) => ({ ...prev, category: cat }))}
-              >
-                {cat}
-              </button>
-            ))}
+            <button
+              type="button"
+              className={`${style.toggleButton} ${
+                values.role === "freelancer" ? style.active : ""
+              }`}
+              onClick={() => {
+                setFieldValue("role", "freelancer");
+                setFieldValue("category", "");
+              }}
+            >
+              Freelancer
+            </button>
+            <button
+              type="button"
+              className={`${style.toggleButton} ${
+                values.role === "employer" ? style.active : ""
+              }`}
+              onClick={() => {
+                setFieldValue("role", "employer");
+                setFieldValue("category", "");
+              }}
+            >
+              İşəgötürən
+            </button>
           </div>
 
-          <div className={style.skillsSection}>
-            <div className={style.skillsHeader}>
-              <label className={style.label}>Skills:</label>
-              <input
-                type="text"
-                value={newSkill}
-                onChange={(e) => setNewSkill(e.target.value)}
-                placeholder="Enter a skill"
-                className={style.skillInput}
-              />
-              <button
-                type="button"
-                onClick={addSkill}
-                className={style.addSkillButton}
-                style={{ color: "#28a745" }}
-              >
-                <HiPlusSm size={24} />
-              </button>
-            </div>
+          <Field name="name" placeholder="Adınız" className={style.input} />
+          <ErrorMessage name="name" component="div" className={style.error} />
 
-            <div className={style.skillsList}>
-              {form.skills.map((skill, index) => (
-                <div key={index} className={style.skillItem}>
-                  <span>{skill}</span>
+          <Field
+            name="email"
+            type="email"
+            placeholder="E-poçt"
+            className={style.input}
+          />
+          <ErrorMessage name="email" component="div" className={style.error} />
+
+          <Field
+            name="password"
+            type="password"
+            placeholder="Şifrə"
+            className={style.input}
+          />
+          <ErrorMessage
+            name="password"
+            component="div"
+            className={style.error}
+          />
+
+          <Field
+            as="textarea"
+            name="bio"
+            placeholder="Özünüz haqqında məlumat verin"
+            className={style.textarea}
+          />
+          <ErrorMessage name="bio" component="div" className={style.error} />
+
+          {values.role === "freelancer" && (
+            <>
+              <p>Kateqoriyanı seçin:</p>
+              <div className={style.buttonGroup}>
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    className={`${style.toggleButton} ${
+                      values.category === cat ? style.active : ""
+                    }`}
+                    onClick={() => setFieldValue("category", cat)}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+              <ErrorMessage
+                name="category"
+                component="div"
+                className={style.error}
+              />
+
+              <div className={style.skillsSection}>
+                <div className={style.skillsHeader}>
+                  <label className={style.label}>Bacarıqlar:</label>
+                  <input
+                    type="text"
+                    value={newSkill}
+                    onChange={(e) => setNewSkill(e.target.value)}
+                    placeholder="Bacarıq daxil edin"
+                    className={style.skillInput}
+                  />
                   <button
                     type="button"
-                    onClick={() => removeSkill(index)}
-                    className={style.removeSkillButton}
-                    style={{ color: "#dc3545" }}
+                    onClick={addSkill}
+                    className={style.addSkillButton}
+                    style={{ color: "#28a745" }}
                   >
-                    <AiOutlineClose size={16} />
+                    <HiPlusSm size={24} />
                   </button>
                 </div>
-              ))}
-            </div>
-          </div>
-        </>
+
+                <div className={style.skillsList}>
+                  {skills.map((skill, index) => (
+                    <div key={index} className={style.skillItem}>
+                      <span>{skill}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeSkill(index)}
+                        className={style.removeSkillButton}
+                        style={{ color: "#dc3545" }}
+                      >
+                        <AiOutlineClose size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
+          <label className={style.fileLabel}>
+            {avatarPreview ? (
+              <img
+                src={avatarPreview}
+                alt="Profil şəkli"
+                className={style.avatarPreview}
+              />
+            ) : (
+              "Profil şəkli yükləyin"
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarChange}
+              className={style.fileInput}
+            />
+          </label>
+
+          <button type="submit" className={style.button}>
+            Qeydiyyat
+          </button>
+
+          {error && <p className={style.error}>{error}</p>}
+        </Form>
       )}
-
-      <label className={style.fileLabel}>
-        {avatarPreview ? (
-          <img src={avatarPreview} alt="Avatar Preview" className={style.avatarPreview} />
-        ) : (
-          "Загрузить фото профиля"
-        )}
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className={style.fileInput}
-        />
-      </label>
-
-      <button type="submit" className={style.button}>
-        Register
-      </button>
-
-      {error && <p className={style.error}>{error}</p>}
-    </form>
+    </Formik>
   );
 }

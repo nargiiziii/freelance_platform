@@ -22,7 +22,7 @@ export const createEscrow = async (req, res) => {
     );
 
     if (!updatedProject) {
-      return res.status(404).json({ message: "Проект не найден" });
+      return res.status(404).json({ message: "Layihə tapılmadı" });
     }
 
     res.status(201).json(escrow);
@@ -37,13 +37,13 @@ export const releaseFunds = async (req, res) => {
     const { escrowId } = req.params;
 
     const escrow = await Escrow.findById(escrowId);
-    if (!escrow) return res.status(404).json({ message: "Escrow не найден" });
+    if (!escrow) return res.status(404).json({ message: "Escrow tapılmadı" });
     if (escrow.status !== "funded")
-      return res.status(400).json({ message: "Escrow неактивен" });
+      return res.status(400).json({ message: "Escrow aktiv deyil" });
 
     const freelancer = await User.findById(escrow.freelancer);
     if (!freelancer)
-      return res.status(404).json({ message: "Фрилансер не найден" });
+      return res.status(404).json({ message: "Freelancer tapılmadı" });
 
     freelancer.balance += escrow.amount;
     freelancer.completedProjectsCount += 1;
@@ -57,7 +57,7 @@ export const releaseFunds = async (req, res) => {
       await project.save();
     }
 
-    res.json({ message: "Средства отправлены фрилансеру", escrow });
+    res.json({ message: "Vəsait freelancerə göndərildi", escrow });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -69,17 +69,17 @@ export const refundFunds = async (req, res) => {
     const { escrowId } = req.params;
 
     const escrow = await Escrow.findById(escrowId);
-    if (!escrow) return res.status(404).json({ message: "Escrow не найден" });
+    if (!escrow) return res.status(404).json({ message: "Escrow tapılmadı" });
 
     if (escrow.status !== "funded") {
       return res
         .status(400)
-        .json({ message: "Средства уже выпущены или возвращены" });
+        .json({ message: "Vəsait artıq göndərilib və ya qaytarılıb" });
     }
 
     const employer = await User.findById(escrow.employer);
     if (!employer)
-      return res.status(404).json({ message: "Работодатель не найден" });
+      return res.status(404).json({ message: "İşəgötürən tapılmadı" });
 
     // Возврат средств работодателю
     employer.balance += escrow.amount;
@@ -108,7 +108,7 @@ export const refundFunds = async (req, res) => {
       await proposal.save();
     }
 
-    res.json({ message: "Средства возвращены работодателю", escrow });
+    res.json({ message: "Vəsait işəgötürənə qaytarıldı", escrow });
   } catch (err) {
     console.error("Ошибка при возврате средств:", err);
     res.status(500).json({ message: err.message });
@@ -142,36 +142,53 @@ export const getTransactionHistory = async (req, res) => {
         const isUserFreelancer = String(e.freelancer._id) === userId;
         const isUserEmployer = String(e.employer._id) === userId;
 
-        const from = e.employer.name;
-        const to = e.freelancer.name;
+        let type = "";
+        let status = "";
+        let direction = "outcome";
 
-        let direction = "outcome"; // по умолчанию, если ты отправлял
+        if (e.type === "topup") {
+          type = "Balans artırılması";
+          status = "Uğurlu";
+          direction = "income";
+          return {
+            date: e.createdAt,
+            from: "—",
+            to: "Balans artırılması",
+            amount: e.amount,
+            direction,
+            type,
+            status,
+          };
+        }
 
-        if (e.status === "released" && isUserFreelancer) direction = "income";
-        if (e.status === "rejected" && isUserEmployer) direction = "income";
+        if (e.status === "released") {
+          type = "Ödəniş";
+          status = "Uğurlu";
+          if (isUserFreelancer) direction = "income";
+        } else if (e.status === "rejected") {
+          type = "Qaytarılma";
+          status = "Ləğv edildi";
+          if (isUserEmployer) direction = "income";
+        }
 
         const signAmount =
           direction === "income" ? `+${e.amount}` : `-${e.amount}`;
 
         return {
-          date: e.createdAt.toLocaleDateString(),
-          from,
-          to,
+          date: e.createdAt,
+          from: e.employer.name,
+          to: e.freelancer.name,
           amount: signAmount,
-          status:
-            e.status === "released"
-              ? "Завершено"
-              : e.status === "rejected"
-              ? "Возврат"
-              : "Неизвестно",
           direction,
+          type,
+          status,
         };
       });
 
     res.json(formatted);
   } catch (err) {
     console.error("Ошибка в getTransactionHistory:", err);
-    res.status(500).json({ message: "Ошибка при получении истории" });
+    res.status(500).json({ message: "Tarixçə yüklənərkən xəta baş verdi" });
   }
 };
 
@@ -182,12 +199,12 @@ export const topUpBalance = async (req, res) => {
     const { amount } = req.body;
 
     if (!amount || amount <= 0) {
-      return res.status(400).json({ message: "Некорректная сумма" });
+      return res.status(400).json({ message: "Məbləğ düzgün daxil edilməyib" });
     }
 
     const user = await User.findById(userId);
     if (!user)
-      return res.status(404).json({ message: "Пользователь не найден" });
+      return res.status(404).json({ message: "İstifadəçi tapılmadı" });
 
     // Обновляем баланс
     user.balance += amount;
@@ -204,9 +221,9 @@ export const topUpBalance = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Баланс пополнен", newBalance: user.balance });
+      .json({ message: "Balans uğurla artırıldı", newBalance: user.balance });
   } catch (err) {
     console.error("Ошибка при пополнении:", err);
-    res.status(500).json({ message: "Не удалось пополнить баланс" });
+    res.status(500).json({ message: "Balansı artırmaq mümkün olmadı" });
   }
 };

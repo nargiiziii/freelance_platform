@@ -7,13 +7,13 @@ const HowWorks = () => {
   return (
     <div className={style.howWorks}>
       <div className={style.howWorks_content}>
-        <h2>How It Works</h2>
+        <h2>Necə işləyir?</h2>
         <div className={style.howWorks_steps}>
           <div className={style.step}>
             <WorkStep
               num="1"
-              title="Create an Account"
-              subtitle="Sign up to get started with our platform."
+              title="Hesab yaradın"
+              subtitle="Başlamaq üçün qeydiyyatdan keçin."
             />
             <Line />
           </div>
@@ -21,8 +21,8 @@ const HowWorks = () => {
           <div className={style.step}>
             <WorkStep
               num="2"
-              title="Choose a Plan"
-              subtitle="Select a plan that suits your needs."
+              title="Plan seçin"
+              subtitle="Tələblərinizə uyğun planı seçin."
             />
             <Line />
           </div>
@@ -30,8 +30,8 @@ const HowWorks = () => {
           <div className={style.step}>
             <WorkStep
               num="3"
-              title="Start Using"
-              subtitle="Access all features and start using the service."
+              title="İstifadəyə başlayın"
+              subtitle="Xidmətlərdən istifadə edin."
             />
           </div>
         </div>

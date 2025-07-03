@@ -42,7 +42,7 @@ const CreateProjectPage = () => {
       !category
     ) {
       alert(
-        "Пожалуйста, заполните все поля корректно. Бюджет должен быть положительным числом, и выберите категорию."
+        "Zəhmət olmasa bütün sahələri düzgün doldurun. Büdcə müsbət ədəd olmalıdır və kateqoriya seçilməlidir."
       );
       return;
     }
@@ -62,7 +62,7 @@ const CreateProjectPage = () => {
       })
       .catch((err) => {
         const message =
-          err?.response?.data?.message || "Your balance is empty!";
+          err?.response?.data?.message || "Balansınız boşdur!";
         toast.error(message);
       });
   };
@@ -70,16 +70,16 @@ const CreateProjectPage = () => {
   return (
     <div className={style.modal}>
       <form onSubmit={handleSubmit}>
-        <h3>Новое задание</h3>
+        <h3>Yeni layihə</h3>
 
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Название проекта"
+          placeholder="Layihənin adı"
           required
         />
 
-        <h4 className={style.subTitle}>Выберите категорию</h4>
+        <h4 className={style.subTitle}>Kateqoriya seçin</h4>
         <div className={style.categoryButtons}>
           {["Web Development", "Design", "Writing", "Marketing"].map((cat) => (
             <button
@@ -98,7 +98,7 @@ const CreateProjectPage = () => {
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Описание проекта"
+          placeholder="Layihənin təsviri"
           required
         />
 
@@ -106,7 +106,7 @@ const CreateProjectPage = () => {
           <input
             value={skillInput}
             onChange={(e) => setSkillInput(e.target.value)}
-            placeholder="Добавить навык"
+            placeholder="Bacarıq əlavə et"
           />
           <button type="button" onClick={addSkill}>
             +
@@ -126,14 +126,14 @@ const CreateProjectPage = () => {
           type="number"
           value={budget}
           onChange={(e) => setBudget(e.target.value)}
-          placeholder="Бюджет в USD"
+          placeholder="Büdcə (USD)"
           required
         />
 
         <div className={style.buttonGroup}>
-          <button type="submit">Создать</button>
+          <button type="submit">Yarat</button>
           <button type="button" onClick={() => navigate("/my-jobs")}>
-            Отмена
+            Ləğv et
           </button>
         </div>
       </form>

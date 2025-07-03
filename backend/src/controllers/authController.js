@@ -66,7 +66,10 @@ export const registerUser = [
       });
 
       // ✅ Генерация токенов и сохранение refresh токена
-      const { accessToken, refreshToken } = generateTokens(newUser._id, newUser.role);
+      const { accessToken, refreshToken } = generateTokens(
+        newUser._id,
+        newUser.role
+      );
       newUser.refreshToken = refreshToken;
       await newUser.save();
 
@@ -119,7 +122,7 @@ export const loginUser = async (req, res) => {
     if (user.isBlocked) {
       return res
         .status(403)
-        .json({ message: "Ваш аккаунт заблокирован администратором." });
+        .json({ message: "Hesabınız administrator tərəfindən bloklanıb." });
     }
 
     // Проверка пароля

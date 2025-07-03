@@ -77,9 +77,7 @@ const NotificationDropdown = ({ role }) => {
 
     if (role === "employer") {
       projects.forEach((proj) => {
-        const hasProposals =
-          (proj.proposals && proj.proposals.length > 0) ||
-          proj.proposalsLength > 0;
+        const hasProposals = proj.proposals && proj.proposals.length > 0;
 
         if (hasProposals) {
           list.push({
@@ -89,7 +87,10 @@ const NotificationDropdown = ({ role }) => {
           });
         }
 
-        if (proj.status?.toLowerCase() === "submitted") {
+        if (
+          typeof proj.status === "string" &&
+          proj.status.toLowerCase() === "submitted"
+        ) {
           list.push({
             id: `sub-${proj._id}`,
             text: "📦 İş təhvil verildi",
@@ -102,28 +103,33 @@ const NotificationDropdown = ({ role }) => {
     return list;
   }, [chats, proposals, employerProjects, role]);
 
+  // ✅ Добавление уведомлений (без дублей и без бесконечного цикла)
   useEffect(() => {
     const seen = new Set(globalNotifications.map((n) => n.id));
-
     generatedNotifications.forEach((n) => {
       const alreadyDismissed = dismissedRef.current.has(n.id);
       const alreadyAdded = seen.has(n.id);
-
       if (!alreadyDismissed && !alreadyAdded) {
         dispatch(addNotification(n));
       }
     });
-  }, [generatedNotifications, globalNotifications, dispatch]);
+  }, [generatedNotifications]);
 
+  // ✅ Автоматическое удаление уведомлений при переходе
   useEffect(() => {
-    globalNotifications.forEach((n) => {
-      if (location.pathname === n.link) {
-        dispatch(removeNotification(n.id));
-        dismissedRef.current.add(n.id);
-        persistDismissed();
-      }
+    const toRemove = globalNotifications.filter(
+      (n) => n.link === location.pathname && !dismissedRef.current.has(n.id)
+    );
+
+    if (toRemove.length === 0) return;
+
+    toRemove.forEach((n) => {
+      dispatch(removeNotification(n.id));
+      dismissedRef.current.add(n.id);
     });
-  }, [location.pathname, globalNotifications, dispatch]);
+
+    persistDismissed();
+  }, [location.pathname]);
 
   const notifications = useMemo(() => {
     const seen = new Set();

@@ -62,7 +62,7 @@ export default function AdminPanel() {
     try {
       await axios.put(`/admin/${action}-user/${id}`);
       fetchAllData();
-    } catch (err) {
+    } catch (err) { 
       console.error("Xəta:", err.message);
     }
   };

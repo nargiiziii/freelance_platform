@@ -23,8 +23,8 @@ instance.interceptors.response.use(
       const message = error.response.data?.message;
 
       if (
-        message === "Ваш аккаунт заблокирован" ||
-        message === "Ваш аккаунт заблокирован администратором."
+        message === "Hesabınız bloklanıb" ||
+        message === "Hesabınız administrator tərəfindən bloklanıb."
       ) {
         alreadyLoggedOutDueToBlock = true;
 
@@ -37,11 +37,11 @@ instance.interceptors.response.use(
 
         // ⛔️ Показываем alert и перенаправляем
         setTimeout(() => {
-          alert("Ваш профиль заблокирован администратором");
+          alert("Profiliniz administrator tərəfindən blok edilib");
           window.location.href = "/login";
         }, 0);
 
-        // Прерываем дальнейшие запросы
+        // Прерываем дальнейшие запросы 
         return new Promise(() => {});
       }
     }
@@ -49,9 +49,10 @@ instance.interceptors.response.use(
     // 🔁 Обработка 401
     const isUnauthorized = error.response?.status === 401;
     const isNotRetry = !originalRequest._retry;
-    const isNotAuthRoute = !originalRequest.url.includes("/auth/login") &&
-                           !originalRequest.url.includes("/auth/register") &&
-                           !originalRequest.url.includes("/auth/refresh");
+    const isNotAuthRoute =
+      !originalRequest.url.includes("/auth/login") &&
+      !originalRequest.url.includes("/auth/register") &&
+      !originalRequest.url.includes("/auth/refresh");
     const requiresAuth = originalRequest.requiresAuth !== false;
 
     if (isUnauthorized && isNotRetry && isNotAuthRoute && requiresAuth) {

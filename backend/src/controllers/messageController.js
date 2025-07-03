@@ -27,27 +27,32 @@ export const getUserChats = async (req, res) => {
         path: "lastMessage",
         select: "content sender createdAt",
       })
-      .lean(); // обязательно, чтобы можно было модифицировать объекты
+      .lean(); // Чтобы можно было модифицировать объекты
 
-    const enrichedChats = chats.map((chat) => {
-      const partner = chat.members.find(
-        (m) => String(m._id) !== String(userId)
-      );
+    const enrichedChats = await Promise.all(
+      chats.map(async (chat) => {
+        const partner = chat.members.find(
+          (m) => String(m._id) !== String(userId)
+        );
 
-      const unreadCount =
-        chat.lastMessage && chat.unreadBy?.includes(userId) ? 1 : 0;
+        const unreadCount = await Message.countDocuments({
+          chatId: chat._id,
+          sender: { $ne: userId },
+          read: false,
+        });
 
-      return {
-        ...chat,
-        partner: {
-          _id: partner._id,
-          name: partner.name,
-          avatar: partner.avatar,
-          role: partner.role,
-        },
-        unreadCount,
-      };
-    });
+        return {
+          ...chat,
+          partner: {
+            _id: partner._id,
+            name: partner.name,
+            avatar: partner.avatar,
+            role: partner.role,
+          },
+          unreadCount,
+        };
+      })
+    );
 
     res.json(enrichedChats);
   } catch (error) {

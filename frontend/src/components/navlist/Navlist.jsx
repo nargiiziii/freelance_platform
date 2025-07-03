@@ -68,7 +68,7 @@ const Navlist = ({ onClick }) => {
           <li className={style.li} style={{ position: "relative" }}>
             <Link to="/messages" onClick={onClick}>
               MESAJLAR
-              {totalUnread > 0 && (
+              {/* {totalUnread > 0 && (
                 <span
                   style={{
                     position: "absolute",
@@ -83,7 +83,7 @@ const Navlist = ({ onClick }) => {
                 >
                   {totalUnread}
                 </span>
-              )}
+              )} */}
             </Link>
           </li>
           <li className={style.li}>
@@ -98,7 +98,7 @@ const Navlist = ({ onClick }) => {
         <>
           <li className={style.li}>
             <Link to="/create-project" onClick={onClick}>
-              İŞ YERLƏŞDİR
+              ELAN YERLƏŞDİR
             </Link>
           </li>
           <li className={style.li}>
@@ -109,7 +109,7 @@ const Navlist = ({ onClick }) => {
           <li className={style.li} style={{ position: "relative" }}>
             <Link to="/messages" onClick={onClick}>
               MESAJLAR
-              {totalUnread > 0 && (
+              {/* {totalUnread > 0 && (
                 <span
                   style={{
                     position: "absolute",
@@ -124,12 +124,12 @@ const Navlist = ({ onClick }) => {
                 >
                   {totalUnread}
                 </span>
-              )}
+              )} */}
             </Link>
           </li>
           <li className={style.li}>
             <Link to="/freelancers" onClick={onClick}>
-              FRELANSER AXTAR
+              IŞÇİ AXTAR
             </Link>
           </li>
           <li className={style.li}>

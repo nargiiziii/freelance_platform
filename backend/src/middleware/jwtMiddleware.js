@@ -14,11 +14,14 @@ export const verifyToken = async (req, res, next) => {
 
     // Находим пользователя по ID
     const user = await User.findById(decoded.id);
-    if (!user) return res.status(401).json({ message: "Пользователь не найден" });
+    if (!user)
+      return res.status(401).json({ message: "Пользователь не найден" });
 
     // Проверка на блокировку
     if (user.isBlocked) {
-      return res.status(403).json({ message: "Ваш аккаунт заблокирован администратором." });
+      return res
+        .status(403)
+        .json({ message: "Hesabınız administrator tərəfindən bloklanıb." });
     }
 
     // Сохраняем ID и роль пользователя
@@ -28,7 +31,9 @@ export const verifyToken = async (req, res, next) => {
     console.error("Ошибка при проверке токена:", error.message);
 
     if (error.name === "TokenExpiredError") {
-      return res.status(401).json({ message: "Токен истек, обновите access token" });
+      return res
+        .status(401)
+        .json({ message: "Токен истек, обновите access token" });
     }
 
     return res.status(401).json({ message: "Токен не валиден" });

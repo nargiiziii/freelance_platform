@@ -1,3 +1,5 @@
+@use "sass:color";
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -96,7 +98,7 @@ $dark-hover-bg: #2e1e4d;
         background-color: $darkAccent;
 
         &:hover {
-          background-color: lighten($darkAccent, 5%);
+          background-color: color.adjust($darkAccent, $lightness: 5%);
         }
       }
     }

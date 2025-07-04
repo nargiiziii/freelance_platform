@@ -1,0 +1,256 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(46, 15, 79, 0.2);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+:global(body.dark) .overlay {
+  background-color: rgba(253, 251, 255, 0.1);
+}
+
+.modal {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 24px 64px rgba(163, 117, 240, 0.2);
+  position: relative;
+  animation: fadeIn 0.25s ease-in-out;
+  font-family: "Segoe UI", sans-serif;
+}
+
+:global(body.dark) .modal {
+  background: #261a3c;
+  box-shadow: 0 24px 64px rgba(217, 184, 255, 0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #2e0f4f;
+  margin-bottom: 0.2rem;
+  font-size: 1.6rem;
+}
+
+:global(body.dark) h2 {
+  color: #fdfbff;
+}
+
+.closeIcon {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 1.4rem;
+  background: transparent;
+  border: none;
+  color: #2e0f4f;
+  cursor: pointer;
+}
+.closeIcon:hover {
+  color: #a375f0;
+}
+
+:global(body.dark) .closeIcon {
+  color: #fdfbff;
+}
+:global(body.dark) .closeIcon:hover {
+  color: #e3cfff;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+.field label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #2e0f4f;
+  font-size: 1.6rem;
+}
+.field input,
+.field textarea {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #ece6f5;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  background-color: #fdfbff;
+  outline: none;
+  width: 40rem;
+  color: #2e0f4f;
+}
+.field input:focus,
+.field textarea:focus {
+  border-color: #c6a5f7;
+  box-shadow: 0 0 0 2px #f0eaff;
+}
+.field textarea {
+  resize: vertical;
+  min-height: 80px;
+  max-height: 200px;
+}
+
+:global(body.dark) .field label {
+  color: #fdfbff;
+}
+:global(body.dark) .field input,
+:global(body.dark) .field textarea {
+  background-color: #261a3c;
+  border: 1px solid #382654;
+  color: #fdfbff;
+}
+:global(body.dark) .field input:focus,
+:global(body.dark) .field textarea:focus {
+  border-color: #d9b8ff;
+  box-shadow: 0 0 0 2px #382654;
+}
+
+.uploadField {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+.uploadField label {
+  font-weight: 600;
+  color: #2e0f4f;
+  font-size: 1.6rem;
+  margin-bottom: 0.4rem;
+}
+.uploadField .uploadRow {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.uploadField .fileInputWrapper {
+  position: relative;
+}
+.uploadField .fileInputWrapper input[type=file] {
+  display: none;
+}
+.uploadField .fileInputWrapper .customButton {
+  padding: 0.6rem 1.2rem;
+  font-size: 1.4rem;
+  border-radius: 10px;
+  background-color: #c6a5f7;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.uploadField .fileInputWrapper .customButton:hover {
+  background-color: #a375f0;
+}
+.uploadField .previewBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+.uploadField .fileName {
+  font-size: 1.3rem;
+  color: #8a6cae;
+  text-align: center;
+  max-width: 120px;
+  word-break: break-word;
+}
+.uploadField .imagePreview {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  box-shadow: 0 0 6px rgba(198, 165, 247, 0.15);
+}
+
+:global(body.dark) .uploadField label {
+  color: #fdfbff;
+}
+:global(body.dark) .uploadField .fileName {
+  color: #cbbedd;
+}
+:global(body.dark) .uploadField .customButton {
+  background-color: #d9b8ff;
+  color: #fdfbff;
+}
+:global(body.dark) .uploadField .customButton:hover {
+  background-color: #e3cfff;
+}
+:global(body.dark) .uploadField .imagePreview {
+  box-shadow: 0 0 6px rgba(217, 184, 255, 0.1);
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+.buttons button {
+  width: 14rem;
+  padding: 0.6rem 0.9rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.buttons button[type=submit] {
+  background-color: #c6a5f7;
+  color: white;
+}
+.buttons button[type=submit]:hover {
+  background-color: #a375f0;
+}
+.buttons button[type=submit]:disabled {
+  background-color: white;
+  cursor: not-allowed;
+}
+.buttons button[type=button] {
+  background-color: #f4efff;
+  color: #a375f0;
+}
+.buttons button[type=button]:hover {
+  background-color: #f0eaff;
+}
+
+:global(body.dark) .buttons button[type=submit] {
+  background-color: #d9b8ff;
+  color: #140a20;
+}
+:global(body.dark) .buttons button[type=submit]:hover {
+  background-color: #e3cfff;
+}
+:global(body.dark) .buttons button[type=button] {
+  background-color: #382654;
+  color: #fdfbff;
+}
+:global(body.dark) .buttons button[type=button]:hover {
+  background-color: #442e66;
+}
+
+.error {
+  color: #e57373;
+  font-size: 0.85rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.8rem;
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

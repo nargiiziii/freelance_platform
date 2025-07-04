@@ -62,7 +62,7 @@ export default function AdminPanel() {
     try {
       await axios.put(`/admin/${action}-user/${id}`);
       fetchAllData();
-    } catch (err) { 
+    } catch (err) {
       console.error("Xəta:", err.message);
     }
   };
@@ -176,7 +176,11 @@ export default function AdminPanel() {
   const renderTable = (columns, data) => (
     <table className={style.table}>
       <thead>
-        <tr>{columns.map((col) => <th key={col}>{col}</th>)}</tr>
+        <tr>
+          {columns.map((col) => (
+            <th key={col}>{col}</th>
+          ))}
+        </tr>
       </thead>
       <tbody>{data}</tbody>
     </table>
@@ -188,7 +192,10 @@ export default function AdminPanel() {
     if (activeTab === "users")
       return (
         <>
-          <button className={style.addButton} onClick={() => setModalOpen(true)}>
+          <button
+            className={style.addButton}
+            onClick={() => setModalOpen(true)}
+          >
             ➕ Yeni istifadəçi əlavə et
           </button>
 
@@ -270,12 +277,14 @@ export default function AdminPanel() {
           )}
         </>
       );
-
-    if (activeTab === "proposals")
+    if (activeTab === "proposals") {
       return renderTable(
-        ["Qiymət", "Status", "Mesaj", "Sil"],
+        ["Freelancer", "İşe götürən", "Layihə", "Qiymət", "Status", "Mesaj", "Sil"],
         proposals.map((p) => (
           <tr key={p._id}>
+            <td>{p.freelancer?.name || "—"}</td>
+            <td>{p.project?.employer?.name || "—"}</td>
+            <td>{p.project?.title || "—"}</td>
             <td>{p.price}$</td>
             <td>{p.status}</td>
             <td>{p.coverLetter?.slice(0, 50)}...</td>
@@ -287,6 +296,7 @@ export default function AdminPanel() {
           </tr>
         ))
       );
+    }
 
     if (activeTab === "escrows") {
       if (escrows.length === 0) {
@@ -331,11 +341,14 @@ export default function AdminPanel() {
       );
     }
 
-    if (activeTab === "reviews")
+    if (activeTab === "reviews") {
       return renderTable(
-        ["Reytinq", "Rəy", "Sil"],
+        ["Kimdən", "Kimə", "Layihə", "Reytinq", "Rəy", "Sil"],
         reviews.map((r) => (
           <tr key={r._id}>
+            <td>{r.fromUser?.name || "—"}</td>
+            <td>{r.toUser?.name || "—"}</td>
+            <td>{r.project?.title || "—"}</td>
             <td>{r.rating}⭐</td>
             <td>{r.comment}</td>
             <td>
@@ -346,6 +359,7 @@ export default function AdminPanel() {
           </tr>
         ))
       );
+    }
   };
 
   return (

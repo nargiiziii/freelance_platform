@@ -1,0 +1,184 @@
+@charset "UTF-8";
+.title {
+  font-size: 2.5rem;
+  text-align: center;
+  padding-top: 13rem;
+  padding-bottom: 4rem;
+  margin-top: -9rem;
+  margin-bottom: 3rem;
+  color: white;
+  background: linear-gradient(135deg, #c490f4, #8b3fce, #6426a2);
+  position: relative;
+}
+
+.dashboard {
+  color: #2c2c2c;
+  display: flex;
+  justify-content: center;
+  gap: 20rem;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: #fafafa;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #6d079c;
+  position: absolute;
+  bottom: 20rem;
+}
+
+.info {
+  margin: 2rem 0;
+}
+.info .name {
+  font-size: 4rem;
+}
+.info .role {
+  font-size: 2rem;
+  padding: 0.5rem 0;
+}
+.info .balance {
+  font-size: 1.4rem;
+}
+.info .editButton {
+  background-color: #aa00ff;
+  color: white;
+  font-size: 1.6rem;
+  padding: 1.3rem 6rem;
+  margin: 1rem 0;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+.info .editButton:hover {
+  background-color: #8300b3;
+}
+
+.sidebar {
+  position: relative;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.sidebar::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #df9efd;
+  pointer-events: none;
+  z-index: 1;
+  margin: 1rem 0;
+}
+
+.sidebar ul {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 4px 0; /* чтобы оставить место под большую линию */
+  position: relative;
+  z-index: 2;
+}
+
+.sidebar li {
+  padding: 1rem 1.2rem 1.5rem 1.2rem; /* добавляем padding-bottom для отступа от линии */
+  cursor: pointer;
+  font-weight: 600;
+  color: #6d079c;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  border-bottom: 3px solid transparent;
+  transition: color 0.3s, border-color 0.3s;
+  position: relative;
+  z-index: 3;
+  margin-bottom: 0;
+  font-size: 1.6rem; /* увеличиваем размер текста */
+  line-height: 1.4; /* чуть больше межстрочного */
+  margin: 1rem 0;
+}
+
+.sidebar li:hover {
+  color: #3c0864;
+}
+
+.sidebar li.activeSection {
+  color: #a402f5;
+  font-weight: 700;
+  border-bottom-color: #a402f5;
+}
+
+.section {
+  background: rgba(229, 203, 253, 0.5254901961);
+  padding: 1.8rem 2rem;
+}
+
+.section h3 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #6d079c;
+}
+
+.portfolioGrid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.portfolioItem {
+  border-radius: 8px;
+}
+
+.portfolioImage {
+  width: 100%;
+  height: 150px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+  border-radius: 1rem;
+}
+
+.portfolioItem strong {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #6d079c;
+}
+
+.portfolioItem a {
+  display: inline-block;
+  margin-top: 0.4rem;
+  color: #aa00ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.portfolioItem a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  padding-left: 1.2rem;
+  color: #333;
+}
+
+li {
+  margin-bottom: 0.7rem;
+  line-height: 1.3;
+}

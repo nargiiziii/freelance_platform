@@ -93,7 +93,12 @@ export const getAllProposals = async (req, res) => {
   try {
     const proposals = await Proposal.find()
       .populate("freelancer", "name email")
-      .populate("project", "title");
+      .populate({
+        path: "project",
+        select: "title employer",
+        populate: { path: "employer", select: "name email" },
+      });
+
     res.json(proposals);
   } catch (error) {
     res.status(500).json({ message: "Ошибка загрузки откликов", error });

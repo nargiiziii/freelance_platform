@@ -1,0 +1,140 @@
+.editProjectWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1rem;
+  background-color: #f4f0ff;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.formContainer {
+  width: 100%;
+  max-width: 700px;
+  background: rgba(255, 255, 255, 0.6);
+  -webkit-backdrop-filter: blur(20px);
+          backdrop-filter: blur(20px);
+  border: 1px solid rgba(198, 165, 247, 0.4);
+  box-shadow: 0 20px 40px rgba(163, 117, 240, 0.1);
+  border-radius: 28px;
+  padding: 3.5rem 4rem;
+  animation: fadeIn 0.4s ease;
+}
+
+.title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #2e0f4f;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.input,
+.textarea {
+  font-size: 1.6rem;
+  padding: 1.2rem 1.4rem;
+  border-radius: 12px;
+  border: 1px solid rgba(198, 165, 247, 0.4);
+  background-color: #fff;
+  color: #2e0f4f;
+  transition: border 0.2s ease;
+  resize: vertical;
+}
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #c6a5f7;
+}
+
+.textarea {
+  min-height: 140px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.saveBtn,
+.cancelBtn {
+  flex: 1;
+  padding: 1.2rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.saveBtn {
+  background-color: #c6a5f7;
+  color: #fff;
+  width: 20rem;
+}
+.saveBtn:hover {
+  background-color: #a375f0;
+}
+
+.cancelBtn {
+  background-color: #f0eaff;
+  color: #2e0f4f;
+}
+.cancelBtn:hover {
+  background-color: #d3baf8;
+}
+
+:global(body.dark) .editProjectWrapper {
+  background-color: #1a102b;
+}
+:global(body.dark) .formContainer {
+  background: rgba(43, 26, 64, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 40px rgba(216, 186, 255, 0.2);
+}
+:global(body.dark) .title {
+  color: #fdfbff;
+}
+:global(body.dark) .input,
+:global(body.dark) .textarea {
+  background-color: #2a1e40;
+  color: #fdfbff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+:global(body.dark) .input:focus,
+:global(body.dark) .textarea:focus {
+  border-color: #d8baff;
+}
+:global(body.dark) .saveBtn {
+  background-color: #cfb3ff;
+  color: #1a102b;
+}
+:global(body.dark) .saveBtn:hover {
+  background-color: #d8baff;
+}
+:global(body.dark) .cancelBtn {
+  background-color: #2e2042;
+  color: #fdfbff;
+}
+:global(body.dark) .cancelBtn:hover {
+  background-color: #a782e4;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

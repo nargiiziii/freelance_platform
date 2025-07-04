@@ -1,0 +1,332 @@
+.container {
+  max-width: 1000px;
+  margin: 3rem auto;
+  padding: 3rem 3.5rem;
+  border-radius: 5px;
+  font-family: "Segoe UI", sans-serif;
+  color: #2e0f4f;
+  background-color: rgba(222, 210, 236, 0.1725490196);
+}
+@media (max-width: 992px) {
+  .container {
+    padding: 2rem;
+  }
+}
+@media (max-width: 576px) {
+  .container {
+    padding: 1.5rem 1rem;
+  }
+}
+
+:global(body.dark) .container {
+  background-color: #261a3c;
+  color: #fdfbff;
+}
+
+h2 {
+  font-size: 2.8rem;
+  text-align: center;
+  margin: 2rem 0;
+  font-weight: 500;
+  color: #2e0f4f;
+  text-shadow: 1px 1px #e8def8;
+}
+@media (max-width: 576px) {
+  h2 {
+    font-size: 2.2rem;
+  }
+}
+
+:global(body.dark) h2 {
+  color: #fdfbff;
+  text-shadow: 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.error {
+  text-align: center;
+  color: #e57373;
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 80rem;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 2rem 4rem;
+  box-shadow: 0 14px 40px rgba(163, 117, 240, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+@media (max-width: 768px) {
+  .card {
+    padding: 2rem;
+  }
+}
+@media (max-width: 576px) {
+  .card {
+    padding: 1.5rem;
+  }
+}
+.card h3 {
+  font-size: 2.3rem;
+  color: #2e0f4f;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 576px) {
+  .card h3 {
+    font-size: 1.8rem;
+  }
+}
+
+:global(body.dark) .card {
+  background: #261a3c;
+  color: #fdfbff;
+}
+:global(body.dark) .card h3 {
+  color: #fdfbff;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+}
+@media (max-width: 768px) {
+  .top {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+.left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.right {
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+}
+@media (max-width: 768px) {
+  .right {
+    flex: 1;
+  }
+}
+
+.completed {
+  background-color: #e0f7e9;
+}
+
+.rejected {
+  background-color: #f9d6d6;
+}
+
+.inProgress {
+  background-color: #f4effc;
+}
+
+.refunded {
+  background-color: #f3e0d0;
+}
+
+.completedLabel,
+.statusPaid,
+.refundedLabel {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  border-radius: 16px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0.6rem 0;
+}
+
+.completedLabel,
+.statusPaid {
+  background: rgb(230, 251, 230);
+  color: #a375f0;
+  border: 1px solid rgb(149, 28, 224);
+}
+
+.refundedLabel {
+  background: #fff2f2;
+  color: #d13438;
+  border: 1px solid #d13438;
+}
+
+.submitBlock {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+}
+.submitBlock input[type=file] {
+  display: none;
+}
+.submitBlock .fileLabel {
+  width: 100%;
+  max-width: 360px;
+  height: 160px;
+  padding: 2rem;
+  background-color: #ffffff;
+  border: 2px dashed #e8def8;
+  border-radius: 20px;
+  color: #8a6cae;
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 8px rgba(198, 165, 247, 0.05);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.submitBlock .fileLabel:hover {
+  border-color: #c6a5f7;
+  background-color: #f0eaff;
+  color: #a375f0;
+  box-shadow: 0 0 10px rgba(198, 165, 247, 0.15);
+}
+.submitBlock .fileLabel::before {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background-color: #dfd5e8;
+  border-radius: 50%;
+  opacity: 0.08;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+.submitBlock .fileLabel span,
+.submitBlock .fileLabel svg,
+.submitBlock .fileLabel p {
+  z-index: 1;
+}
+.submitBlock :global(body.dark) .fileLabel {
+  background-color: #261a3c;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #bca8da;
+}
+.submitBlock :global(body.dark) .fileLabel:hover {
+  background-color: #2e1e4d;
+  border-color: #a375f0;
+  color: #a375f0;
+}
+.submitBlock .fileName {
+  font-size: 1.3rem;
+  color: #2e0f4f;
+  font-weight: 500;
+  text-align: center;
+  max-width: 300px;
+  word-wrap: break-word;
+  animation: fadeIn 0.4s ease;
+}
+.submitBlock :global(body.dark) .fileName {
+  color: #fdfbff;
+}
+.submitBlock button {
+  width: 100%;
+  max-width: 240px;
+  background-color: #a375f0;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 1rem 1.5rem;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+.submitBlock button:hover {
+  background: linear-gradient(to right, #c6a5f7, #a375f0);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(163, 117, 240, 0.1);
+}
+.submitBlock button:disabled {
+  background-color: #8a6cae;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.submitBlock :global(body.dark) button:disabled {
+  background-color: #bca8da;
+}
+
+.submittedBlock {
+  margin-top: 2rem;
+  text-align: center;
+  background: rgb(239, 253, 239);
+  border-radius: 16px;
+  padding: 1.2rem;
+  box-shadow: inset 0 0 8px rgba(198, 165, 247, 0.05);
+}
+.submittedBlock .fileSent {
+  font-size: 1.3rem;
+  color: #2e0f4f;
+  margin-bottom: 1rem;
+}
+.submittedBlock .fileSent a {
+  color: #a375f0;
+  text-decoration: underline;
+}
+.submittedBlock .fileSent a:hover {
+  color: #c6a5f7;
+}
+.submittedBlock :global(body.dark) .fileSent {
+  color: #fdfbff;
+}
+.submittedBlock :global(body.dark) .fileSent a {
+  color: #a375f0;
+}
+.submittedBlock :global(body.dark) .fileSent a:hover {
+  color: #c6a5f7;
+}
+
+.reviewBlock {
+  margin-top: 2rem;
+}
+.reviewBlock h4 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #2e0f4f;
+  margin-bottom: 1rem;
+}
+@media (max-width: 576px) {
+  .reviewBlock h4 {
+    font-size: 1.4rem;
+  }
+}
+.reviewBlock :global(body.dark) h4 {
+  color: #fdfbff;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

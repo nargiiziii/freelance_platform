@@ -1,0 +1,204 @@
+.detailContainer {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", sans-serif;
+  color: #2c2c2c;
+  background: #fff;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border: 4px solid #c9b6f7;
+  background-color: #f2f2f2;
+}
+
+.avatarFallback {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background-color: #c9b6f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: #fff;
+}
+
+.info {
+  flex: 1;
+}
+.info h2 {
+  font-size: 32px;
+  margin: 0 0 10px;
+  text-align: start;
+}
+.info .bio {
+  margin: 10px 0 20px;
+  font-style: italic;
+  color: #555;
+}
+.info .stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.info .stats p {
+  background: #f5f5fa;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.section {
+  margin-top: 30px;
+}
+.section h3 {
+  font-size: 22px;
+  margin-bottom: 16px;
+  color: #4a3f7c;
+}
+
+.skillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skillBadge {
+  background-color: #faf8ff;
+  color: #4a3f7c;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.portfolioGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.portfolioCard {
+  background: #fefefe;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+}
+.portfolioCard .image {
+  width: 100%;
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+}
+.portfolioCard .portfolioInfo {
+  padding: 14px;
+}
+.portfolioCard .portfolioInfo strong {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 6px;
+}
+.portfolioCard .portfolioInfo p {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #333;
+}
+.portfolioCard .portfolioInfo a {
+  display: inline-block;
+  font-size: 14px;
+  text-decoration: none;
+  color: #6a4eb6;
+  font-weight: bold;
+}
+.portfolioCard .portfolioInfo a:hover {
+  text-decoration: underline;
+}
+
+.messageButton {
+  margin-top: 40px;
+  background: linear-gradient(to right, #a084e8, #8b72dd);
+  color: #fff;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(138, 115, 210, 0.3);
+  transition: background 0.3s ease;
+}
+.messageButton:hover {
+  background: linear-gradient(to right, #9274eb, #735bcf);
+}
+
+.loading,
+.error {
+  text-align: center;
+  margin-top: 60px;
+  font-size: 18px;
+  color: #6b6b6b;
+}
+
+:global(body.dark) .detailContainer {
+  background: #1a102b;
+  color: #fdfbff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+:global(body.dark) .avatar {
+  background-color: #2e2042;
+  border: 4px solid #d8baff;
+}
+:global(body.dark) .avatarFallback {
+  background-color: #d8baff;
+  color: #1a102b;
+}
+:global(body.dark) .info .bio {
+  color: #bba6d8;
+}
+:global(body.dark) .info .stats p {
+  background: #3c2c50;
+  color: #d8baff;
+}
+:global(body.dark) .section h3 {
+  color: #cfb3ff;
+}
+:global(body.dark) .skillBadge {
+  background-color: #3b2e50;
+  color: #d8baff;
+}
+:global(body.dark) .portfolioCard {
+  background: #2b1a40;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+:global(body.dark) .portfolioCard .portfolioInfo p {
+  color: #cfc3e8;
+}
+:global(body.dark) .portfolioCard .portfolioInfo a {
+  color: #d8baff;
+}
+:global(body.dark) .messageButton {
+  background: linear-gradient(to right, #cfb3ff, #b392ff);
+  color: #1a102b;
+}
+:global(body.dark) .messageButton:hover {
+  background: linear-gradient(to right, #e0c9ff, #a67ee5);
+}
+:global(body.dark) .loading,
+:global(body.dark) .error {
+  color: #d8baff;
+}

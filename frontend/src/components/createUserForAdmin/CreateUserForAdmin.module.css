@@ -1,0 +1,50 @@
+.formContainer {
+  background-color: #ffffff;
+  padding: 2.5rem 3rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 12px 32px rgba(163, 117, 240, 0.1);
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  max-width: 480px;
+  margin: 2rem 0;
+}
+.formContainer h3 {
+  font-size: 2.2rem;
+  color: #a375f0;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.formContainer input,
+.formContainer select {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid #e8def8;
+  border-radius: 0.8rem;
+  font-size: 1.6rem;
+  color: #2e0f4f;
+  background-color: #f4f0ff;
+  transition: border-color 0.2s;
+}
+.formContainer input:focus,
+.formContainer select:focus {
+  border-color: #a375f0;
+  outline: none;
+  background-color: #f0eaff;
+}
+.formContainer select {
+  cursor: pointer;
+}
+.formContainer button {
+  background-color: #c6a5f7;
+  color: white;
+  font-size: 1.7rem;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.formContainer button:hover {
+  background-color: #a375f0;
+}

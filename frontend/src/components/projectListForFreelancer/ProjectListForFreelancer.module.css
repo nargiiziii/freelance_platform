@@ -1,0 +1,386 @@
+@charset "UTF-8";
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  padding: 3rem 8%;
+  background-color: #f4f0ff;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 1.25rem;
+  color: #2e0f4f;
+}
+@media (max-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+    padding: 2rem 5%;
+    gap: 2rem;
+  }
+}
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 1.5rem 4%;
+    font-size: 1.1rem;
+  }
+}
+
+:global(body.dark) .wrapper {
+  background-color: #1f1432;
+  color: #fdfbff;
+}
+
+.leftPanel {
+  flex: 0 0 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+@media (max-width: 768px) {
+  .leftPanel {
+    flex: 1 1 100%;
+  }
+}
+
+.heading {
+  font-size: 2.4rem;
+  color: #a375f0;
+  margin: 0;
+}
+@media (max-width: 768px) {
+  .heading {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 480px) {
+  .heading {
+    font-size: 1.8rem;
+  }
+}
+
+:global(body.dark) .heading {
+  color: #e3cfff;
+}
+
+.selectBar select {
+  width: 100%;
+  padding: 1.2rem 1.5rem;
+  border-radius: 14px;
+  border: 1px solid rgba(155, 133, 184, 0.2);
+  background-color: #ffffff;
+  color: #2e0f4f;
+  font-size: 1.6rem;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #a375f0 50%), linear-gradient(135deg, #a375f0 50%, transparent 50%);
+  background-position: calc(100% - 1.5rem) center, calc(100% - 1rem) center;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.selectBar select:hover, .selectBar select:focus {
+  border-color: #a375f0;
+  box-shadow: 0 0 0 3px rgba(163, 117, 240, 0.2);
+}
+@media (max-width: 768px) {
+  .selectBar select {
+    font-size: 1.5rem;
+    padding: 1rem 1.2rem;
+  }
+}
+@media (max-width: 480px) {
+  .selectBar select {
+    font-size: 1.4rem;
+    padding: 0.9rem 1rem;
+  }
+}
+
+:global(body.dark) .selectBar select {
+  background-color: #261a3c;
+  color: #fdfbff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-image: linear-gradient(45deg, transparent 50%, #e3cfff 50%), linear-gradient(135deg, #e3cfff 50%, transparent 50%);
+}
+
+.projectList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 100%;
+  width: 90rem;
+}
+@media (max-width: 768px) {
+  .projectList {
+    width: 100%;
+    gap: 1.5rem;
+  }
+}
+@media (max-width: 480px) {
+  .projectList {
+    gap: 1rem;
+  }
+}
+
+.card {
+  position: relative;
+  flex: 0 1 calc(50% - 1rem);
+  background: #ffffff;
+  border: 1px solid rgba(155, 133, 184, 0.2);
+  border-radius: 18px;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+  color: #2e0f4f;
+}
+@media (max-width: 768px) {
+  .card {
+    flex: 1 1 100%;
+    padding: 2rem;
+  }
+}
+@media (max-width: 480px) {
+  .card {
+    padding: 1.5rem;
+  }
+}
+.card:hover {
+  background-color: #f0eaff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+.card h4.title {
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: #a375f0;
+  margin-bottom: 1rem;
+}
+@media (max-width: 768px) {
+  .card h4.title {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 480px) {
+  .card h4.title {
+    font-size: 1.8rem;
+  }
+}
+.card p,
+.card .employerInfo {
+  font-size: 1.6rem;
+  margin: 0.3rem 0;
+  line-height: 1.5;
+}
+@media (max-width: 768px) {
+  .card p,
+  .card .employerInfo {
+    font-size: 1.4rem;
+  }
+}
+@media (max-width: 480px) {
+  .card p,
+  .card .employerInfo {
+    font-size: 1.3rem;
+  }
+}
+.card .employerInfo {
+  margin-top: 1rem;
+}
+
+:global(body.dark) .card {
+  background-color: #261a3c;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #fdfbff;
+}
+:global(body.dark) .card h4.title {
+  color: #e3cfff;
+}
+:global(body.dark) .card .employerInfo,
+:global(body.dark) .card p {
+  color: #fdfbff;
+}
+:global(body.dark) .card:hover {
+  background-color: #382654;
+}
+:global(body.dark) .card .respondBtn,
+:global(body.dark) .card .messageBtn {
+  background-color: #e3cfff;
+  color: #140a20;
+}
+:global(body.dark) .card .respondBtn:hover,
+:global(body.dark) .card .messageBtn:hover {
+  background-color: #c59cff;
+}
+
+.topRight {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  z-index: 1;
+}
+.topRight .messageBtn {
+  padding: 0.6rem 1.3rem;
+  font-size: 1.3rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #a375f0;
+  color: white;
+  transition: background-color 0.25s ease;
+}
+.topRight .messageBtn:hover {
+  background-color: #8447eb;
+}
+@media (max-width: 480px) {
+  .topRight .messageBtn {
+    font-size: 1.2rem;
+    padding: 0.5rem 1.2rem;
+  }
+}
+
+.buttonBlock {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.buttonBlock .respondBtn {
+  padding: 0.9rem 2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #a375f0;
+  color: #fff;
+  transition: background-color 0.25s ease;
+}
+.buttonBlock .respondBtn:hover {
+  background-color: #8447eb;
+}
+@media (max-width: 480px) {
+  .buttonBlock .respondBtn {
+    font-size: 1.2rem;
+    padding: 0.6rem 1.5rem;
+  }
+}
+
+.skills {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+@media (max-width: 480px) {
+  .skills {
+    gap: 0.4rem;
+  }
+}
+
+.skill {
+  font-size: 1.3rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background-color: rgba(198, 165, 247, 0.2);
+  border: 1px solid rgba(155, 133, 184, 0.2);
+  color: #2e0f4f;
+  transition: all 0.2s ease-in-out;
+}
+.skill:hover {
+  background-color: #f0eaff;
+}
+@media (max-width: 480px) {
+  .skill {
+    font-size: 1.2rem;
+    padding: 0.3rem 0.8rem;
+  }
+}
+
+:global(body.dark) .skill {
+  background-color: rgba(217, 184, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #fdfbff;
+}
+:global(body.dark) .skill:hover {
+  background-color: #382654;
+}
+
+.loading {
+  text-align: center;
+  color: #2e0f4f;
+  font-size: 1.6rem;
+}
+@media (max-width: 480px) {
+  .loading {
+    font-size: 1.4rem;
+  }
+}
+
+:global(body.dark) .loading {
+  color: #fdfbff;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #2e0f4f;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.checkboxLabel input[type=checkbox] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #c6a5f7;
+  border-radius: 4px;
+  background-color: transparent;
+  display: grid;
+  place-content: center;
+  transition: all 0.2s ease;
+}
+.checkboxLabel input[type=checkbox]:checked {
+  background-color: #c6a5f7;
+  border-color: #c6a5f7;
+}
+.checkboxLabel input[type=checkbox]:checked::after {
+  content: "✔";
+  font-size: 12px;
+  color: white;
+}
+.checkboxLabel input[type=checkbox]:hover {
+  border-color: #a375f0;
+}
+@media (max-width: 480px) {
+  .checkboxLabel {
+    font-size: 1.3rem;
+  }
+  .checkboxLabel input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+  }
+  .checkboxLabel input[type=checkbox]::after {
+    font-size: 10px;
+  }
+}
+
+:global(body.dark) .checkboxLabel {
+  color: #fdfbff;
+}
+:global(body.dark) .checkboxLabel input[type=checkbox] {
+  border-color: #d9b8ff;
+}
+:global(body.dark) .checkboxLabel input[type=checkbox]:checked {
+  background-color: #d9b8ff;
+  border-color: #d9b8ff;
+}
+:global(body.dark) .checkboxLabel input[type=checkbox]:checked::after {
+  color: #140a20;
+}
+:global(body.dark) .checkboxLabel input[type=checkbox]:hover {
+  border-color: #e3cfff;
+}

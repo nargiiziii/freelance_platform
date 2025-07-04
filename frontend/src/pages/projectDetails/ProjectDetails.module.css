@@ -1,0 +1,196 @@
+.projectPage {
+  padding: 40px;
+  background: #f8f6ff;
+  color: #2e0f4f;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.projectHeader {
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #5e3ea1;
+}
+
+.description {
+  font-size: 1.1rem;
+  margin-top: 8px;
+}
+
+.infoBox {
+  background-color: #e8def8;
+  border-left: 5px solid #b49cfc;
+  padding: 16px;
+  margin: 20px 0;
+  border-radius: 12px;
+}
+
+.section {
+  margin-top: 40px;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #6a41c2;
+}
+
+.freelancerCard {
+  background: white;
+  border: 1px solid #ded2f4;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(144, 118, 240, 0.1);
+}
+
+.freelancerInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.freelancerText {
+  flex: 1;
+  min-width: 220px;
+}
+.freelancerText p {
+  margin: 6px 0;
+  font-size: 1.8rem;
+  color: #42276b;
+}
+.freelancerText p strong {
+  color: #6a41c2;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border: 2px solid #c0a7fa;
+}
+
+.reviewBox {
+  margin-top: 20px;
+  background: #f3edfc;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #cdb7f6;
+}
+
+.notice {
+  color: #9c7dc9;
+  font-style: italic;
+  margin-top: 12px;
+}
+
+.loading {
+  padding: 60px;
+  text-align: center;
+  color: #7a4ee0;
+  font-weight: bold;
+}
+
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.leftColumn {
+  flex: 1 1 40%;
+  min-width: 300px;
+}
+
+.rightColumn {
+  flex: 1 1 55%;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.leftColumn .section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px dashed #c7b6ec;
+}
+
+:global(body.dark) .projectPage {
+  background: #1a102b;
+  color: #f4ebff;
+}
+:global(body.dark) .title {
+  color: #d9c8ff;
+}
+:global(body.dark) .description {
+  color: #ccc0e8;
+}
+:global(body.dark) .infoBox {
+  background-color: #2a1c47;
+  border-left: 5px solid #b89dff;
+}
+:global(body.dark) .sectionTitle {
+  color: #e0c9ff;
+}
+:global(body.dark) .freelancerCard {
+  background: #2c1a44;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+:global(body.dark) .freelancerText p {
+  color: #d7c9f0;
+}
+:global(body.dark) .freelancerText p strong {
+  color: #e0c9ff;
+}
+:global(body.dark) .avatar {
+  border: 2px solid #d9c8ff;
+}
+:global(body.dark) .reviewBox {
+  background: #2f1d4d;
+  border: 1px solid #a47eff;
+}
+:global(body.dark) .notice {
+  color: #c7a8f3;
+}
+:global(body.dark) .loading {
+  color: #e0c9ff;
+}
+:global(body.dark) .leftColumn .section {
+  border-top: 1px dashed #6e4aa7;
+}
+
+.skillsBox {
+  margin: 1rem 0;
+}
+
+.skillsTitle {
+  font-size: 16px;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.skillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.skillItem {
+  background-color: #eee;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+}

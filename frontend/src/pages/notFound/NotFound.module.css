@@ -1,0 +1,90 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.notFound {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f0ff;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.6s ease;
+}
+.notFound .content {
+  text-align: center;
+  padding: 4rem 3rem;
+  border-radius: 2rem;
+  box-shadow: 0 14px 40px rgba(163, 117, 240, 0.08);
+  max-width: 500px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.notFound .content h1,
+.notFound .content p,
+.notFound .content .homeBtn {
+  transition: all 0.3s ease;
+}
+.notFound .content h1 {
+  font-size: 7rem;
+  color: #a375f0;
+  margin-bottom: 1rem;
+}
+.notFound .content p {
+  font-size: 1.8rem;
+  color: #2e0f4f;
+  margin-bottom: 2rem;
+}
+.notFound .content .homeBtn {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background-color: #c6a5f7;
+  color: white;
+  font-size: 1.6rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.notFound .content .homeBtn:hover {
+  background-color: #a375f0;
+}
+.notFound.dark {
+  background: #140a20;
+}
+.notFound.dark .content {
+  background: #261a3c;
+}
+.notFound.dark .content h1 {
+  color: #bca8da;
+}
+.notFound.dark .content p {
+  color: #fdfbff;
+}
+.notFound.dark .content .homeBtn {
+  background-color: #a375f0;
+}
+.notFound.dark .content .homeBtn:hover {
+  background-color: #b28cf3;
+}
+
+.gifWrapper {
+  margin: 2rem;
+  display: flex;
+  justify-content: center;
+}
+.gifWrapper img {
+  width: 100%;
+  max-width: 40rem;
+  height: 30rem;
+  border-radius: 1.5rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}

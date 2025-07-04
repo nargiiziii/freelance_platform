@@ -6,14 +6,17 @@ import ProposalListEmp from "../../components/proposalListEmp/ProposalListEmp";
 import style from "./ProjectDetails.module.scss";
 import ReviewForm from "../../components/reviewForm/ReviewForm";
 import useNotificationCleaner from "../../hooks/useNotificationCleaner";
-import { fetchUserReviews } from "../../redux/features/reviewSlice";
+import {
+  fetchUserReviews,
+  checkIfReviewed,
+} from "../../redux/features/reviewSlice";
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const userReviews = useSelector((state) => state.reviews.reviews);
+  const hasReviewed = useSelector((state) => state.reviews.hasReviewed);
   useNotificationCleaner([`new-${id}`, `sub-${id}`]);
 
   useEffect(() => {
@@ -30,6 +33,17 @@ const ProjectDetails = () => {
     dispatch(fetchUserReviews());
   }, [id, dispatch]);
 
+  useEffect(() => {
+    if (project?.escrow?.freelancer && project._id) {
+      dispatch(
+        checkIfReviewed({
+          toUserId: project.escrow.freelancer,
+          projectId: project._id,
+        })
+      );
+    }
+  }, [dispatch, project]);
+
   if (!project) return <p className={style.loading}>Layihə yüklənir...</p>;
 
   const acceptedProposal = project.proposals?.find(
@@ -39,11 +53,6 @@ const ProjectDetails = () => {
   );
 
   const freelancer = acceptedProposal?.freelancer;
-
-  const hasLeftReview = userReviews.some(
-    (review) =>
-      review.projectId === project._id && review.fromUser === user._id
-  );
 
   return (
     <div className={style.projectPage}>
@@ -97,13 +106,21 @@ const ProjectDetails = () => {
                 {project.status === "closed" &&
                   project.escrow?.status === "released" &&
                   acceptedProposal?.workFile &&
-                  !hasLeftReview && (
+                  !hasReviewed && (
                     <div className={style.reviewBox}>
                       <h3 className={style.sectionTitle}>Freelancer-i qiymətləndirin</h3>
                       <ReviewForm
                         toUserId={freelancer._id}
                         projectId={project._id}
-                        onSubmitSuccess={() => dispatch(fetchUserReviews())}
+                        onSubmitSuccess={() => {
+                          dispatch(fetchUserReviews());
+                          dispatch(
+                            checkIfReviewed({
+                              toUserId: freelancer._id,
+                              projectId: project._id,
+                            })
+                          );
+                        }}
                       />
                     </div>
                   )}
@@ -117,7 +134,10 @@ const ProjectDetails = () => {
         {/* Sağ sütun — təkliflər */}
         <div className={style.rightColumn}>
           <section className={style.section}>
-            <ProposalListEmp projectId={project._id} onProjectUpdated={setProject} />
+            <ProposalListEmp
+              projectId={project._id}
+              onProjectUpdated={setProject}
+            />
           </section>
         </div>
       </div>

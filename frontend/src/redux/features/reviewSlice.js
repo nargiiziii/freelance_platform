@@ -47,12 +47,29 @@ export const fetchReviewsForUser = createAsyncThunk(
   }
 );
 
+export const checkIfReviewed = createAsyncThunk(
+  "reviews/checkIfReviewed",
+  async ({ toUserId, projectId }, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `/reviews/has-reviewed/${toUserId}/${projectId}`
+      );
+      return res.data.hasReviewed;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "Yoxlama zamanı xəta baş verdi"
+      );
+    }
+  }
+);
+
 const reviewSlice = createSlice({
   name: "reviews",
   initialState: {
     reviews: [],
     loading: false,
     error: null,
+    hasReviewed: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -91,6 +108,12 @@ const reviewSlice = createSlice({
       })
       .addCase(fetchReviewsForUser.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(checkIfReviewed.fulfilled, (state, action) => {
+        state.hasReviewed = action.payload;
+      })
+      .addCase(checkIfReviewed.rejected, (state, action) => {
         state.error = action.payload;
       });
   },

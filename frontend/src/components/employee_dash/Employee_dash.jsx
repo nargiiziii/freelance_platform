@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEmployerProjects } from "../../redux/features/projectSlice";
 import { fetchReviewsForUser } from "../../redux/features/reviewSlice";
 import style from "./Employee_dash.module.scss";
+import { FaStar } from "react-icons/fa"; // вверху файла
 
 function EmployeeDash() {
   const dispatch = useDispatch();
@@ -16,7 +17,9 @@ function EmployeeDash() {
   const reviews = useSelector((state) => state.reviews.reviews);
   const loading = useSelector((state) => state.reviews.loading);
 
-  const [activeSection, setActiveSection] = useState("Tapşırıq yerləşdirilməsi");
+  const [activeSection, setActiveSection] = useState(
+    "Tapşırıq yerləşdirilməsi"
+  );
   const [filterStatus, setFilterStatus] = useState("all");
   const [filteredProjects, setFilteredProjects] = useState([]);
 
@@ -140,9 +143,7 @@ function EmployeeDash() {
                 <h4>Mənim yerləşdirdiyim layihələr</h4>
                 <div className={style.statusFilter}>
                   <button onClick={() => setFilterStatus("all")}>Hamısı</button>
-                  <button onClick={() => setFilterStatus("open")}>
-                    Açıq
-                  </button>
+                  <button onClick={() => setFilterStatus("open")}>Açıq</button>
                   <button onClick={() => setFilterStatus("in progress")}>
                     İşlənir
                   </button>
@@ -213,7 +214,16 @@ function EmployeeDash() {
                         {review.fromUser?.name || "Anonim"}
                       </div>
                       <div className={style.reviewStars}>
-                        {"⭐".repeat(review.rating)}
+                        {[...Array(5)].map((_, index) => (
+                          <FaStar
+                            key={index}
+                            size={18}
+                            color={
+                              index < review.rating ? "#b48bfb" : "#e0d3f9"
+                            }
+                            className={style.star}
+                          />
+                        ))}
                       </div>
                       <div className={style.reviewComment}>
                         {review.comment}

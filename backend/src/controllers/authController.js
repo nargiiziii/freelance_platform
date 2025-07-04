@@ -179,21 +179,26 @@ export const getProfile = async (req, res) => {
     }
 
     const userId = req.user.id;
-    const user = await User.findById(userId).select("-passwordHash");
 
-    if (!user)
+    const user = await User.findById(userId)
+      .select("-passwordHash -refreshToken")
+      .lean(); // lean делает объект обычным JS, без лишнего
+
+    if (!user) {
       return res.status(404).json({ message: "Пользователь не найден" });
+    }
 
-    const userObj = user.toObject();
-    userObj.id = userObj._id;
-    delete userObj._id;
+    // Убедимся, что поле `id` присутствует
+    user.id = user._id;
+    delete user._id;
 
-    res.json(userObj);
+    res.status(200).json(user);
   } catch (error) {
-    console.error(error);
+    console.error("Ошибка в getProfile:", error);
     res.status(500).json({ message: "Ошибка сервера" });
   }
 };
+
 
 // Контроллер выхода пользователя из системы
 export const logoutUser = async (req, res) => {

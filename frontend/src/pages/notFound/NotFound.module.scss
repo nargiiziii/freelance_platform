@@ -1,0 +1,119 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 🎨 Цвета
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$card-bg: #ffffff;
+$shadow: 0 14px 40px rgba($darkAccent, 0.08);
+
+// 🌙 Тёмная тема
+$dark-bg: #140a20;
+$dark-card: #261a3c;
+$dark-text: #fdfbff;
+$dark-muted: #bca8da;
+$dark-border: rgba(255, 255, 255, 0.1);
+$dark-hover-bg: #2e1e4d;
+
+.notFound {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $primary;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.6s ease;
+
+  .content {
+    text-align: center;
+    padding: 4rem 3rem;
+    border-radius: 2rem;
+    box-shadow: $shadow;
+    max-width: 500px;
+    width: 100%;
+    transition: all 0.3s ease;
+
+    h1,
+    p,
+    .homeBtn {
+      transition: all 0.3s ease;
+    }
+
+    h1 {
+      font-size: 7rem;
+      color: $darkAccent;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.8rem;
+      color: $text;
+      margin-bottom: 2rem;
+    }
+
+    .homeBtn {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background-color: $accent;
+      color: white;
+      font-size: 1.6rem;
+      border-radius: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: $darkAccent;
+      }
+    }
+  }
+
+  &.dark {
+    background: $dark-bg;
+
+    .content {
+      background: $dark-card;
+
+      h1 {
+        color: $dark-muted;
+      }
+
+      p {
+        color: $dark-text;
+      }
+
+      .homeBtn {
+        background-color: $darkAccent;
+
+        &:hover {
+          background-color: lighten($darkAccent, 5%);
+        }
+      }
+    }
+  }
+}
+
+.gifWrapper {
+  margin: 2rem;
+  display: flex;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    max-width: 40rem;
+    height: 30rem;
+    border-radius: 1.5rem;
+    object-fit: cover;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+}

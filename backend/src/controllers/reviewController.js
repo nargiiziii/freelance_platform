@@ -69,3 +69,22 @@ export const getMyReviews = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+// Проверка: оставил ли пользователь отзыв по проекту
+export const hasUserReviewed = async (req, res) => {
+  try {
+    const fromUser = req.user.id;
+    const { toUserId, projectId } = req.params;
+
+    const existingReview = await Review.findOne({
+      fromUser,
+      toUser: toUserId,
+      project: projectId,
+    });
+
+    res.json({ hasReviewed: !!existingReview });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

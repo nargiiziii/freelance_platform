@@ -7,7 +7,7 @@ const AssistantChat = () => {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      text: "Salam! Mən FreelaBot! Bu platformadan istifadə ilə bağlı sizə kömək edə bilərəm 😊",
+      text: "Salam! Mən RemotaBot! Bu platformadan istifadə ilə bağlı sizə kömək edə bilərəm 😊",
     },
   ]);
   const [input, setInput] = useState("");
@@ -102,7 +102,7 @@ Cavabların səmimi, aydın və qısa olsun.
       {open ? (
         <div className={style.chatBox}>
           <div className={style.header} onMouseDown={handleMouseDown}>
-            <span>🤖 FreelaBot </span>
+            <span>🤖 RemotaBot </span>
             <button
               className={style.closeButton}
               onClick={() => setOpen(false)}

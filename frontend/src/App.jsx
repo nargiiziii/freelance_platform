@@ -34,6 +34,7 @@ import EditProject from "./pages/editProject/EditProject";
 
 // 🛠 Страница администратора
 import AdminPanel from "./pages/admin/AdminPanel";
+import NotFound from "./pages/notFound/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
       { path: "/edit-profile", element: <EditProfile /> },
       { path: "/escrow", element: <BalancePage /> },
       { path: "/messages", element: <MessagesPage /> },
+      { path: "*", element: <NotFound /> },
 
       // 🧑‍💻 Маршруты фрилансера
       { path: "/freelancer-dash", element: <FreelancerDash /> },

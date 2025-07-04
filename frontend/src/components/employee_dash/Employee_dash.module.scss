@@ -9,12 +9,13 @@ $card-bg: #ffffff;
 $border: #e8def8;
 $hover-bg: #f0eaff;
 $hoverAccent: #d3baf8;
+$font-main: "Nunito", sans-serif;
 
 .employeeContent {
   display: flex;
   flex-direction: column;
   padding: 2rem 6%;
-  font-family: "Segoe UI", sans-serif;
+  font-family: $font-main;
   background-color: $primary;
   min-height: 100vh;
   font-size: 1.5rem;
@@ -211,7 +212,7 @@ $hoverAccent: #d3baf8;
       width: 16rem;
     }
 
-    .projectHeader{
+    .projectHeader {
       display: flex;
       align-items: center;
       gap: 1rem;
@@ -269,7 +270,6 @@ $hoverAccent: #d3baf8;
   }
 }
 
-
 .reviewsSection {
   background-color: #ffffff;
   border-radius: 20px;
@@ -277,7 +277,7 @@ $hoverAccent: #d3baf8;
   box-shadow: 0 6px 24px rgba(163, 117, 240, 0.1);
   font-size: 1.6rem;
   color: #2e0f4f;
-  font-family: "Segoe UI", sans-serif;
+  font-family: $font-main;
 }
 
 .reviewsSection h3 {
@@ -322,7 +322,6 @@ $hoverAccent: #d3baf8;
   line-height: 1.6;
   color: #2e0f4f;
 }
-
 
 :global(body.dark) {
   .employeeContent {
@@ -419,7 +418,6 @@ $hoverAccent: #d3baf8;
       color: #fdfbff;
       box-shadow: 0 1px 6px rgba(216, 186, 255, 0.1);
     }
-
   }
 
   .tabMenu {
@@ -475,7 +473,6 @@ $hoverAccent: #d3baf8;
     color: #fdfbff;
   }
 }
-
 
 // 🔽 РЕСПОНСИВНОСТЬ
 

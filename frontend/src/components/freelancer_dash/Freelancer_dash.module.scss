@@ -499,7 +499,6 @@ $hoverAccent: #d3baf8;
   color: #2e0f4f;
 }
 
-
 // 🌙 Темная тема
 :global(body.dark) .freelancerContent {
   background-color: #140a20;
@@ -824,4 +823,10 @@ $hoverAccent: #d3baf8;
   .portfolioContent p {
     font-size: 1.4rem;
   }
+}
+
+.icon {
+  margin-right: 0.5rem;
+  color: $darkAccent; // или любой красивый цвет из палитры
+  vertical-align: middle;
 }

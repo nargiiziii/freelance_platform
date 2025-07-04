@@ -13,6 +13,15 @@ import {
 import FreelancerProposals from "../freelancerProposals/FreelancerProposals";
 import { fetchFreelancerStats } from "../../redux/features/userSlice";
 import { getProfile } from "../../redux/features/authSlice";
+import { FaStar } from "react-icons/fa";
+import {
+  FaClock,
+  FaPaperPlane,
+  FaProjectDiagram,
+  FaMoneyBillWave,
+  FaCalendarAlt,
+} from "react-icons/fa";
+import { HiOutlineLightningBolt } from "react-icons/hi";
 
 function FreelancerDash() {
   const navigate = useNavigate();
@@ -165,13 +174,39 @@ function FreelancerDash() {
                 <div className={style.activityCard}>
                   <h4>Fəaliyyət</h4>
                   <p>
-                    🔄 Son giriş:{" "}
+                    <FaClock className={style.icon} /> Son giriş:{" "}
                     {stats?.lastSeen
                       ? new Date(stats.lastSeen).toLocaleDateString()
                       : "Məlumat yoxdur"}
                   </p>
-                  <p>📤 Göndərilən müraciətlər: {stats?.proposalsCount ?? 0}</p>
-                  <p>⭐ Orta reytinq: {stats?.averageRating ?? "0.0"}</p>
+                  <p>
+                    <FaPaperPlane className={style.icon} /> Göndərilən
+                    müraciətlər: {stats?.proposalsCount ?? 0}
+                  </p>
+                  <p>
+                    <FaStar className={style.icon} /> Orta reytinq:{" "}
+                    {stats?.averageRating ?? "0.0"}
+                  </p>
+                  <p>
+                    <FaProjectDiagram className={style.icon} /> Aktiv layihələr:{" "}
+                    {stats?.activeProjectsCount ?? 0}
+                  </p>
+                  <p>
+                    <HiOutlineLightningBolt className={style.icon} /> Ortalama
+                    cavab vaxtı:{" "}
+                    {stats?.averageResponseTime ?? "Məlumat yoxdur"}
+                  </p>
+                  <p>
+                    <FaCalendarAlt className={style.icon} /> Platformaya
+                    qoşulma:{" "}
+                    {user?.createdAt
+                      ? new Date(user.createdAt).toLocaleDateString()
+                      : "Məlumat yoxdur"}
+                  </p>
+                  <p>
+                    <FaMoneyBillWave className={style.icon} /> Ümumi qazanc:{" "}
+                    {user.balance?.toLocaleString("ru-RU") || 0}₼
+                  </p>
                 </div>
               </div>
 
@@ -243,7 +278,7 @@ function FreelancerDash() {
               <h3>Rəylər</h3>
               {loading ? (
                 <p className={style.reviewsLoading}>Rəylər yüklənir...</p>
-              ) : reviews.length ? (
+              ) : reviews.length > 0 ? (
                 <ul>
                   {reviews.map((review, i) => (
                     <li key={review._id || i} className={style.reviewItem}>
@@ -254,7 +289,16 @@ function FreelancerDash() {
                         {review.fromUser?.name || "Anonim"}
                       </div>
                       <div className={style.reviewStars}>
-                        {"⭐".repeat(review.rating)}
+                        {[...Array(5)].map((_, index) => (
+                          <FaStar
+                            key={index}
+                            size={18}
+                            color={
+                              index < review.rating ? "#b48bfb" : "#e0d3f9"
+                            }
+                            className={style.star}
+                          />
+                        ))}
                       </div>
                       <div className={style.reviewComment}>
                         {review.comment}
@@ -263,7 +307,7 @@ function FreelancerDash() {
                   ))}
                 </ul>
               ) : (
-                <p className={style.reviewsEmpty}>Heç bir rəy yoxdur</p>
+                <p className={style.reviewsEmpty}>Rəy yoxdur</p>
               )}
             </section>
           )}

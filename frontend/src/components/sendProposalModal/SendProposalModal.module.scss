@@ -1,33 +1,71 @@
+@use "sass:color";
+
+$primary: #f4f0ff;
+$accent: #c6a5f7;
+$darkAccent: #a375f0;
+$text: #2e0f4f;
+$muted: #8a6cae;
+$card-bg: #ffffff;
+$border: #e8def8;
+$hover-bg: #f0eaff;
+$shadow: 0 14px 40px rgba($darkAccent, 0.08);
+
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 1rem;
 }
 
 .modal {
-  background: white;
+  background-color: $card-bg;
   padding: 2rem;
-  border-radius: 14px;
-  width: 400px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  font-family: "Segoe UI", sans-serif;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: $shadow;
+  color: $text;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 
   h3 {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    color: $darkAccent;
+    text-align: center;
   }
 
-  textarea,
-  input {
-    width: 100%;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    textarea,
+    input {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.4rem;
+      border: 1px solid $border;
+      border-radius: 12px;
+      background-color: $primary;
+      resize: none;
+      color: $text;
+
+      &:focus {
+        outline: none;
+        border-color: $accent;
+        background-color: $hover-bg;
+      }
+    }
+
+    textarea {
+      min-height: 120px;
+    }
   }
 
   .buttons {
@@ -36,19 +74,61 @@
     gap: 1rem;
 
     button {
-      padding: 0.6rem 1.2rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.4rem;
       border: none;
-      border-radius: 8px;
-      font-size: 1rem;
+      border-radius: 10px;
       cursor: pointer;
+      transition: background-color 0.3s;
+    }
 
-      &:first-of-type {
-        background: #6a4ef6;
-        color: white;
+    button[type="submit"] {
+      background-color: $darkAccent;
+      color: white;
+
+      &:hover {
+        background-color: color.scale($darkAccent, $lightness: -10%);
       }
+    }
 
-      &:last-of-type {
-        background: #eee;
+    button[type="button"] {
+      background-color: $border;
+      color: $text;
+
+      &:hover {
+        background-color: $hover-bg;
+      }
+    }
+  }
+}
+
+// 🌐 Responsive adjustments
+@media (max-width: 480px) {
+  .modal {
+    padding: 1.5rem;
+    max-width: 100%;
+    border-radius: 16px;
+
+    h3 {
+      font-size: 1.6rem;
+    }
+
+    form {
+      gap: 0.8rem;
+
+      textarea,
+      input {
+        font-size: 1.2rem;
+        padding: 0.8rem;
+      }
+    }
+
+    .buttons {
+      flex-direction: column;
+      button {
+        width: 100%;
+        font-size: 1.3rem;
+        padding: 0.9rem;
       }
     }
   }
